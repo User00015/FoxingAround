@@ -20,7 +20,7 @@ namespace MVC5App.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base(Helpers.GetRDSConnection() ?? "WeddingPlanner", false)
+            : base(Helpers.GetRDSConnection() ?? "DefaultConnection", false)
         {
         }
 
