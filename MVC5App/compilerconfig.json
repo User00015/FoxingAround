@@ -1,0 +1,14 @@
+﻿[
+  {
+    "outputFile": "Content/Temp.css",
+    "inputFile": "Content/Temp.less"
+  },
+  {
+    "outputFile": "Content/cerulean-bootstrap.css",
+    "inputFile": "Content/cerulean-bootstrap.less"
+  },
+  {
+    "outputFile": "Content/final.css",
+    "inputFile": "Content/final.less"
+  }
+]

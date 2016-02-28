@@ -1,0 +1,9 @@
+﻿TODO:
+
+Need a landing page.
+Need a gallery page.
+Need a ordering page.
+Need a contacts page.
+
+Custom costume page Version 2.0
+* Measurements. Order form. Body template. Props.

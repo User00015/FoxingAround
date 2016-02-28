@@ -1,0 +1,12 @@
+﻿
+<div class="dropdown dropdown-select">
+    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+        {{isPlaceholder ? placeholder : selected.name}}
+        <i class="fa fa-angle-down"></i>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right" ng-click="show();">
+            <li ng-repeat="item in list" ng-click="select(item)" ng-class="{ selected: isSelected(item) }">
+                <a href="">{{property !== undefined ? item[property] : item}}</a>
+            </li>
+    </ul>
+</div>

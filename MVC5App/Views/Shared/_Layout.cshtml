@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+<html ng-app="weddingApp">
+<head>
+    <title>@ViewBag.Title - Foxing Around</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <script src="http://maps.google.com/maps/api/js"></script>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/angularapp")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("scripts", required: false)
+
+</head>
+<body>
+    @RenderBody()
+</body>
+</html>
