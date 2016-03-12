@@ -36,6 +36,8 @@ namespace MVC5App
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/final.min.css",
                       "~/Content/site.css"));
+
+            BundleTable.EnableOptimizations = false;
         }
     }
 }

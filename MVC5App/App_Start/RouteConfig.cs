@@ -10,6 +10,11 @@ namespace MVC5App
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapMvcAttributeRoutes();
+            routes.MapRoute(
+                name: "Default",
+                url: "{*anything}", // THIS IS THE MAGIC!!!!
+                defaults: new { controller = "Home", action = "Index" }
+            );
         }
     }
 }
