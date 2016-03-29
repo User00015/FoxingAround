@@ -5,8 +5,8 @@ app
         function ($routeProvider, $locationProvider) {
             $routeProvider
                 .when('/home', { templateUrl: './Angular/Home/home.html', controller: 'HomeController' })
-                .when('/gallery', { templateUrl: './Angular/Gallery/gallery.html', controller: 'GalleryController' })
-                .when('/ordering', { templateUrl: './Angular/Ordering/ordering.html', controller: 'OrderingController' })
+                //.when('/gallery', { templateUrl: './Angular/Gallery/gallery.html', controller: 'GalleryController' })
+                .when('/encounter', { templateUrl: './Angular/Encounter/encounter.html', controller: 'EncounterController' })
                 .when('/contacts', { templateUrl: './Angular/Contacts/contacts.html', controller: 'ContactsController' })
                 .otherwise({ redirectTo: '/home' });
 

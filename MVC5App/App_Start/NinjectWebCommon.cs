@@ -2,7 +2,8 @@ using System;
 using System.Web;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using MVC5App;
-using MVC5App.Controllers;
+using MVC5App.DynamoDb;
+using MVC5App.Services;
 using Ninject;
 using Ninject.Web.Common;
 
@@ -61,6 +62,8 @@ namespace MVC5App
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            kernel.Bind<ITableDataService>().To<DynamoService>();
+            kernel.Bind<IEncounterService>().To<EncounterService>();
         }        
     }
 }

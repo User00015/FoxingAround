@@ -1,9 +1,82 @@
 ﻿TODO:
 
-Need a landing page.
-Need a gallery page.
-Need a ordering page.
-Need a contacts page.
+I am going to make an encounter builder for 5e. Lets figure out what we need.
 
-Custom costume page Version 2.0
-* Measurements. Order form. Body template. Props.
+An encounter in 5e is two tables and the following rules:
+
+1) Make note of XP values for each Character via a lookup table. We'll assume everyone is equal level for now.
+2) Pick creatures that sum up but do not exceed this XP value.
+3) Apply a modifier to monster encounters as number of monsters increases.
+
+	Ranges are: 
+	n      == %'ge modifier
+	1      ==   1
+	2      == 1.5
+	3-6    ==   2
+	7-10   == 2.5
+	11-14  ==   3
+	15+    ==   4
+
+4) Match this value to the appropriate lookup table for difficulty. Difficulties are Easy/Medium/Hard/Deadly
+
+	e.g.  Level 1 is: 25/50/75/100 per character
+
+	An example ripped from the PDF:
+
+		You’ve designed an encounter for four player characters and
+	want to estimate how difficult it’s going to be. Three of the
+	four players have 3rd-level characters and one has a character
+	at 2nd level (due to missing a session).
+	First, note the XP values that define the four categories
+	of difficulty. For each difficulty category on the Encounter
+	Difficulty XP per Character table, you’ll find the number for
+	a 3rd-level character and multiply it by three (for the three
+	3rd-level characters), then add the number for a 2nd-level
+	character. That gives you the following numbers:
+	• Easy: up to 275 XP
+	• Medium: up to 550 XP
+	• Hard: up to 925 XP
+	• Deadly: up to 1,400 XP
+	Now you look at the encounter you’ve designed, a fight
+	with four hobgoblins. Each hobgoblin has an XP value of
+	100, so the total XP is 400. Since there are four hobgoblins,
+	you double the XP value of the encounter; the encounter’s
+	XP value, for the purposes of figuring out its difficulty, is
+	800 XP. That makes this encounter tougher than a medium
+	encounter, but not higher than the hard threshold—so it’s a
+	hard encounter.
+	If you build a later encounter with four bugbears, with
+	an XP value of 200 XP each, you’d end up with a total value
+	of 1,600 XP for the encounter. That number is above the
+	threshold of deadly encounters, meaning it’s probably too
+	hard for your characters to handle. If you adjust it down to
+	three bugbears, your total is 1,200 XP—still deadly, but at
+	least the adventurers have a fighting chance. Two bugbears
+	is probably a better encounter for this party: you multiply the
+	base XP value of 400 by only 1.5 for a pair of monsters, giving
+	you 600 XP—slightly easier than the hobgoblin fight
+
+
+	Encounter Difficulty XP per Character
+		Level		Easy		Medium		Hard		Deadly
+		1			25			50			75			100
+		2			50			100			150			200
+		3			75			150			225			400
+		4			125			250			375			500
+		5			250			500			750			1,100
+		6			300			600			900			1,400
+		7			350			750			1,100		1,700
+		8			450			900			1,400		2,100
+		9			550			1,100		1,600		2,400
+		10			600			1,200		1,900		2,800
+		11			800			1,600		2,400		3,600
+		12			1,000		2,000		3,000		4,500
+		13			1,100		2,200		3,400		5,100
+		14			1,250		2,500		3,800		5,700
+		15			1,400		2,800		4,300		6,400
+		16			1,600		3,200		4,800		7,200
+		17			2,000		3,900		5,900		8,800
+		18			2,100		4,200		6,300		9,500
+		19			2,400		4,900		7,300		10,900
+		20			2,800		5,700		8,500		12,700
+

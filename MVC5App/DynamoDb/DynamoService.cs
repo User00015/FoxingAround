@@ -39,7 +39,7 @@ namespace MVC5App.DynamoDb
             return Context.Scan<T>();
         }
 
-        public T GetItem<T>(string key) where T : class
+        public T GetItem<T>(object key) where T : class
         {
             return Context.Load<T>(key);
         }
@@ -66,14 +66,5 @@ namespace MVC5App.DynamoDb
 
             Context.Delete(item);
         }
-    }
-
-    public interface ITableDataService
-    {
-        void Store<T>(T item) where T : class;
-        void BatchStore<T>(IEnumerable<T> items) where T : class;
-        IEnumerable<T> GetAll<T>() where T : class;
-        T GetItem<T>(string key) where T : class;
-        void Delete<T>(T item) where T : class;
     }
 }
