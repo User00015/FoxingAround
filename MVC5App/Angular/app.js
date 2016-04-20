@@ -1,4 +1,4 @@
-﻿var app = angular.module('weddingApp', ['ngRoute', 'ngResource', 'ngMap']);
+﻿var app = angular.module('FifthEditionEncounters', ['ngRoute', 'ngResource', 'ngMap']);
 
 app
     .config(['$routeProvider', '$locationProvider',
@@ -17,6 +17,7 @@ app
         angular.element(document).on("click", function (e) {
             $rootScope.$broadcast("documentClicked", angular.element(e.target));
         });
+
     })
         .controller('RootController', ['$scope', '$route', '$routeParams', '$location',
         function ($scope, $route, $routeParams, $location) {

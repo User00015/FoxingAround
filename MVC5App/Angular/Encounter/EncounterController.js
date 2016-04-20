@@ -1,3 +1,3 @@
-﻿app.controller('EncounterController', ['$scope', function () {
+﻿app.controller('EncounterController', ['$scope', 'encounterService', function (encounterService) {
 
 }]);

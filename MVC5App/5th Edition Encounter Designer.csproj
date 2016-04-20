@@ -259,6 +259,7 @@
     <Content Include="Angular\Contacts\ContactsController.js" />
     <Content Include="Angular\Encounter\EncounterController.js" />
     <Content Include="Angular\Encounter\encounter.html" />
+    <Content Include="Angular\Encounter\encounterService.js" />
     <Content Include="Angular\Gallery\gallery.html" />
     <Content Include="Angular\Gallery\GalleryController.js" />
     <Content Include="Angular\Home\Directives\dropdown.js" />
