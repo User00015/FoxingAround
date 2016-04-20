@@ -50,9 +50,9 @@ namespace MVC5App.Controllers
             throw new NotImplementedException();
         }
 
-        public MonsterViewModel Foo()
+        public EncounterVM Encounter()
         {
-            return _encounterService.GetMonster();
+            return _encounterService.Encounter;
         }
     }
 }

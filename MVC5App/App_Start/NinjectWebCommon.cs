@@ -64,6 +64,7 @@ namespace MVC5App
         {
             kernel.Bind<ITableDataService>().To<DynamoService>();
             kernel.Bind<IEncounterService>().To<EncounterService>();
+            kernel.Bind<IEncounterVM>().To<EncounterVM>();
         }        
     }
 }

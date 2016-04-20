@@ -1,15 +1,10 @@
-﻿namespace MVC5App.Services
+﻿using System.Collections.Generic;
+using MVC5App.Controllers;
+
+namespace MVC5App.Services
 {
     public class EncounterService : IEncounterService
     {
-        public bool GetMonster()
-        {
-            return false;
-        }  
-    }
-
-    public interface IEncounterService
-    {
-        bool GetMonster();
+        public EncounterVM Encounter { get; set; }
     }
 }
