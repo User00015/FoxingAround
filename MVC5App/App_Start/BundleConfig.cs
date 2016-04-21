@@ -18,6 +18,7 @@ namespace MVC5App
                 "~/Scripts/angular-resource.js",
                 "~/Scripts/angular-strap.js",
                 "~/Scripts/ng-map.min.js",
+                "~/Scripts/angular-environment.js",
                 "~/Scripts/angular-route.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/angularapp").Include(

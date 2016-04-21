@@ -1,8 +1,8 @@
-﻿var app = angular.module('FifthEditionEncounters', ['ngRoute', 'ngResource', 'ngMap']);
+﻿var app = angular.module('FifthEditionEncounters', ['ngRoute', 'ngResource', 'ngMap', 'environment']);
 
 app
-    .config(['$routeProvider', '$locationProvider',
-        function ($routeProvider, $locationProvider) {
+    .config(['$routeProvider', '$locationProvider','envServiceProvider',
+        function ($routeProvider, $locationProvider, envService) {
             $routeProvider
                 .when('/home', { templateUrl: './Angular/Home/home.html', controller: 'HomeController' })
                 //.when('/gallery', { templateUrl: './Angular/Gallery/gallery.html', controller: 'GalleryController' })
@@ -11,6 +11,22 @@ app
                 .otherwise({ redirectTo: '/home' });
 
             $locationProvider.html5Mode(true);
+
+            envService.config({
+                domains: {
+                    development: ['localhost'],
+                    production: ['foxing-around.com', 'www.foxing-around.com']
+                },
+                vars: {
+                    development: {
+                        apiUrl: 'http://localhost:60533'
+                    },
+                    production: {
+                        apiUrl: '//whoknows'
+                    }
+                }
+            });
+            envService.check();
         }])
 
     .run(function ($rootScope) {
@@ -20,5 +36,6 @@ app
 
     })
         .controller('RootController', ['$scope', '$route', '$routeParams', '$location',
-        function ($scope, $route, $routeParams, $location) {
-        }]);
+            function ($scope, $route, $routeParams, $location) {
+
+            }]);

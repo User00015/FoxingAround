@@ -1,15 +1,14 @@
-﻿app.service('encounterService', ['$http', function($http) {
+﻿app.service('encounterService', ['$http', 'envService', function($http, envService) {
 
     var self = this;
 
+    var url = envService.read('apiUrl') + '/api/Monsters';
 
-
-    $http.get('http://localhost:60533/api/Monsters').then(function(response) {
-        self.monsters = response.data;
-        console.log(JSON.stringify(response.data, null, '\t'));
-    }, function() {
-        console.log('broke');
-    });
-
+    self.getMonsters = function(callback) {
+        $http.get(url).then(function(response) {
+            self.monsters = response.data;
+            callback(response.data);
+        });
+    }
     return self;
 }])
