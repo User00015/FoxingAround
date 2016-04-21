@@ -1,15 +1,26 @@
 ﻿<form class="form-horizontal">
     <div class="form-group">
-        <label for="form1" class="col-sm-2 control-label">Form1</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="form1" placeholder="" />
+        <div class="col-md-12">
+            <label for="NumberOfCharactersSelect" class="control-label">Number of characters</label>
+            <select class="form-control" id="NumberOfCharactersSelect" placeholder="" ng-model="numberOfCharacters" required>
+                <option selected="">1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+            </select>
+        </div>
+
+        <div class="col-md-12">
+            <label for="LevelOfCharacters" class="control-label">Level of Characters</label> 
+            <input type="text" class="form-control" id="LevelOfCharacters" required ng-model="levelOfCharacters"/>
         </div>
     </div>
-</form>
 
-<div class="container">
-    <div ng-repeat="monster in monsters">
-        {{monster.name}}
-        {{monster.age}}
-    </div>
-</div>
+    <button type="submit" class="btn btn-default btn-primary" ng-click="createEncounters()">Submit</button>
+</form>
