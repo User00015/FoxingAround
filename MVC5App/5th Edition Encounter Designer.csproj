@@ -247,10 +247,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Difficulty.cs" />
     <Compile Include="Services\EncounterService.cs" />
-    <Compile Include="Services\EncounterVM.cs" />
+    <Compile Include="Services\EncounterViewModel.cs" />
     <Compile Include="Services\IEncounterService.cs" />
     <Compile Include="Services\IEncounterVM.cs" />
+    <Compile Include="Services\IMonsterRepository.cs" />
     <Compile Include="Services\IPartyViewModel.cs" />
+    <Compile Include="Services\MonsterRepository.cs" />
     <Compile Include="Services\PartyViewModel.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -409,6 +411,8 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\smart-table.js" />
+    <Content Include="Scripts\smart-table.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Angular\app.js" />
     <Content Include="Angular\Home\HomeController.js" />
@@ -427,6 +431,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Scripts\jquery-2.2.1.min.map" />
+    <Content Include="Scripts\smart-table.min.js.map" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

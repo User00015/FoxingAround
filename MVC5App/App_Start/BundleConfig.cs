@@ -19,6 +19,7 @@ namespace MVC5App
                 "~/Scripts/angular-strap.js",
                 "~/Scripts/ng-map.min.js",
                 "~/Scripts/angular-environment.js",
+                "~/Scripts/smart-table.min.js",
                 "~/Scripts/angular-route.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/angularapp").Include(

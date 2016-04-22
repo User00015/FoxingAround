@@ -11,11 +11,10 @@
         });
     }
 
-    self.postMonsters = function(params) {
-        $http.post(url, params).then(function() {
-            console.log(params);
-            //self.foo = data;
-            //callback(data);
+    self.postMonsters = function(callback, params) {
+        $http.post(url, params).then(function(response) {
+            self.monsters = response.data;
+            callback(response.data);
         });
     }
 

@@ -1,4 +1,4 @@
-﻿var app = angular.module('FifthEditionEncounters', ['ngRoute', 'ngResource', 'ngMap', 'environment']);
+﻿var app = angular.module('FifthEditionEncounters', ['ngRoute', 'ngResource', 'ngMap', 'environment', 'smart-table']);
 
 app
     .config(['$routeProvider', '$locationProvider','envServiceProvider',

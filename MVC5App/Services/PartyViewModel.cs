@@ -6,26 +6,38 @@ namespace MVC5App.Services
 {
     public class PartyViewModel : IPartyViewModel
     {
-        private List<Difficulty> _difficulties { get; set; }
         public PartyViewModel(List<int> levels)
         {
-            _difficulties = new List<Difficulty>();
-            Levels = levels;
-            SetPartyDifficulty();
-        }
+            Difficulties = new List<Difficulty>();
 
-        private List<int> Levels { get; set; }
-
-        public List<Difficulty> Difficulty => _difficulties;
-
-
-        private void SetPartyDifficulty()
-        {
-            foreach (var level in Levels)
+            foreach (var level in levels)
             {
-                _difficulties.Add(new Difficulty(level));
-
+                Difficulties.Add(new Difficulty(level));
+                
             }
         }
+
+        private List<Difficulty> Difficulties { get; set; }
+
+        public int TotalDeadlyXP
+        {
+            get { return Difficulties.Sum(m => m.Deadly); }
+        }
+
+        public int TotalHardXP
+        {
+            get { return Difficulties.Sum(m => m.Hard); }
+        }
+
+        public int TotalMediumXP
+        {
+            get { return Difficulties.Sum(m => m.Medium); }
+        }
+
+        public int TotalEasyXP
+        {
+            get { return Difficulties.Sum(m => m.Easy); }
+        }
+
     }
 }

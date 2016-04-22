@@ -36,32 +36,27 @@ namespace MVC5App.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        public void Post([FromBody] string partyVm)
+        public EncounterViewModel Post([FromBody] List<int> levels)
         {
-            var foo = partyVm;
+            _encounterService.CreateEncounter(levels);
+            return _encounterService.Encounter;
         }
 
-        //// PUT api/<controller>/5
-        //public void Put(int id, [FromBody]string value)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        // PUT api/<controller>/5
+        public void Put(int id, [FromBody]string value)
+        {
+            throw new NotImplementedException();
+        }
 
-        //// DELETE api/<controller>/5
-        //public void Delete(int id)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        // DELETE api/<controller>/5
+        public void Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
 
-        public EncounterVM Encounter()
+        public EncounterViewModel Encounter()
         {
             return _encounterService.Encounter;
         }
-    }
-
-    public class PartyVM
-    {
-        public int Levels { get; set; }
-        public int Characters { get; set; }
     }
 }

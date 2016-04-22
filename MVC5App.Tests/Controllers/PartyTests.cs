@@ -31,11 +31,11 @@ namespace MVC5App.Tests.Controllers
             var levels = new List<int> { 3, 3, 3, 3, 3, 3 };
             var mockParty = Generator.CreateParty(levels);
 
-            _encounterMock.Setup(mock => mock.Encounter).Returns(new EncounterVM
+            _encounterMock.Setup(mock => mock.Encounter).Returns(new EncounterViewModel
             {
                 Party = mockParty
             });
-            var sum = _encounterMock.Object.Encounter.Party.Difficulty.Sum(p => p.Easy);
+            var sum = _encounterMock.Object.Encounter.Party.TotalEasyXP;
             Assert.IsTrue(sum == 75 * 6);
 
         }
@@ -47,11 +47,11 @@ namespace MVC5App.Tests.Controllers
             var levels = new List<int> { 3, 3, 3, 3, 3, 3 };
             var mockParty = Generator.CreateParty(levels);
 
-            _encounterMock.Setup(mock => mock.Encounter).Returns(new EncounterVM
+            _encounterMock.Setup(mock => mock.Encounter).Returns(new EncounterViewModel
             {
                 Party = mockParty
             });
-            var sum = _encounterMock.Object.Encounter.Party.Difficulty.Sum(p => p.Medium);
+            var sum = _encounterMock.Object.Encounter.Party.TotalMediumXP;
             Assert.IsTrue(sum == 150 * 6);
 
         }
@@ -63,11 +63,11 @@ namespace MVC5App.Tests.Controllers
             var levels = new List<int> { 3, 3, 3, 3, 3, 3 };
             var mockParty = Generator.CreateParty(levels);
 
-            _encounterMock.Setup(mock => mock.Encounter).Returns(new EncounterVM
+            _encounterMock.Setup(mock => mock.Encounter).Returns(new EncounterViewModel
             {
                 Party = mockParty
             });
-            var sum = _encounterMock.Object.Encounter.Party.Difficulty.Sum(p => p.Hard);
+            var sum = _encounterMock.Object.Encounter.Party.TotalHardXP;
             Assert.IsTrue(sum == 225 * 6);
 
         }
@@ -79,11 +79,11 @@ namespace MVC5App.Tests.Controllers
             var levels = new List<int> { 3, 3, 3, 3, 3, 3 };
             var mockParty = Generator.CreateParty(levels);
 
-            _encounterMock.Setup(mock => mock.Encounter).Returns(new EncounterVM
+            _encounterMock.Setup(mock => mock.Encounter).Returns(new EncounterViewModel
             {
                 Party = mockParty
             });
-            var sum = _encounterMock.Object.Encounter.Party.Difficulty.Sum(p => p.Deadly);
+            var sum = _encounterMock.Object.Encounter.Party.TotalDeadlyXP;
             Assert.IsTrue(sum == 400 * 6);
 
         }
