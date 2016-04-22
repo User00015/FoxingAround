@@ -1,2 +1,2 @@
 # MVC5_Angular_DynamoDB
-A website for helping people find their polling place and/or Caucus events, because I feel the Bern.
+A website to generate encounters on the fly for a D&D group running 5th edition. 
