@@ -1,50 +1,48 @@
-﻿<form class="form-horizontal" name="formEncounter">
-    <div class="form-group">
-        <div class="col-md-12">
-            <label for="NumberOfCharactersSelect" class="control-label">Number of characters</label>
-            <select class="form-control" name="numOfChars" id="NumberOfCharactersSelect" placeholder="" ng-model="numberOfCharacters" required ng-options="level as level for level in levels">
-               
-            </select>
+﻿<div class="well">
+    <form class="form-horizontal" name="formEncounter">
+        <div class="form-group">
+            <div class="col-md-12">
+                <label for="NumberOfCharactersSelect" class="control-label">Number of characters</label>
+                <select class="form-control" name="numOfChars" id="NumberOfCharactersSelect" placeholder="" ng-model="numberOfCharacters" required ng-options="level as level for level in levels"></select>
+            </div>
+
+            <div class="col-md-12">
+                <label for="LevelOfCharacters" class="control-label">Level of Characters</label>
+                <input type="number" class="form-control" id="LevelOfCharacters" required ng-model="levelOfCharacters" />
+            </div>
+
+            <div class="col-md-12">
+                <label for="Difficulty" class="control-label">Difficulty</label>
+                <select class="form-control" id="Difficulty" placeholder="" ng-model="difficulty" ng-options="difficulty.type for difficulty in difficulties track by difficulty.value"></select>
+            </div>
         </div>
 
-        <div class="col-md-12">
-            <label for="LevelOfCharacters" class="control-label">Level of Characters</label>
-            <input type="number" class="form-control" id="LevelOfCharacters" required ng-model="levelOfCharacters" />
-        </div>
 
-        <div class="col-md-12">
-            <label for="Difficulty" class="control-label">Difficulty</label>
-            <select class="form-control" id="Difficulty" placeholder="" ng-model="difficulty" ng-options="difficulty.type for difficulty in difficulties track by difficulty.value">
-             
-            </select>
-        </div>
-    </div>
 
-   
+        <table st-table="encounter" class="table table-striped table-bordered" ng-show="encounter">
+            <thead>
+                <tr>
 
-    <table st-table="encounter" class="table table-striped table-bordered" ng-show="encounter">
-        <thead>
-            <tr>
+                    <th>Name</th>
+                    <th>Level</th>
+                    <th>
+                        Experience
+                        <button class="pull-right btn btn-sm btn-default" type="button" ng-click="toggle = !toggle">
+                            <i class="glyphicon glyphicon-arrow-up" ng-show="toggle"></i>
+                            <i class="glyphicon glyphicon-arrow-down" ng-show="!toggle"></i>
+                        </button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody ng-show="toggle">
+                <tr ng-repeat="monster in encounter">
+                    <td>{{monster.name}}</td>
+                    <td>{{monster.level}}</td>
+                    <td>{{monster.experienceValue}}</td>
+                </tr>
+            </tbody>
+        </table>
 
-                <th>Name</th>
-                <th>Level</th>
-                <th>
-                    Experience
-                    <button class="pull-right btn btn-sm btn-default" type="button" ng-click="toggle = !toggle">
-                        <i class="glyphicon glyphicon-arrow-up" ng-show="toggle"></i>
-                        <i class="glyphicon glyphicon-arrow-down" ng-show="!toggle"></i>
-                    </button>
-                </th>
-            </tr>
-        </thead>
-        <tbody ng-show="toggle">
-            <tr ng-repeat="monster in encounter">
-                <td>{{monster.name}}</td>
-                <td>{{monster.level}}</td>
-                <td>{{monster.experienceValue}}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <button type="submit" class="btn btn-default btn-primary" ng-disabled="formEncounter.$invalid" ng-click="createEncounters()">Submit</button>
-</form>
+        <button type="submit" class="btn btn-default btn-primary" ng-disabled="formEncounter.$invalid" ng-click="createEncounters()">Submit</button>
+    </form>
+</div>

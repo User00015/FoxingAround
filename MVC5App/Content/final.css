@@ -6293,15 +6293,12 @@ button.close {
 body {
   background-color: white;
 }
+.panel {
+  background-color: #eeeeee;
+}
 .panel-body {
-  background-color: #1995dc;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
-}
-.map {
-  color: white;
-  background-color: #5cb85c;
-  border-color: #4cae4c;
 }
