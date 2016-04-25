@@ -16,7 +16,7 @@ namespace MVC5App.Services
         private static readonly IEnumerable<int> Mob = Enumerable.Range(11, 3);
         private static readonly IEnumerable<int> Horde = Enumerable.Range(15, 100);
 
-        internal void CreateMonsters(PartyViewModel party)
+        internal void CreateMonsters(EncounterViewModel encounter)
         {
             Monsters = new List<MonsterViewModel>()
             {
@@ -88,10 +88,6 @@ namespace MVC5App.Services
             if (Mob.Contains(Monsters.Count))
             {
                 return 3;
-            }
-            if (Horde.Contains(Monsters.Count))
-            {
-                return 4;
             }
             return 4;
         }

@@ -2,7 +2,7 @@
 
 namespace MVC5App.Services
 {
-    public interface IPartyViewModel
+    public interface IPartyDifficulties
     {
        int TotalDeadlyXP { get; } 
        int TotalHardXP { get; } 

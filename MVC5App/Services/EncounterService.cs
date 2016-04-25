@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using MVC5App.Controllers;
 
 namespace MVC5App.Services
@@ -13,14 +14,14 @@ namespace MVC5App.Services
         {
             return _monsterRepository.ExperienceValue();
         }
-        public void CreateEncounter(List<int> levels )
+        public void CreateEncounter(IPartyViewModel party)
         {
             Encounter = new EncounterViewModel
             {
-                Party = new PartyViewModel(levels)
+                Party = new PartyDifficulties(party)
             };
 
-            _monsterRepository.CreateMonsters(Encounter.Party);
+            _monsterRepository.CreateMonsters(Encounter);
             Encounter.Monsters = _monsterRepository.Monsters;
         }
     }

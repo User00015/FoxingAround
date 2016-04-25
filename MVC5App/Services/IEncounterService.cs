@@ -7,7 +7,7 @@ namespace MVC5App.Services
     public interface IEncounterService
     {
         EncounterViewModel Encounter { get; set; }
-        void CreateEncounter(List<int> levels );
+        void CreateEncounter(IPartyViewModel levels);
         int GetEncounterExperience();
     }
 }

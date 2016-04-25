@@ -11,48 +11,31 @@ namespace MVC5App.Tests.Controllers
     [TestFixture]
     public class PartyTests
     {
-        private Mock<IEncounterService> _encounterMock;
-        private Mock<ITableDataService> _dataMock;
-        private Mock<IEncounterVM> _monsterMock;
-        private Mock<IPartyViewModel> _party;
+        private IEncounterService _encounterService;
 
         [SetUp]
         public void Init()
         {
-            _encounterMock = new Mock<IEncounterService>();
-            _dataMock = new Mock<ITableDataService>();
-            _monsterMock = new Mock<IEncounterVM>();
-            _party = new Mock<IPartyViewModel>();
+            _encounterService = new EncounterService();
+            _encounterService.CreateEncounter(new PartyViewModel()
+            {
+                PartyLevel = 3,
+                PartySize = 6
+            });
+
         }
 
         [Test]
         public void PartyOfSixLevelThreesAndTheirTotalXPForAnEasyEncounter()
         {
-            var levels = new List<int> { 3, 3, 3, 3, 3, 3 };
-            var mockParty = Generator.CreateParty(levels);
-
-            _encounterMock.Setup(mock => mock.Encounter).Returns(new EncounterViewModel
-            {
-                Party = mockParty
-            });
-            var sum = _encounterMock.Object.Encounter.Party.TotalEasyXP;
-            Assert.IsTrue(sum == 75 * 6);
-
+            Assert.IsTrue(_encounterService.Encounter.Party.TotalEasyXP == 75 * 6);
         }
 
 
         [Test]
         public void PartyOfSixLevelThreesAndTheirTotalXPForAMediumEncounter()
         {
-            var levels = new List<int> { 3, 3, 3, 3, 3, 3 };
-            var mockParty = Generator.CreateParty(levels);
-
-            _encounterMock.Setup(mock => mock.Encounter).Returns(new EncounterViewModel
-            {
-                Party = mockParty
-            });
-            var sum = _encounterMock.Object.Encounter.Party.TotalMediumXP;
-            Assert.IsTrue(sum == 150 * 6);
+            Assert.IsTrue(_encounterService.Encounter.Party.TotalMediumXP == 150 * 6);
 
         }
 
@@ -60,15 +43,7 @@ namespace MVC5App.Tests.Controllers
         [Test]
         public void PartyOfSixLevelThreesAndTheirTotalXPForAHardEncounter()
         {
-            var levels = new List<int> { 3, 3, 3, 3, 3, 3 };
-            var mockParty = Generator.CreateParty(levels);
-
-            _encounterMock.Setup(mock => mock.Encounter).Returns(new EncounterViewModel
-            {
-                Party = mockParty
-            });
-            var sum = _encounterMock.Object.Encounter.Party.TotalHardXP;
-            Assert.IsTrue(sum == 225 * 6);
+            Assert.IsTrue(_encounterService.Encounter.Party.TotalHardXP == 225 * 6);
 
         }
 
@@ -76,15 +51,7 @@ namespace MVC5App.Tests.Controllers
         [Test]
         public void PartyOfSixLevelThreesAndTheirTotalXPForADeadlyEncounter()
         {
-            var levels = new List<int> { 3, 3, 3, 3, 3, 3 };
-            var mockParty = Generator.CreateParty(levels);
-
-            _encounterMock.Setup(mock => mock.Encounter).Returns(new EncounterViewModel
-            {
-                Party = mockParty
-            });
-            var sum = _encounterMock.Object.Encounter.Party.TotalDeadlyXP;
-            Assert.IsTrue(sum == 400 * 6);
+            Assert.IsTrue(_encounterService.Encounter.Party.TotalDeadlyXP == 400 * 6);
 
         }
 

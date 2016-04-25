@@ -23,11 +23,5 @@ namespace MVC5App.Tests.Controllers
 
             return mockMonster;
         }
-
-        public static PartyViewModel CreateParty(List<int> levels)
-        {
-            return new PartyViewModel(levels);
-            
-        }
     }
 }

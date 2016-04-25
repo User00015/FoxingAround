@@ -36,9 +36,9 @@ namespace MVC5App.Controllers
 
         // POST api/<controller>
         [HttpPost]
-        public EncounterViewModel Post([FromBody] List<int> levels)
+        public EncounterViewModel Post([FromBody] PartyViewModel viewModel)
         {
-            _encounterService.CreateEncounter(levels);
+            _encounterService.CreateEncounter(viewModel);
             return _encounterService.Encounter;
         }
 

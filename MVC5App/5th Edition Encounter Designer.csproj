@@ -233,7 +233,9 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IPartyViewModel.cs" />
     <Compile Include="Controllers\MonsterViewModel.cs" />
+    <Compile Include="Controllers\PartyViewModel.cs" />
     <Compile Include="Controllers\StudentVM.cs" />
     <Compile Include="Controllers\MonstersController.cs" />
     <Compile Include="DynamoDb\DynamoService.cs" />
@@ -251,9 +253,9 @@
     <Compile Include="Services\IEncounterService.cs" />
     <Compile Include="Services\IEncounterVM.cs" />
     <Compile Include="Services\IMonsterRepository.cs" />
-    <Compile Include="Services\IPartyViewModel.cs" />
+    <Compile Include="Services\IPartyDifficulties.cs" />
     <Compile Include="Services\MonsterRepository.cs" />
-    <Compile Include="Services\PartyViewModel.cs" />
+    <Compile Include="Services\PartyDifficulties.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>

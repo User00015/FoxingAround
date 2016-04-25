@@ -14,6 +14,7 @@ namespace MVC5App.Tests.Controllers
         private Mock<IEncounterService> _encounterMock;
         private Mock<ITableDataService> _dataMock;
         private IEncounterService _encounterService;
+        private IPartyViewModel _party;
 
 
 
@@ -23,16 +24,23 @@ namespace MVC5App.Tests.Controllers
             _encounterMock = new Mock<IEncounterService>();
             _dataMock = new Mock<ITableDataService>();
             _encounterService = new EncounterService();
+            _party = new PartyViewModel()
+            {
+                PartyLevel = 3,
+                PartySize = 6
+            };
+
+            _encounterService.CreateEncounter(_party);
         }
 
 
         [Test]
         public void CreateADeadlyEncounterForAParty()
         {
-            _encounterService.CreateEncounter(new List<int> { 3, 3, 3, 3, 3, 3 });
+            _encounterMock.Setup(mock => mock.GetEncounterExperience()).Returns(2440);
 
             var deadlyDifficulty = _encounterService.Encounter.Party.TotalDeadlyXP;
-            var encounterXp = _encounterService.GetEncounterExperience();
+            var encounterXp = _encounterMock.Object.GetEncounterExperience();
 
             Assert.IsTrue(encounterXp >= deadlyDifficulty );
         }
@@ -40,11 +48,11 @@ namespace MVC5App.Tests.Controllers
         [Test]
         public void CreateAHardEncounterForAParty()
         {
-            _encounterService.CreateEncounter(new List<int> { 3, 3, 3, 3 });
+            _encounterMock.Setup(mock => mock.GetEncounterExperience()).Returns(1440);
 
             var mediumDifficulty = _encounterService.Encounter.Party.TotalMediumXP;
             var deadlyDifficulty = _encounterService.Encounter.Party.TotalDeadlyXP;
-            var encounterXp = _encounterService.Encounter.Monsters.Sum(xp => xp.ExperienceValue);
+            var encounterXp = _encounterMock.Object.GetEncounterExperience();
 
             Assert.IsTrue(encounterXp >= mediumDifficulty && encounterXp < deadlyDifficulty);
         }
@@ -52,11 +60,11 @@ namespace MVC5App.Tests.Controllers
         [Test]
         public void CreateAMediumEncounterForAParty()
         {
-            _encounterService.CreateEncounter(new List<int> { 3, 3, 3, 3, 3, 3 });
+            _encounterMock.Setup(mock => mock.GetEncounterExperience()).Returns(900);
 
             var easyDifficulty = _encounterService.Encounter.Party.TotalEasyXP;
             var hardDifficulty = _encounterService.Encounter.Party.TotalHardXP;
-            var encounterXp = _encounterService.Encounter.Monsters.Sum(xp => xp.ExperienceValue);
+            var encounterXp = _encounterMock.Object.GetEncounterExperience();
 
             Assert.IsTrue(encounterXp >= easyDifficulty && encounterXp < hardDifficulty);
         }
@@ -64,12 +72,23 @@ namespace MVC5App.Tests.Controllers
         [Test]
         public void CreateAnEasyEncounterForAParty()
         {
-            _encounterService.CreateEncounter(new List<int> { 3, 3, 3, 3, 3, 3 });
+            _encounterMock.Setup(mock => mock.GetEncounterExperience()).Returns(750);
 
             var mediumDifficulty = _encounterService.Encounter.Party.TotalMediumXP;
-            var encounterXp = _encounterService.Encounter.Monsters.Sum(xp => xp.ExperienceValue);
+            var encounterXp = _encounterMock.Object.GetEncounterExperience();
 
             Assert.IsTrue(encounterXp < mediumDifficulty);
+        }
+
+        [Test]
+        public void CreateToEasyOfAnEncounterForAParty()
+        {
+            _encounterMock.Setup(mock => mock.GetEncounterExperience()).Returns(0);
+
+            var easyDifficulty = _encounterService.Encounter.Party.TotalEasyXP;
+            var encounterXp = _encounterMock.Object.GetEncounterExperience();
+
+            Assert.IsTrue(encounterXp < easyDifficulty);
         }
 
 

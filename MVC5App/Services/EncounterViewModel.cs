@@ -9,7 +9,7 @@ namespace MVC5App.Services
     {
 
         public List<MonsterViewModel> Monsters { get; set; }
-        public PartyViewModel Party { get; set; }
+        public PartyDifficulties Party { get; set; }
 
     }
 }

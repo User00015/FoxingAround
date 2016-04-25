@@ -6,6 +6,6 @@ namespace MVC5App.Services
     public interface IEncounterVM
     {
         List<MonsterViewModel> Monsters { get; set; }
-        PartyViewModel Party { get; set; }
+        PartyDifficulties Party { get; set; }
     }
 }
