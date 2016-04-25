@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace MVC5App.Services
+﻿namespace MVC5App.Services.Interfaces
 {
-    public interface IPartyDifficulties
+    public interface IParty
     {
        int TotalDeadlyXP { get; } 
        int TotalHardXP { get; } 

@@ -247,16 +247,16 @@
     <Compile Include="Models\Helpers.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\Difficulty.cs" />
+    <Compile Include="Repositories\Interfaces\IMonsterRepository.cs" />
+    <Compile Include="Repositories\MonsterRepository.cs" />
     <Compile Include="Services\EncounterService.cs" />
-    <Compile Include="Services\EncounterViewModel.cs" />
-    <Compile Include="Services\IEncounterService.cs" />
-    <Compile Include="Services\IEncounterVM.cs" />
-    <Compile Include="Services\IMonsterRepository.cs" />
-    <Compile Include="Services\IPartyDifficulties.cs" />
-    <Compile Include="Services\MonsterRepository.cs" />
-    <Compile Include="Services\PartyDifficulties.cs" />
+    <Compile Include="Services\Interfaces\IEncounterService.cs" />
+    <Compile Include="Services\Interfaces\IParty.cs" />
+    <Compile Include="Services\Models\Difficulty.cs" />
+    <Compile Include="Services\Models\Party.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\EncounterViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IEncounterViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Angular\Contacts\contacts.html" />

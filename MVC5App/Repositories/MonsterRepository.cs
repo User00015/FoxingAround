@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using MVC5App.Controllers;
+using MVC5App.Repositories.Interfaces;
+using MVC5App.Services;
+using MVC5App.ViewModels;
 
-namespace MVC5App.Services
+namespace MVC5App.Repositories
 {
     public class MonsterRepository : IMonsterRepository
     {

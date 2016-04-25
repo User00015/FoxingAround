@@ -1,20 +1,20 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MVC5App.Controllers;
+using MVC5App.Services.Interfaces;
 
-namespace MVC5App.Services
+namespace MVC5App.Services.Models
 {
-    public class PartyDifficulties : IPartyDifficulties
+    public class Party : IParty
     {
-        private static List<int> levels = new List<int>();
+        private static List<int> _levels = new List<int>();
 
 
-        public PartyDifficulties(IPartyViewModel party) 
+        public Party(IPartyViewModel party) 
         {
-            levels = AddDifficultyLevels(party);
+            _levels = AddDifficultyLevels(party);
 
-            foreach (var level in levels)
+            foreach (var level in _levels)
             {
                 Difficulties.Add(new Difficulty(level));
 
@@ -43,14 +43,14 @@ namespace MVC5App.Services
             get { return Difficulties.Sum(m => m.Easy); }
         }
 
-        private List<int> AddDifficultyLevels(IPartyViewModel party)
+        private List<int> AddDifficultyLevels(IPartyViewModel party) //TODO - Later on a level will be associated with a character instead of this simple calculation.
         {
-            levels.Clear();
+            _levels.Clear();
             for (var i = 0; i < party.PartySize; ++i)
             {
-                levels.Add(party.PartyLevel);
+                _levels.Add(party.PartyLevel);
             }
-            return levels;
+            return _levels;
         }
     }
 }

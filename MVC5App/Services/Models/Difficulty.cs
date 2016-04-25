@@ -1,4 +1,4 @@
-namespace MVC5App.Services
+namespace MVC5App.Services.Models
 {
     public class Difficulty
     {
@@ -7,10 +7,6 @@ namespace MVC5App.Services
             SetDifficulty(level);
         }
 
-        public Difficulty()
-        {
-            
-        }
 
         public int Easy { get; set; }
         public int Medium { get; set; }

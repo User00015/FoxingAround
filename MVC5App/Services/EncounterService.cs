@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MVC5App.Controllers;
+using MVC5App.Repositories;
+using MVC5App.Services.Interfaces;
+using MVC5App.Services.Models;
+using MVC5App.ViewModels;
 
 namespace MVC5App.Services
 {
@@ -18,7 +22,7 @@ namespace MVC5App.Services
         {
             Encounter = new EncounterViewModel
             {
-                Party = new PartyDifficulties(party)
+                Party = new Party(party)
             };
 
             _monsterRepository.CreateMonsters(Encounter);

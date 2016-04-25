@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using MVC5App.Controllers;
+using MVC5App.ViewModels;
 
-namespace MVC5App.Services
+namespace MVC5App.Services.Interfaces
 {
     public interface IEncounterService
     {

@@ -6,6 +6,8 @@ using System.Net.Http;
 using System.Web.Http;
 using MVC5App.DynamoDb;
 using MVC5App.Services;
+using MVC5App.Services.Interfaces;
+using MVC5App.ViewModels;
 
 namespace MVC5App.Controllers
 {

@@ -4,6 +4,7 @@ using Moq;
 using MVC5App.Controllers;
 using MVC5App.DynamoDb;
 using MVC5App.Services;
+using MVC5App.Services.Interfaces;
 using NUnit.Framework;
 
 namespace MVC5App.Tests.Controllers
