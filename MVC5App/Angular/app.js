@@ -22,7 +22,7 @@ app
                         apiUrl: 'http://localhost:60533'
                     },
                     production: {
-                        apiUrl: 'www.foxing-around.com'
+                        apiUrl: 'http://www.foxing-around.com'
                     }
                 }
             });
