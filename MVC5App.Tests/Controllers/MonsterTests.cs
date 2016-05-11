@@ -33,7 +33,7 @@ namespace MVC5App.Tests.Controllers
 
             var rep = new MonsterRepository {Monsters = mockMonsters};
 
-            Assert.IsTrue(rep.GetMonsterSizeMultiplier() == expectedMultiplier);
+            Assert.IsTrue(rep.GetMonstersSizeMultiplier() == expectedMultiplier);
         }
 
         [Test]
@@ -43,7 +43,7 @@ namespace MVC5App.Tests.Controllers
             var rep = new MonsterRepository { Monsters = mockMonsters };
 
             //Total XP * 1
-            Assert.IsTrue(rep.ExperienceValue() == 50);
+            Assert.IsTrue(rep.GetMonstersExperienceValue() == 50);
 
         }
 
@@ -55,7 +55,7 @@ namespace MVC5App.Tests.Controllers
 
 
             //Total XP * 1.5
-            Assert.IsTrue(rep.ExperienceValue() == (int)(50 * 2 * 1.5));
+            Assert.IsTrue(rep.GetMonstersExperienceValue() == (int)(50 * 2 * 1.5));
         }
 
         [Test]
@@ -66,7 +66,7 @@ namespace MVC5App.Tests.Controllers
 
 
             //Total XP * 2
-            Assert.IsTrue(rep.ExperienceValue() == 50 * 3 * 2);
+            Assert.IsTrue(rep.GetMonstersExperienceValue() == 50 * 3 * 2);
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace MVC5App.Tests.Controllers
 
 
             //Total XP * 2.5
-            Assert.IsTrue(rep.ExperienceValue() == (int)(50 * 7 * 2.5));
+            Assert.IsTrue(rep.GetMonstersExperienceValue() == (int)(50 * 7 * 2.5));
         }
 
         [Test]
@@ -88,7 +88,7 @@ namespace MVC5App.Tests.Controllers
 
 
             //Total XP * 3
-            Assert.IsTrue(rep.ExperienceValue() == 50 * 11 * 3);
+            Assert.IsTrue(rep.GetMonstersExperienceValue() == 50 * 11 * 3);
         }
 
         [Test]
@@ -99,7 +99,7 @@ namespace MVC5App.Tests.Controllers
 
 
             //Total XP * 4
-            Assert.IsTrue(rep.ExperienceValue() == 50 * 15 * 4);
+            Assert.IsTrue(rep.GetMonstersExperienceValue() == 50 * 15 * 4);
         }
 
 

@@ -5,6 +5,7 @@ using MVC5App.Repositories;
 using MVC5App.Services.Interfaces;
 using MVC5App.Services.Models;
 using MVC5App.ViewModels;
+using MVC5App.ViewModels.Interfaces;
 
 namespace MVC5App.Services
 {
@@ -14,10 +15,8 @@ namespace MVC5App.Services
 
         private readonly MonsterRepository _monsterRepository = new MonsterRepository();
 
-        public int GetEncounterExperience()
-        {
-            return _monsterRepository.ExperienceValue();
-        }
+        public int EncounterExperience => _monsterRepository.GetMonstersExperienceValue();
+
         public void CreateEncounter(IPartyViewModel party)
         {
             Encounter = new EncounterViewModel
@@ -25,7 +24,7 @@ namespace MVC5App.Services
                 Party = new Party(party)
             };
 
-            _monsterRepository.CreateMonsters(Encounter);
+            _monsterRepository.MonsterResolver(Encounter);
             Encounter.Monsters = _monsterRepository.Monsters;
         }
     }

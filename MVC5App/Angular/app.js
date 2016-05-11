@@ -7,7 +7,7 @@ app
                 .when('/home', { templateUrl: './Angular/Home/home.html', controller: 'HomeController' })
                 //.when('/gallery', { templateUrl: './Angular/Gallery/gallery.html', controller: 'GalleryController' })
                 .when('/encounter', { templateUrl: './Angular/Encounter/encounter.html', controller: 'EncounterController' })
-                .when('/contacts', { templateUrl: './Angular/Contacts/contacts.html', controller: 'ContactsController' })
+                .when('/about', { templateUrl: './Angular/about/about.html', controller: 'AboutController' })
                 .otherwise({ redirectTo: '/home' });
 
             $locationProvider.html5Mode(true);

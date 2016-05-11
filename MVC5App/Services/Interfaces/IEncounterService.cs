@@ -1,5 +1,6 @@
 using MVC5App.Controllers;
 using MVC5App.ViewModels;
+using MVC5App.ViewModels.Interfaces;
 
 namespace MVC5App.Services.Interfaces
 {
@@ -7,6 +8,6 @@ namespace MVC5App.Services.Interfaces
     {
         EncounterViewModel Encounter { get; set; }
         void CreateEncounter(IPartyViewModel levels);
-        int GetEncounterExperience();
+        int EncounterExperience { get; }
     }
 }

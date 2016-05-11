@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MVC5App.Controllers;
+using MVC5App.DynamoDb;
 using MVC5App.Repositories.Interfaces;
 using MVC5App.Services;
 using MVC5App.ViewModels;
@@ -9,67 +10,28 @@ namespace MVC5App.Repositories
 {
     public class MonsterRepository : IMonsterRepository
     {
-        private const int None = 0;
         private const int Single = 1;
         private const int Pair = 2;
         private static readonly IEnumerable<int> Group = Enumerable.Range(3, 3);
         private static readonly IEnumerable<int> Gang = Enumerable.Range(7, 3);
         private static readonly IEnumerable<int> Mob = Enumerable.Range(11, 3);
         private static readonly IEnumerable<int> Horde = Enumerable.Range(15, 100);
+        private ITableDataService _tableDataService;
 
-        internal void CreateMonsters(EncounterViewModel encounter)
+        public MonsterRepository(ITableDataService tableDataService)
         {
-            Monsters = new List<MonsterViewModel>()
-            {
-                new MonsterViewModel()
-                {
-                    ExperienceValue = 50,
-                    Level = 2,
-                    Name = "Foo Monster"
-                },
-                new MonsterViewModel()
-                {
-                    ExperienceValue = 60,
-                    Level = 2,
-                    Name = "Foo Monster"
-                },
-                new MonsterViewModel()
-                {
-                    ExperienceValue = 50,
-                    Level = 2,
-                    Name = "Foo Monster"
-                },
-                new MonsterViewModel()
-                {
-                    ExperienceValue = 150,
-                    Level = 2,
-                    Name = "Foo Monster"
-                },
-                new MonsterViewModel()
-                {
-                    ExperienceValue = 50,
-                    Level = 2,
-                    Name = "Foo Monster"
-                },
-                new MonsterViewModel()
-                {
-                    ExperienceValue = 250,
-                    Level = 3,
-                    Name = "Foo Monster"
-                },
-            };
-        
+            _tableDataService = tableDataService;
+        }
+
+        internal void MonsterResolver(EncounterViewModel encounter)
+        {
+            var monsterList = _tableDataService
         }
 
         public List<MonsterViewModel> Monsters { get; set; }
 
-        public double GetMonsterSizeMultiplier()
+        public double GetMonstersSizeMultiplier()
         {
-
-            if (Monsters.Count == None)
-            {
-                return 0;
-            }
             if (Monsters.Count == Single)
             {
                 return 1;
@@ -90,12 +52,16 @@ namespace MVC5App.Repositories
             {
                 return 3;
             }
-            return 4;
+            if (Horde.Contains(Monsters.Count))
+            {
+                return 4;
+            }
+            return 0;
         }
 
-        public int ExperienceValue()
+        public int GetMonstersExperienceValue()
         {
-            return (int)(Monsters.Sum(m => m.ExperienceValue) * GetMonsterSizeMultiplier());
+            return (int)(Monsters.Sum(m => m.ExperienceValue) * GetMonstersSizeMultiplier());
         }
     }
 }

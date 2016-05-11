@@ -233,10 +233,6 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\IPartyViewModel.cs" />
-    <Compile Include="Controllers\MonsterViewModel.cs" />
-    <Compile Include="Controllers\PartyViewModel.cs" />
-    <Compile Include="Controllers\StudentVM.cs" />
     <Compile Include="Controllers\MonstersController.cs" />
     <Compile Include="DynamoDb\DynamoService.cs" />
     <Compile Include="DynamoDb\IDynamoDataService.cs" />
@@ -244,8 +240,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Action.cs" />
     <Compile Include="Models\Helpers.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ISpecialAbility.cs" />
+    <Compile Include="Models\LegendaryAction.cs" />
+    <Compile Include="Models\MonsterModel.cs" />
+    <Compile Include="Models\SpecialAbility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Interfaces\IMonsterRepository.cs" />
     <Compile Include="Repositories\MonsterRepository.cs" />
@@ -257,10 +258,15 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\EncounterViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IEncounterViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IMonsterViewModel.cs" />
+    <Compile Include="ViewModels\Interfaces\IPartyViewModel.cs" />
+    <Compile Include="ViewModels\MonsterViewModel.cs" />
+    <Compile Include="ViewModels\PartyViewModel.cs" />
+    <Compile Include="ViewModels\StudentViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Angular\Contacts\contacts.html" />
-    <Content Include="Angular\Contacts\ContactsController.js" />
+    <Content Include="Angular\About\about.html" />
+    <Content Include="Angular\About\ContactsController.js" />
     <Content Include="Angular\Encounter\EncounterController.js" />
     <Content Include="Angular\Encounter\encounter.html" />
     <Content Include="Angular\Encounter\encounterService.js" />
@@ -398,6 +404,7 @@
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-resource.min.js.map" />
     <Content Include="Scripts\angular-route.min.js.map" />
+    <None Include="monsters.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.1.js" />
     <Content Include="Scripts\jquery-2.2.1.min.js" />

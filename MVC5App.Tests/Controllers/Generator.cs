@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using MVC5App.Controllers;
 using MVC5App.Services;
+using MVC5App.ViewModels;
 
 namespace MVC5App.Tests.Controllers
 {

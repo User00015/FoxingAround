@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using Amazon.DynamoDBv2.DataModel;
 
-namespace MVC5App.Controllers
+namespace MVC5App.ViewModels
 {
     [DynamoDBTable("Test")]
-    public class StudentVM
+    public class StudentViewModel
     {
         [DynamoDBHashKey]
         public int Id { get; set; }

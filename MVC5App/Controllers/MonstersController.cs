@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Results;
 using MVC5App.DynamoDb;
+using MVC5App.Models;
 using MVC5App.Services;
 using MVC5App.Services.Interfaces;
 using MVC5App.ViewModels;
+using Newtonsoft.Json;
 
 namespace MVC5App.Controllers
 {
@@ -24,19 +28,19 @@ namespace MVC5App.Controllers
 
         // GET api/<controller>
         [HttpGet]
-        public IEnumerable<StudentVM> Get()
+        public IEnumerable<MonsterModel> Get()
         {
-            return _tableDataService.GetAll<StudentVM>();
+            return _tableDataService.GetAll<MonsterModel>();
         }
 
         // GET api/<controller>/5
         [HttpGet]
-        public StudentVM Get(int id)
+        public MonsterModel Get(int id)
         {
-            return _tableDataService.GetItem<StudentVM>(id);
+            return _tableDataService.GetItem<MonsterModel>(id);
         }
 
-        // POST api/<controller>
+        //POST api/<controller>
         [HttpPost]
         public EncounterViewModel Post([FromBody] PartyViewModel viewModel)
         {
@@ -45,13 +49,13 @@ namespace MVC5App.Controllers
         }
 
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
+        public IHttpActionResult Put(int id, [FromBody]MonsterModel value)
         {
             throw new NotImplementedException();
         }
 
         // DELETE api/<controller>/5
-        public void Delete(int id)
+        public IHttpActionResult Delete(object item)
         {
             throw new NotImplementedException();
         }

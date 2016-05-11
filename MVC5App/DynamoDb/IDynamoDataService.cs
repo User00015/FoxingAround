@@ -9,5 +9,6 @@ namespace MVC5App.DynamoDb
         IEnumerable<T> GetAll<T>() where T : class;
         T GetItem<T>(object key) where T : class;
         void Delete<T>(T item) where T : class;
+        void UpdateItem<T>(T item) where T : class;
     }
 }

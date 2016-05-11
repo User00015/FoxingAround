@@ -1,6 +1,8 @@
-namespace MVC5App.Controllers
+using MVC5App.ViewModels.Interfaces;
+
+namespace MVC5App.ViewModels
 {
-    public class MonsterViewModel
+    public class MonsterViewModel : IMonsterViewModel
     {
         public string Name { get; set; }
         public int Level { get; set; }

@@ -1,4 +1,6 @@
-﻿namespace MVC5App.Controllers
+﻿using MVC5App.ViewModels.Interfaces;
+
+namespace MVC5App.ViewModels
 {
     public class PartyViewModel : IPartyViewModel
     {

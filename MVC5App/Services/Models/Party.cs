@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MVC5App.Controllers;
 using MVC5App.Services.Interfaces;
+using MVC5App.ViewModels.Interfaces;
 
 namespace MVC5App.Services.Models
 {
@@ -21,7 +22,7 @@ namespace MVC5App.Services.Models
             }
         }
 
-        private List<Difficulty> Difficulties { get; set; } = new List<Difficulty>();
+        private List<Difficulty> Difficulties { get; } = new List<Difficulty>();
 
         public int TotalDeadlyXP
         {

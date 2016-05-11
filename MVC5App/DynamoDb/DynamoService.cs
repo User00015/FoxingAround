@@ -55,6 +55,7 @@ namespace MVC5App.DynamoDb
 
             Context.Save(item);
         }
+
         public void Delete<T>(T item) where T : class
         {
             var savedItem = Context.Load(item);
