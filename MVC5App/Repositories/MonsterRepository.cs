@@ -2,9 +2,12 @@
 using System.Linq;
 using MVC5App.Controllers;
 using MVC5App.DynamoDb;
+using MVC5App.Extensions;
+using MVC5App.Models;
 using MVC5App.Repositories.Interfaces;
 using MVC5App.Services;
 using MVC5App.ViewModels;
+using MVC5App.ViewModels.Interfaces;
 
 namespace MVC5App.Repositories
 {
@@ -16,43 +19,61 @@ namespace MVC5App.Repositories
         private static readonly IEnumerable<int> Gang = Enumerable.Range(7, 3);
         private static readonly IEnumerable<int> Mob = Enumerable.Range(11, 3);
         private static readonly IEnumerable<int> Horde = Enumerable.Range(15, 100);
-        private ITableDataService _tableDataService;
+        private readonly ITableDataService _tableDataService;
 
         public MonsterRepository(ITableDataService tableDataService)
         {
             _tableDataService = tableDataService;
         }
 
-        internal void MonsterResolver(EncounterViewModel encounter)
+        public void MonsterResolver(IEncounterViewModel encounter)
         {
-            var monsterList = _tableDataService
+            var monsters = _tableDataService.GetAll<MonsterModel>();
+            var difficulty = encounter.Party.GetDifficulty();
+
+            var sum = 0;
+            var monsterList = monsters.Where(p => p.Xp <= difficulty).Shuffle().TakeWhile(x =>
+            {
+                sum += x.Xp;
+                var temp = sum;
+                return temp < difficulty;
+            });
+
+
+            Monsters = monsterList.Select(monster => new MonsterViewModel()
+            {
+                ExperienceValue = monster.Xp,
+                Level = monster.ChallengeRating,
+                Name = monster.Name
+            }).OrderByDescending(monster => monster.ExperienceValue);
         }
 
-        public List<MonsterViewModel> Monsters { get; set; }
+        public IEnumerable<MonsterViewModel> Monsters { get; set; }
 
         public double GetMonstersSizeMultiplier()
         {
-            if (Monsters.Count == Single)
+            var monsters = Monsters.ToList();
+            if (monsters.Count == Single)
             {
                 return 1;
             }
-            if (Monsters.Count == Pair)
+            if (monsters.Count == Pair)
             {
                 return 1.5;
             }
-            if (Group.Contains(Monsters.Count))
+            if (Group.Contains(monsters.Count))
             {
                 return 2;
             }
-            if (Gang.Contains(Monsters.Count))
+            if (Gang.Contains(monsters.Count))
             {
                 return 2.5;
             }
-            if (Mob.Contains(Monsters.Count))
+            if (Mob.Contains(monsters.Count))
             {
                 return 3;
             }
-            if (Horde.Contains(Monsters.Count))
+            if (Horde.Contains(monsters.Count))
             {
                 return 4;
             }

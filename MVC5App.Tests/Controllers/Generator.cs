@@ -16,7 +16,7 @@ namespace MVC5App.Tests.Controllers
                 mockMonster.Add(new MonsterViewModel
                 {
                     Name = "Added Monster",
-                    Level = 1,
+                    Level = "1",
                     ExperienceValue = 50
                 });
 

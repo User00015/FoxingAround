@@ -236,6 +236,7 @@
     <Compile Include="Controllers\MonstersController.cs" />
     <Compile Include="DynamoDb\DynamoService.cs" />
     <Compile Include="DynamoDb\IDynamoDataService.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -262,7 +263,6 @@
     <Compile Include="ViewModels\Interfaces\IPartyViewModel.cs" />
     <Compile Include="ViewModels\MonsterViewModel.cs" />
     <Compile Include="ViewModels\PartyViewModel.cs" />
-    <Compile Include="ViewModels\StudentViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Angular\About\about.html" />

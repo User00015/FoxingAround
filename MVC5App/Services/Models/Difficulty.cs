@@ -1,7 +1,10 @@
+using System;
+
 namespace MVC5App.Services.Models
 {
     public class Difficulty
     {
+        public enum DifficultyEnum {Easy, Medium, Hard, Deadly};
         public Difficulty(int level)
         {
             SetDifficulty(level);
@@ -36,7 +39,7 @@ namespace MVC5App.Services.Models
                     Deadly = 400;
                     break;
 
-                //More to go
+                //We need to cover up to level 20 here
             }
         }
     }

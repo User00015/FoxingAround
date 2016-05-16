@@ -3,6 +3,8 @@ using System.Web;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 using MVC5App;
 using MVC5App.DynamoDb;
+using MVC5App.Repositories;
+using MVC5App.Repositories.Interfaces;
 using MVC5App.Services;
 using MVC5App.Services.Interfaces;
 using MVC5App.ViewModels;
@@ -68,6 +70,9 @@ namespace MVC5App
             kernel.Bind<ITableDataService>().To<DynamoService>();
             kernel.Bind<IEncounterService>().To<EncounterService>();
             kernel.Bind<IEncounterViewModel>().To<EncounterViewModel>();
+            kernel.Bind<IMonsterViewModel>().To<MonsterViewModel>();
+            kernel.Bind<IPartyViewModel>().To<PartyViewModel>();
+            kernel.Bind<IMonsterRepository>().To<MonsterRepository>();
         }        
     }
 }

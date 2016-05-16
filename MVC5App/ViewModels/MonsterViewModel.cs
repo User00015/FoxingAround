@@ -5,7 +5,7 @@ namespace MVC5App.ViewModels
     public class MonsterViewModel : IMonsterViewModel
     {
         public string Name { get; set; }
-        public int Level { get; set; }
+        public string Level { get; set; }
         public int ExperienceValue { get; set; }
     }
 }
