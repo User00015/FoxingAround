@@ -24,6 +24,7 @@
                 <tr>
 
                     <th>Name</th>
+                    <th>Qty</th>
                     <th>Level</th>
                     <th>
                         Experience
@@ -35,8 +36,9 @@
                 </tr>
             </thead>
             <tbody ng-show="toggle">
-                <tr ng-repeat="monster in encounter">
+                <tr ng-repeat="monster in encounter.monsters">
                     <td>{{monster.name}}</td>
+                    <td>{{monster.quantity}}</td>
                     <td>{{monster.level}}</td>
                     <td>{{monster.experienceValue}}</td>
                 </tr>

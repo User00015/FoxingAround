@@ -8,8 +8,8 @@ namespace MVC5App.Repositories.Interfaces
     public interface IMonsterRepository
     {
         IEnumerable<MonsterViewModel> Monsters { get; set; }
-        int GetMonstersExperienceValue();
-        double GetMonstersSizeMultiplier();
+        int GetMonstersExperienceValue(IEnumerable<MonsterViewModel> monsters );
+        double ApplyMonsterSizeMultiplier(int monsters);
         void MonsterResolver(IEncounterViewModel encounter);
     }
 }

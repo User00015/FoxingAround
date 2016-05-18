@@ -111,12 +111,12 @@
     <Reference Include="System.Net.Http.WebRequest" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\Generator.cs" />
-    <Compile Include="Controllers\MonsterTests.cs" />
-    <Compile Include="Controllers\PartyTests.cs" />
-    <Compile Include="Controllers\EncounterTests.cs" />
+    <Compile Include="Tests\Generator.cs" />
+    <Compile Include="Tests\MonsterTests.cs" />
+    <Compile Include="Tests\PartyTests.cs" />
+    <Compile Include="Tests\EncounterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controllers\HomeControllerTest.cs" />
+    <Compile Include="Tests\HomeControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />

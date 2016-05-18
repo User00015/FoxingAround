@@ -8,5 +8,6 @@
        //int TotalEasyXP { get; } 
 
         int GetDifficulty();
+        int GetDifficulty(int difficultyType);
     }
 }

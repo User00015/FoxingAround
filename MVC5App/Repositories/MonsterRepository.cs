@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Amazon.Runtime.Internal;
 using MVC5App.Controllers;
 using MVC5App.DynamoDb;
 using MVC5App.Extensions;
@@ -28,61 +30,83 @@ namespace MVC5App.Repositories
 
         public void MonsterResolver(IEncounterViewModel encounter)
         {
-            var monsters = _tableDataService.GetAll<MonsterModel>();
             var difficulty = encounter.Party.GetDifficulty();
+            var monsterList = _tableDataService.GetAll<MonsterModel>().Where(p => p.Xp <= difficulty).Shuffle();
 
-            var sum = 0;
-            var monsterList = monsters.Where(p => p.Xp <= difficulty).Shuffle().TakeWhile(x =>
+
+            //var monsters = shuffledList.TakeWhile(x =>
+            //{
+            //    sum += x.Xp;
+            //    var temp = sum;
+            //    return temp < difficulty;
+            //});
+
+            var finalList = new List<MonsterViewModel>();
+            foreach (var monster in monsterList.TakeWhile(monster => GetMonstersExperienceValue(finalList) < difficulty))
             {
-                sum += x.Xp;
-                var temp = sum;
-                return temp < difficulty;
-            });
+                var experienceRemaining = difficulty - GetMonstersExperienceValue(finalList);
+                var quantity = (int)Math.Floor((decimal)experienceRemaining / monster.Xp); //Loss of remainder is intentional.
+                var amountToAdd = new Random().Next(quantity/2, quantity);
+
+                if (amountToAdd > 0)
+                    finalList.Add(new MonsterViewModel
+                    {
+                        Quantity = amountToAdd,
+                        ExperienceValue = monster.Xp * amountToAdd,
+                        Level = monster.ChallengeRating,
+                        Name = monster.Name
+
+                    });
+            Monsters = finalList;
+            }
 
 
-            Monsters = monsterList.Select(monster => new MonsterViewModel()
-            {
-                ExperienceValue = monster.Xp,
-                Level = monster.ChallengeRating,
-                Name = monster.Name
-            }).OrderByDescending(monster => monster.ExperienceValue);
+            Monsters = Monsters.OrderByDescending(m => m.ExperienceValue);
+
+
+
+            //Monsters = monsterList.Select(monster => new MonsterViewModel()
+            //{
+            //    ExperienceValue = monster.Xp,
+            //    Level = monster.ChallengeRating,
+            //    Name = monster.Name
+            //}).OrderByDescending(monster => monster.ExperienceValue);
         }
 
-        public IEnumerable<MonsterViewModel> Monsters { get; set; }
+        public IEnumerable<MonsterViewModel> Monsters { get; set; } = new List<MonsterViewModel>();
 
-        public double GetMonstersSizeMultiplier()
+        public double ApplyMonsterSizeMultiplier(int monsters)
         {
-            var monsters = Monsters.ToList();
-            if (monsters.Count == Single)
+            if (monsters == Single)
             {
                 return 1;
             }
-            if (monsters.Count == Pair)
+            if (monsters == Pair)
             {
                 return 1.5;
             }
-            if (Group.Contains(monsters.Count))
+            if (Group.Contains(monsters))
             {
                 return 2;
             }
-            if (Gang.Contains(monsters.Count))
+            if (Gang.Contains(monsters))
             {
                 return 2.5;
             }
-            if (Mob.Contains(monsters.Count))
+            if (Mob.Contains(monsters))
             {
                 return 3;
             }
-            if (Horde.Contains(monsters.Count))
+            if (Horde.Contains(monsters))
             {
                 return 4;
             }
             return 0;
         }
 
-        public int GetMonstersExperienceValue()
+        public int GetMonstersExperienceValue(IEnumerable<MonsterViewModel> monsters )
         {
-            return (int)(Monsters.Sum(m => m.ExperienceValue) * GetMonstersSizeMultiplier());
+            return (int)monsters.Sum(m => m.ExperienceValue*ApplyMonsterSizeMultiplier(m.Quantity));
         }
     }
 }

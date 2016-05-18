@@ -42,9 +42,9 @@ namespace MVC5App.Controllers
 
         //POST api/<controller>
         [HttpPost]
-        public EncounterViewModel Post([FromBody] PartyViewModel viewModel)
+        public EncounterViewModel Post([FromBody] PartyViewModel party)
         {
-            _encounterService.CreateEncounter(viewModel);
+            _encounterService.CreateEncounter(party);
             return _encounterService.Encounter;
         }
 

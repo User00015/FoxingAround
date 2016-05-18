@@ -5,5 +5,6 @@
         int ExperienceValue { get; set; }
         string Level { get; set; }
         string Name { get; set; }
+        int Quantity { get; set; }
     }
 }

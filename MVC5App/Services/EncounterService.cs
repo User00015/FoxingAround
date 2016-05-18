@@ -22,7 +22,7 @@ namespace MVC5App.Services
             _monsterRepository = monsterRepository;
         }
 
-        public int EncounterExperience => _monsterRepository.GetMonstersExperienceValue();
+        public int EncounterExperience => _monsterRepository.GetMonstersExperienceValue(Encounter.Monsters);
 
         public void CreateEncounter(IPartyViewModel party)
         {
@@ -33,6 +33,7 @@ namespace MVC5App.Services
 
             _monsterRepository.MonsterResolver(Encounter);
             Encounter.Monsters = _monsterRepository.Monsters;
+            Encounter.ExperienceValue = _monsterRepository.GetMonstersExperienceValue(Encounter.Monsters);
         }
     }
 }

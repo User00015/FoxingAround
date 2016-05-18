@@ -3,6 +3,9 @@ using System.Linq;
 using Moq;
 using MVC5App.Controllers;
 using MVC5App.DynamoDb;
+using MVC5App.Models;
+using MVC5App.Repositories;
+using MVC5App.Repositories.Interfaces;
 using MVC5App.Services;
 using MVC5App.Services.Interfaces;
 using MVC5App.Services.Models;
@@ -17,8 +20,9 @@ namespace MVC5App.Tests.Controllers
     {
         private Mock<IEncounterService> _encounterMock;
         private Mock<ITableDataService> _dataMock;
+        private Mock<IMonsterRepository> _mockMonsterRepository;
+        private Mock<IEncounterViewModel> _mockEncounterViewModel;
         private IPartyViewModel _party;
-
 
 
         [SetUp]
@@ -26,6 +30,8 @@ namespace MVC5App.Tests.Controllers
         {
             _encounterMock = new Mock<IEncounterService>();
             _dataMock = new Mock<ITableDataService>();
+            _mockMonsterRepository = new Mock<IMonsterRepository>();
+            _mockEncounterViewModel =  new Mock<IEncounterViewModel>();
             _party = new PartyViewModel()
             {
                 PartyLevel = 3,
@@ -115,5 +121,6 @@ namespace MVC5App.Tests.Controllers
             Assert.IsTrue(test.Count == 0);
             Assert.IsTrue(test.Any() == false);
         }
+
     } //Bottom
 }

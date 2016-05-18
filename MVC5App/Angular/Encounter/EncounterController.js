@@ -24,7 +24,7 @@
 
     var submit = function (params) {
         encounterService.postMonsters(function (encounter) {
-            $scope.encounter = encounter.monsters;
+            $scope.encounter = encounter;
         }, params);
     };
 

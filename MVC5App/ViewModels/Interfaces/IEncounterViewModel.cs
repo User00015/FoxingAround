@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using MVC5App.Controllers;
 using MVC5App.Services;
+using MVC5App.Services.Interfaces;
 using MVC5App.Services.Models;
 
 namespace MVC5App.ViewModels.Interfaces
 {
     public interface IEncounterViewModel
     {
-        IEnumerable<IMonsterViewModel> Monsters { get; set; }
-        Party Party { get; set; }
+        IEnumerable<MonsterViewModel> Monsters { get; set; }
+        IParty Party { get; set; }
+        int ExperienceValue { get; set; }
     }
 }
