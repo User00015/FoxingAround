@@ -45,14 +45,16 @@ namespace MVC5App.Repositories
             foreach (var monster in monsterList.TakeWhile(monster => GetMonstersExperienceValue(finalList) < difficulty))
             {
                 var experienceRemaining = difficulty - GetMonstersExperienceValue(finalList);
-                var quantity = (int)Math.Floor((decimal)experienceRemaining / monster.Xp); //Loss of remainder is intentional.
-                var amountToAdd = new Random().Next(quantity/2, quantity);
 
-                if (amountToAdd > 0)
+                var amountToAdd = Foo(experienceRemaining);
+
+                var quantity = new Random().Next(0, amountToAdd);
+
+                if (quantity > 0)
                     finalList.Add(new MonsterViewModel
                     {
-                        Quantity = amountToAdd,
-                        ExperienceValue = monster.Xp * amountToAdd,
+                        Quantity = quantity,
+                        ExperienceValue = monster.Xp * quantity,
                         Level = monster.ChallengeRating,
                         Name = monster.Name
 
@@ -71,6 +73,13 @@ namespace MVC5App.Repositories
             //    Level = monster.ChallengeRating,
             //    Name = monster.Name
             //}).OrderByDescending(monster => monster.ExperienceValue);
+        }
+
+        private int Foo(int experienceRemaining)
+        {
+            var bar = new List<MonsterViewModel>();
+
+            return experienceRemaining;
         }
 
         public IEnumerable<MonsterViewModel> Monsters { get; set; } = new List<MonsterViewModel>();
