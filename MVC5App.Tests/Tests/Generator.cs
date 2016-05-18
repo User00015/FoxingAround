@@ -17,7 +17,9 @@ namespace MVC5App.Tests.Controllers
                 {
                     Name = "Added Monster",
                     Level = "1",
-                    ExperienceValue = 50
+                    ExperienceValue = 50,
+                    Quantity = monstersToAdd
+                   
                 });
 
             }
