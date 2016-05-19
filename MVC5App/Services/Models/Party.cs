@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Amazon.DynamoDBv2;
 using MVC5App.Controllers;
 using MVC5App.Services.Interfaces;
 using MVC5App.ViewModels.Interfaces;
@@ -9,12 +10,11 @@ namespace MVC5App.Services.Models
     public class Party : IParty
     {
         private static List<int> _levels = new List<int>();
-        private int _difficulty;
 
         public Party(IPartyViewModel party)
         {
             _levels = AddDifficultyLevels(party);
-            _difficulty = party.Difficulty;
+            Difficulty = party.Difficulty;
 
             foreach (var level in _levels)
             {
@@ -26,7 +26,15 @@ namespace MVC5App.Services.Models
 
         public int GetDifficulty()
         {
-            switch (_difficulty)
+            return GetDifficulty(Difficulty);
+        }
+
+        public int Difficulty { get; }
+
+
+        public int GetDifficulty(int difficultyLevel)
+        {
+            switch (difficultyLevel)
             {
                 case 0:
                     return Difficulties.Sum(m => m.Easy);
@@ -39,12 +47,6 @@ namespace MVC5App.Services.Models
                 default:
                     return 0;
             }
-        }
-
-        public int GetDifficulty(int difficultyLevel)
-        {
-            _difficulty = difficultyLevel;
-            return GetDifficulty();
         }
 
         private List<int> AddDifficultyLevels(IPartyViewModel party) //TODO - Later on a level will be associated with a character instead of this simple calculation.

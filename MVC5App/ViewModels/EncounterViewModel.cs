@@ -10,7 +10,7 @@ namespace MVC5App.ViewModels
     // ReSharper disable once InconsistentNaming
     public class EncounterViewModel : IEncounterViewModel
     {
-        public IEnumerable<MonsterViewModel> Monsters { get; set; }
+        public IEnumerable<MonsterViewModel> Monsters { get; set; }  = new List<MonsterViewModel>();
         public IParty Party { get; set; }
         public int ExperienceValue { get; set; }
     }

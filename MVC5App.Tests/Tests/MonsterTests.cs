@@ -18,13 +18,17 @@ namespace MVC5App.Tests.Controllers
     public class MonsterTests
     {
         private Mock<ITableDataService> _databaseMock;
-        private MonsterRepository _mock;
+        private MonsterRepository _mockRepository;
+        private EncounterService _mock;
 
         [SetUp]
         public void Init()
         {
             _databaseMock = new Mock<ITableDataService>();
-            _mock = new MonsterRepository(_databaseMock.Object);
+            _mockRepository = new MonsterRepository(_databaseMock.Object);
+            _mock = new EncounterService(_mockRepository);
+            _mock.CreateEncounter(new PartyViewModel());
+
         }
 
         [TestCase(0, 0)]
@@ -37,19 +41,19 @@ namespace MVC5App.Tests.Controllers
         public void GetEncounterSizeMultiplier(int numberOfMonsters, double expectedMultiplier)
         {
             var mockMonsters = Generator.CreateMonsters(numberOfMonsters);
-            _mock.Monsters = mockMonsters;
+            _mock.Encounter.Monsters = mockMonsters;
 
-            Assert.IsTrue(_mock.ApplyMonsterSizeMultiplier(_mock.Monsters.Count()) == expectedMultiplier);
+            Assert.IsTrue(_mock.ApplyMonsterSizeMultiplier(_mock.Encounter.Monsters.Count()) == expectedMultiplier);
         }
 
         [Test]
         public void GetSingleMonsterEncounterDifficulty()
         {
             var mockMonsters = Generator.CreateMonsters(1);
-            _mock.Monsters = mockMonsters;
+            _mock.Encounter.Monsters = mockMonsters;
 
             //Total XP * 1
-            Assert.IsTrue(_mock.GetMonstersExperienceValue(_mock.Monsters) == 50);
+            Assert.IsTrue(_mock.GetMonstersExperienceValue(_mock.Encounter.Monsters) == 50);
 
         }
 
@@ -57,51 +61,51 @@ namespace MVC5App.Tests.Controllers
         public void GetAPairOfMonstersEncounterDifficulty()
         {
             var mockMonsters = Generator.CreateMonsters(2);
-            _mock.Monsters = mockMonsters;
+            _mock.Encounter.Monsters = mockMonsters;
 
 
             //Total XP * 1.5
-            Assert.IsTrue(_mock.GetMonstersExperienceValue(_mock.Monsters) == (int)(50 * 2 * 1.5));
+            Assert.IsTrue(_mock.GetMonstersExperienceValue(_mock.Encounter.Monsters) == (int)(50 * 2 * 1.5));
         }
 
         [Test]
         public void GetAGroupOfThreeToSixMonstersEncounterDifficulty()
         {
             var mockMonsters = Generator.CreateMonsters(3);
-            _mock.Monsters = mockMonsters;
+            _mock.Encounter.Monsters = mockMonsters;
 
             //Total XP * 2
-            Assert.IsTrue(_mock.GetMonstersExperienceValue(_mock.Monsters) == 50 * 3 * 2);
+            Assert.IsTrue(_mock.GetMonstersExperienceValue(_mock.Encounter.Monsters) == 50 * 3 * 2);
         }
 
         [Test]
         public void GetAGangOfSevenToTenMonstersEncounterDifficulty()
         {
             var mockMonsters = Generator.CreateMonsters(7);
-            _mock.Monsters = mockMonsters;
+            _mock.Encounter.Monsters = mockMonsters;
 
             //Total XP * 2.5
-            Assert.IsTrue(_mock.GetMonstersExperienceValue(_mock.Monsters) == (int)(50 * 7 * 2.5));
+            Assert.IsTrue(_mock.GetMonstersExperienceValue(_mock.Encounter.Monsters) == (int)(50 * 7 * 2.5));
         }
 
         [Test]
         public void GetAMobOfElevenToFourteenMonstersEncounterDifficulty()
         {
             var mockMonsters = Generator.CreateMonsters(11);
-            _mock.Monsters = mockMonsters;
+            _mock.Encounter.Monsters = mockMonsters;
 
             //Total XP * 3
-            Assert.IsTrue(_mock.GetMonstersExperienceValue(_mock.Monsters) == 50 * 11 * 3);
+            Assert.IsTrue(_mock.GetMonstersExperienceValue(_mock.Encounter.Monsters) == 50 * 11 * 3);
         }
 
         [Test]
         public void GetAHordeOfFifteenOrMoreMonstersEncounterDifficulty()
         {
             var mockMonsters = Generator.CreateMonsters(15);
-            _mock.Monsters = mockMonsters;
+            _mock.Encounter.Monsters = mockMonsters;
 
             //Total XP * 4
-            Assert.IsTrue(_mock.GetMonstersExperienceValue(_mock.Monsters) == 50 * 15 * 4);
+            Assert.IsTrue(_mock.GetMonstersExperienceValue(_mock.Encounter.Monsters) == 50 * 15 * 4);
         }
 
 

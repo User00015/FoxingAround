@@ -9,5 +9,6 @@
 
         int GetDifficulty();
         int GetDifficulty(int difficultyType);
+        int Difficulty { get;  }
     }
 }
