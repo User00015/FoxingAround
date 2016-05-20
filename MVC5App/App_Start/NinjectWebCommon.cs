@@ -72,7 +72,7 @@ namespace MVC5App
             kernel.Bind<IEncounterViewModel>().To<EncounterViewModel>();
             kernel.Bind<IMonsterViewModel>().To<MonsterViewModel>();
             kernel.Bind<IPartyViewModel>().To<PartyViewModel>();
-            kernel.Bind<IMonsterRepository>().To<MonsterRepository>();
+            kernel.Bind<IMonsterRepository>().To<MonsterRepository>().InSingletonScope();
         }        
     }
 }

@@ -16,17 +16,23 @@ namespace MVC5App.Repositories
     public class MonsterRepository : IMonsterRepository
     {
         private readonly ITableDataService _tableDataService;
+        private readonly IEnumerable<MonsterModel> _allMonsters;
 
         public MonsterRepository(ITableDataService tableDataService)
         {
             _tableDataService = tableDataService;
+            _allMonsters = _tableDataService.GetAll<MonsterModel>();
         }
 
         public IEnumerable<MonsterModel> GetMonsters(IEncounterViewModel encounter)
         {
-            var difficulty = encounter.Party.GetDifficulty();
-            return _tableDataService.GetAll<MonsterModel>().Where(p => p.Xp <= difficulty).Shuffle();
+            var difficulty = encounter.GetPartyDifficulty;
+            return _allMonsters.Where(p => p.Xp <= difficulty);
         }
 
+        public MonsterModel GetMonster(int id)
+        {
+            return _allMonsters.SingleOrDefault(monster => monster.Id == id);
+        }
     }
 }

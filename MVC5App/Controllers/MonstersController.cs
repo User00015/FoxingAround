@@ -8,6 +8,7 @@ using System.Web.Http;
 using System.Web.Http.Results;
 using MVC5App.DynamoDb;
 using MVC5App.Models;
+using MVC5App.Repositories.Interfaces;
 using MVC5App.Services;
 using MVC5App.Services.Interfaces;
 using MVC5App.ViewModels;
@@ -19,25 +20,27 @@ namespace MVC5App.Controllers
     {
         private readonly ITableDataService _tableDataService;
         private readonly IEncounterService _encounterService;
+        private readonly IMonsterRepository _monsterRepository;
 
-        public MonstersController(ITableDataService tableDataService, IEncounterService encounterService)
+        public MonstersController(ITableDataService tableDataService, IEncounterService encounterService, IMonsterRepository monsterRepository)
         {
             _tableDataService = tableDataService;
             _encounterService = encounterService;
+            _monsterRepository = monsterRepository;
         }
 
         // GET api/<controller>
         [HttpGet]
         public IEnumerable<MonsterModel> Get()
         {
-            return _tableDataService.GetAll<MonsterModel>();
+            return _monsterRepository.GetMonsters(new EncounterViewModel());
         }
 
         // GET api/<controller>/5
         [HttpGet]
         public MonsterModel Get(int id)
         {
-            return _tableDataService.GetItem<MonsterModel>(id);
+            return _monsterRepository.GetMonster(id);
         }
 
         //POST api/<controller>

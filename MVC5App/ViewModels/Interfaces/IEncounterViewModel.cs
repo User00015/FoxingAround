@@ -10,6 +10,7 @@ namespace MVC5App.ViewModels.Interfaces
     {
         IEnumerable<MonsterViewModel> Monsters { get; set; }
         IParty Party { get; set; }
+        int GetPartyDifficulty { get; }
         int ExperienceValue { get; set; }
     }
 }

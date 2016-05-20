@@ -9,5 +9,6 @@ namespace MVC5App.Repositories.Interfaces
     public interface IMonsterRepository
     {
         IEnumerable<MonsterModel> GetMonsters(IEncounterViewModel encounter);
+        MonsterModel GetMonster(int id);
     }
 }

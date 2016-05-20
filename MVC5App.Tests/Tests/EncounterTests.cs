@@ -23,6 +23,7 @@ namespace MVC5App.Tests.Controllers
         private Mock<IMonsterRepository> _mockMonsterRepository;
         private Mock<IEncounterViewModel> _mockEncounterViewModel;
         private IPartyViewModel _party;
+        private EncounterService _encounterService;
 
 
         [SetUp]
@@ -32,6 +33,7 @@ namespace MVC5App.Tests.Controllers
             _dataMock = new Mock<ITableDataService>();
             _mockMonsterRepository = new Mock<IMonsterRepository>();
             _mockEncounterViewModel =  new Mock<IEncounterViewModel>();
+            _encounterService = new EncounterService(_mockMonsterRepository.Object);
             _party = new PartyViewModel()
             {
                 PartyLevel = 3,
@@ -115,11 +117,35 @@ namespace MVC5App.Tests.Controllers
                 Monsters = mockMonster
             });
 
-            var encounter = new MonstersController(_dataMock.Object, _encounterMock.Object);
+            var encounter = new MonstersController(_dataMock.Object, _encounterMock.Object, _mockMonsterRepository.Object);
             var test = encounter.Encounter().Monsters.ToList();
 
             Assert.IsTrue(test.Count == 0);
             Assert.IsTrue(test.Any() == false);
+        }
+
+        [Test]
+        [TestCase(0, 50 * 0)]
+        [TestCase(1, 50 * 1 * 1)]
+        [TestCase(2, 50 * 2 * 1.5)]
+        [TestCase(3, 50 * 3 * 2)]
+        [TestCase(4, 50 * 4 * 2)]
+        [TestCase(6, 50 * 6 * 2)]
+        [TestCase(7, 50 * 7 * 2.5)]
+        [TestCase(9, 50 * 9 * 2.5)]
+        [TestCase(10, 50 * 10 * 2.5)]
+        [TestCase(11, 50 * 11 * 3)]
+        [TestCase(13, 50 * 13 * 3)]
+        [TestCase(15, 50 * 15 * 4)]
+        [TestCase(50, 50 * 50 * 4)]
+        public void SizeMonsterMultiplier(int numberOfMonsters, double expectedXpValue)
+        {
+            const int xp = 50;
+
+            var xpValue = (int) (xp*numberOfMonsters*_encounterService.ApplyMonsterSizeMultiplier(numberOfMonsters));
+
+            Assert.IsTrue(xpValue == (int)expectedXpValue);
+
         }
 
     } //Bottom

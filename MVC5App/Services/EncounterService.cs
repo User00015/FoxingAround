@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MVC5App.Controllers;
 using MVC5App.DynamoDb;
+using MVC5App.Extensions;
 using MVC5App.Models;
 using MVC5App.Repositories;
 using MVC5App.Repositories.Interfaces;
@@ -17,9 +18,9 @@ namespace MVC5App.Services
     {
         private const int Single = 1;
         private const int Pair = 2;
-        private static readonly IEnumerable<int> Group = Enumerable.Range(3, 3);
-        private static readonly IEnumerable<int> Gang = Enumerable.Range(7, 3);
-        private static readonly IEnumerable<int> Mob = Enumerable.Range(11, 3);
+        private static readonly IEnumerable<int> Group = Enumerable.Range(3, 4);
+        private static readonly IEnumerable<int> Gang = Enumerable.Range(7, 4);
+        private static readonly IEnumerable<int> Mob = Enumerable.Range(11, 4);
         private static readonly IEnumerable<int> Horde = Enumerable.Range(15, 100);
 
         public EncounterViewModel Encounter { get; set; }
@@ -46,38 +47,43 @@ namespace MVC5App.Services
 
         public void MonsterResolver(IEncounterViewModel encounter)
         {
-            var difficulty = encounter.Party.GetDifficulty();
-            var monsterList = _monsterRepository.GetMonsters(encounter);
-
             var finalList = new List<MonsterViewModel>();
-            foreach (var monster in monsterList)
+
+            foreach (var monster in _monsterRepository.GetMonsters(encounter).Shuffle())
             {
 
-                var experienceRemaining = difficulty - GetMonstersExperienceValue(finalList);
+                //Create monsters until experience 'runs out'
+                var experienceRemaining = encounter.GetPartyDifficulty - GetMonstersExperienceValue(finalList);
+
+                //Find the maximum amount of a monster that can be added to an encounter
                 var amountToAdd = CalculateQuantityToAdd(experienceRemaining, monster);
 
+                //Randomize how many of that monster to add
                 var quantity = new Random().Next(amountToAdd / 2, amountToAdd);
 
-                if (quantity > 0)
+
+                //Don't include large variations in monster xp value. E.G. 1 Ancient red dragon and 1 cat.
+                var threshold = 0;
+                if (finalList.Any())
+                {
+                    threshold = (int)(finalList.Max(m => m.ExperienceValue) * .25);
+                }
+
+                if (quantity > 0 && monster.Xp > threshold)
                     finalList.Add(new MonsterViewModel
                     {
                         Quantity = quantity,
                         ExperienceValue = monster.Xp * quantity,
                         Level = monster.ChallengeRating,
                         Name = monster.Name
-
                     });
-                Encounter.Monsters = finalList;
 
-                var previousDifficulty = Encounter.Party.GetDifficulty(Encounter.Party.Difficulty - 1);
-
-                if (previousDifficulty > 0 && GetMonstersExperienceValue(finalList) > previousDifficulty)
+                //If the total encounter experience is close to the target difficulty, stop. Prevents 'stuffing' an encounter with increasingly smaller/fewer enemies.
+                if (GetMonstersExperienceValue(finalList) > encounter.GetPartyDifficulty * .8)
                     break;
-
-
             }
 
-            Encounter.Monsters = Encounter.Monsters.OrderByDescending(m => m.ExperienceValue);
+            Encounter.Monsters = finalList.OrderByDescending(m => m.ExperienceValue);
         }
 
         public double ApplyMonsterSizeMultiplier(int monsters)
