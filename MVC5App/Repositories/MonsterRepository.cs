@@ -15,13 +15,11 @@ namespace MVC5App.Repositories
 {
     public class MonsterRepository : IMonsterRepository
     {
-        private readonly ITableDataService _tableDataService;
         private readonly IEnumerable<MonsterModel> _allMonsters;
 
         public MonsterRepository(ITableDataService tableDataService)
         {
-            _tableDataService = tableDataService;
-            _allMonsters = _tableDataService.GetAll<MonsterModel>();
+            _allMonsters = tableDataService.GetAll<MonsterModel>().ToList();
         }
 
         public IEnumerable<MonsterModel> GetMonsters(IEncounterViewModel encounter)

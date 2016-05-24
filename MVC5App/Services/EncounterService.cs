@@ -56,7 +56,7 @@ namespace MVC5App.Services
                 var experienceRemaining = encounter.GetPartyDifficulty - GetMonstersExperienceValue(finalList);
 
                 //Find the maximum amount of a monster that can be added to an encounter
-                var amountToAdd = CalculateQuantityToAdd(experienceRemaining, monster);
+                var amountToAdd = CalculateQuantityToAdd(experienceRemaining, monster, 3);
 
                 //Randomize how many of that monster to add
                 var quantity = new Random().Next(amountToAdd / 2, amountToAdd);
@@ -69,7 +69,8 @@ namespace MVC5App.Services
                     threshold = (int)(finalList.Max(m => m.ExperienceValue) * .25);
                 }
 
-                if (quantity > 0 && monster.Xp > threshold)
+
+                if (quantity > 0 && monster.Xp  > threshold)
                     finalList.Add(new MonsterViewModel
                     {
                         Quantity = quantity,
@@ -78,8 +79,10 @@ namespace MVC5App.Services
                         Name = monster.Name
                     });
 
+                finalList.RemoveAll(m => m.ExperienceValue < threshold);
+
                 //If the total encounter experience is close to the target difficulty, stop. Prevents 'stuffing' an encounter with increasingly smaller/fewer enemies.
-                if (GetMonstersExperienceValue(finalList) > encounter.GetPartyDifficulty * .8)
+                if (GetMonstersExperienceValue(finalList) > encounter.GetPartyDifficulty * .9)
                     break;
             }
 
@@ -121,10 +124,10 @@ namespace MVC5App.Services
             return (int)monsters.Sum(m => m.ExperienceValue * ApplyMonsterSizeMultiplier(m.Quantity));
         }
 
-        private int CalculateQuantityToAdd(int experienceRemaining, MonsterModel monster)
+        private int CalculateQuantityToAdd(int experienceRemaining, MonsterModel monster, int maxQuantityToAdd = 100)
         {
             var quantity = 0;
-            while (quantity * monster.Xp * ApplyMonsterSizeMultiplier(quantity) < experienceRemaining)
+            while (quantity * monster.Xp * ApplyMonsterSizeMultiplier(quantity) < experienceRemaining && quantity < maxQuantityToAdd)
             {
                 quantity += 1;
             }
