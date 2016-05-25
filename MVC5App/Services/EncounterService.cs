@@ -26,6 +26,9 @@ namespace MVC5App.Services
         public EncounterViewModel Encounter { get; set; }
 
         private readonly IMonsterRepository _monsterRepository;
+        public int MaximumAmountPerMonster { get; set; } = 5;
+        public double MinimumExperienceThreshold { get; set; } = .25;
+        public double VariableEncounterExperienceThreshold { get; set; } = .9;
 
         public EncounterService(IMonsterRepository monsterRepository)
         {
@@ -41,52 +44,47 @@ namespace MVC5App.Services
                 Party = new Party(party),
             };
 
-            MonsterResolver(Encounter);
+            Encounter.Monsters = MonsterResolver(Encounter).OrderByDescending(p => p.ExperienceValue);
             Encounter.ExperienceValue = GetMonstersExperienceValue(Encounter.Monsters);
         }
 
-        public void MonsterResolver(IEncounterViewModel encounter)
+        public IEnumerable<MonsterViewModel> MonsterResolver(IEncounterViewModel encounter)
         {
             var finalList = new List<MonsterViewModel>();
 
             foreach (var monster in _monsterRepository.GetMonsters(encounter).Shuffle())
             {
-
-                //Create monsters until experience 'runs out'
-                var experienceRemaining = encounter.GetPartyDifficulty - GetMonstersExperienceValue(finalList);
-
                 //Find the maximum amount of a monster that can be added to an encounter
-                var amountToAdd = CalculateQuantityToAdd(experienceRemaining, monster, 3);
+                var quantity = CalculateQuantityToAdd(finalList, monster);
 
-                //Randomize how many of that monster to add
-                var quantity = new Random().Next(amountToAdd / 2, amountToAdd);
-
-
-                //Don't include large variations in monster xp value. E.G. 1 Ancient red dragon and 1 cat.
-                var threshold = 0;
-                if (finalList.Any())
-                {
-                    threshold = (int)(finalList.Max(m => m.ExperienceValue) * .25);
-                }
-
-
-                if (quantity > 0 && monster.Xp  > threshold)
+                if (quantity  > 0)
                     finalList.Add(new MonsterViewModel
                     {
-                        Quantity = quantity,
+                        Quantity = quantity ,
                         ExperienceValue = monster.Xp * quantity,
                         Level = monster.ChallengeRating,
                         Name = monster.Name
                     });
 
+                var threshold = XPThreshold(finalList);
                 finalList.RemoveAll(m => m.ExperienceValue < threshold);
 
                 //If the total encounter experience is close to the target difficulty, stop. Prevents 'stuffing' an encounter with increasingly smaller/fewer enemies.
-                if (GetMonstersExperienceValue(finalList) > encounter.GetPartyDifficulty * .9)
+                if (GetMonstersExperienceValue(finalList) > Encounter.GetPartyDifficulty * VariableEncounterExperienceThreshold)
                     break;
             }
 
-            Encounter.Monsters = finalList.OrderByDescending(m => m.ExperienceValue);
+            return finalList;
+        }
+
+        private int XPThreshold(List<MonsterViewModel> finalList)
+        {
+            var threshold = 0;
+            if (finalList.Any())
+            {
+                threshold = (int)(finalList.Max(m => m.ExperienceValue) * MinimumExperienceThreshold);
+            }
+            return threshold;
         }
 
         public double ApplyMonsterSizeMultiplier(int monsters)
@@ -124,15 +122,16 @@ namespace MVC5App.Services
             return (int)monsters.Sum(m => m.ExperienceValue * ApplyMonsterSizeMultiplier(m.Quantity));
         }
 
-        private int CalculateQuantityToAdd(int experienceRemaining, MonsterModel monster, int maxQuantityToAdd = 100)
+        public int CalculateQuantityToAdd(List<MonsterViewModel> finalList, MonsterModel monster)
         {
+            var experienceRemaining = Encounter.GetPartyDifficulty - GetMonstersExperienceValue(finalList);
+
             var quantity = 0;
-            while (quantity * monster.Xp * ApplyMonsterSizeMultiplier(quantity) < experienceRemaining && quantity < maxQuantityToAdd)
+            while (quantity * monster.Xp * ApplyMonsterSizeMultiplier(quantity) < experienceRemaining && quantity < MaximumAmountPerMonster)
             {
                 quantity += 1;
             }
-
-            return quantity;
+            return new Random().Next(quantity / 2, quantity);
         }
     }
 }

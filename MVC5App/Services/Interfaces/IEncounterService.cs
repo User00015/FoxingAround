@@ -10,7 +10,7 @@ namespace MVC5App.Services.Interfaces
         EncounterViewModel Encounter { get; set; }
         void CreateEncounter(IPartyViewModel levels);
         int EncounterExperience { get; }
-        void MonsterResolver(IEncounterViewModel encounter);
+        IEnumerable<MonsterViewModel> MonsterResolver(IEncounterViewModel encounter);
         double ApplyMonsterSizeMultiplier(int monsters);
         int GetMonstersExperienceValue(IEnumerable<MonsterViewModel> monsters);
     }

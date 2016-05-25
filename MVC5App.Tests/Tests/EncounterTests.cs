@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using MVC5App.Controllers;
@@ -170,10 +171,33 @@ namespace MVC5App.Tests.Controllers
             };
             _mockEncounterViewModel.Setup(p => p.GetPartyDifficulty).Returns(1350);
 
-            service.MonsterResolver(_mockEncounterViewModel.Object);
+            var encounter = service.MonsterResolver(_mockEncounterViewModel.Object);
 
-            var encounter = service.Encounter;
+            Assert.IsTrue(encounter.Count() == 1);
         }
 
+        [Test]
+        public void EncounterResolverMonsterIsToBigAndReturnsEmpty()
+        {
+
+            _mockMonsterRepository.Setup(p => p.GetMonsters(_mockEncounterViewModel.Object))
+                .Returns(() => new List<MonsterModel>
+                {
+                    new MonsterModel { Xp = 9999 }
+                });
+
+            _mockEncounterViewModel.Setup(p => p.Party).Returns(new Party(_party));
+            var service = new EncounterService(_mockMonsterRepository.Object)
+            {
+                Encounter = new EncounterViewModel
+                {
+                    Party = new Party(_party)
+                }
+            };
+            _mockEncounterViewModel.Setup(p => p.GetPartyDifficulty).Returns(1350);
+            var encounter = service.MonsterResolver(_mockEncounterViewModel.Object);
+
+            Assert.IsFalse(encounter.Any());
+        }
     } //Bottom
 }
