@@ -63,7 +63,8 @@ namespace MVC5App.Services
                         Quantity = quantity ,
                         ExperienceValue = monster.Xp * quantity,
                         Level = monster.ChallengeRating,
-                        Name = monster.Name
+                        Name = monster.Name,
+                        Id = monster.Id
                     });
 
                 var threshold = XPThreshold(finalList);

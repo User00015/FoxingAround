@@ -115,6 +115,7 @@
     <Reference Include="System.Net.Http.WebRequest" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Tests\MonsterDetailTests.cs" />
     <Compile Include="Tests\Generator.cs" />
     <Compile Include="Tests\MonsterTests.cs" />
     <Compile Include="Tests\PartyTests.cs" />

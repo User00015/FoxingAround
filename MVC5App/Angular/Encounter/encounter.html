@@ -8,7 +8,7 @@
 
             <div class="col-md-12">
                 <label for="LevelOfCharacters" class="control-label">Level of Characters</label>
-                <input type="number" class="form-control" id="LevelOfCharacters" required ng-model="levelOfCharacters" />
+                <select class="form-control" name="levelOfChars" id="LevelOfCharacters" required ng-model="levelOfCharacters" ng-options="level as level for level in levels"></select>
             </div>
 
             <div class="col-md-12">
@@ -36,7 +36,7 @@
                 </tr>
             </thead>
             <tbody ng-show="toggle">
-                <tr ng-repeat="monster in encounter.monsters">
+                <tr ng-repeat="monster in encounter.monsters" ng-click="getMonsterDetails(monster.id)">
                     <td>{{monster.name}}</td>
                     <td>{{monster.quantity}}</td>
                     <td>{{monster.level}}</td>
