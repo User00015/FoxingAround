@@ -54,20 +54,22 @@ namespace MVC5App.Services
 
             foreach (var monster in _monsterRepository.GetMonsters(encounter).Shuffle())
             {
-                //Find the maximum amount of a monster that can be added to an encounter
+                //Find the amount of a monster to be added to an encounter
                 var quantity = CalculateQuantityToAdd(finalList, monster);
 
-                if (quantity  > 0)
+                if (quantity > 0)
+                {
                     finalList.Add(new MonsterViewModel
                     {
-                        Quantity = quantity ,
-                        ExperienceValue = monster.Xp * quantity,
+                        Quantity = quantity,
+                        ExperienceValue = monster.Xp*quantity,
                         Level = monster.ChallengeRating,
                         Name = monster.Name
                     });
 
-                var threshold = XPThreshold(finalList);
-                finalList.RemoveAll(m => m.ExperienceValue < threshold);
+                    //Strip monsters with large value disparities. E.g. 1 Ancient red dragon and 1 cat.
+                    finalList.RemoveAll(m => m.ExperienceValue < XpThreshold(finalList));
+                }
 
                 //If the total encounter experience is close to the target difficulty, stop. Prevents 'stuffing' an encounter with increasingly smaller/fewer enemies.
                 if (GetMonstersExperienceValue(finalList) > Encounter.GetPartyDifficulty * VariableEncounterExperienceThreshold)
@@ -77,15 +79,11 @@ namespace MVC5App.Services
             return finalList;
         }
 
-        private int XPThreshold(List<MonsterViewModel> finalList)
+        private double XpThreshold(IEnumerable<MonsterViewModel> finalList)
         {
-            var threshold = 0;
-            if (finalList.Any())
-            {
-                threshold = (int)(finalList.Max(m => m.ExperienceValue) * MinimumExperienceThreshold);
-            }
-            return threshold;
+            return finalList.Max(p => p.ExperienceValue) * MinimumExperienceThreshold;
         }
+
 
         public double ApplyMonsterSizeMultiplier(int monsters)
         {
