@@ -4,6 +4,13 @@
         $scope.monsters = data;
     });
 
+
+    $scope.getMonsterDetails = function(id) {
+        encounterService.getMonsterDetails(function(data) {
+            $scope.monsterDetails = data;
+        }, id);
+    }
+
     $scope.difficulties = [
         { type: "Easy", value: 0 },
         { type: "Medium", value: 1 },
@@ -18,9 +25,9 @@
     };
 
     //Defaults
-    $scope.difficulty = $scope.difficulties[2];
-    $scope.toggle = true;
-    $scope.levels = levels;
+    $scope.difficulty = $scope.difficulties[2]; //Default to Hard
+    $scope.toggle = true; //Defaults visible
+    $scope.levels = levels; //Hard-coded character levels
 
     var submit = function (params) {
         encounterService.postMonsters(function (encounter) {
@@ -34,10 +41,10 @@
             partySize: $scope.numberOfCharacters,
             difficulty: $scope.difficulty.value
         };
-        console.log(params);
         submit(params);
 
     }
+
 
 
 }]);
