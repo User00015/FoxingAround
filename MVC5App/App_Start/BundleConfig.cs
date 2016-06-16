@@ -35,9 +35,13 @@ namespace MVC5App
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/extensions").Include(
+                "~/Scripts/lodash.min.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/final.min.css",
                       "~/Content/site.css"));
+
 
             BundleTable.EnableOptimizations = false;
         }

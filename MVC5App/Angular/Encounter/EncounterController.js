@@ -18,11 +18,7 @@
         { type: "Deadly", value: 3 }
     ];
 
-    var levels = [];
-
-    for (var i = 1; i <= 20; ++i) {
-        levels.push(i);
-    };
+    var levels = _.range(1, 20);
 
     //Defaults
     $scope.difficulty = $scope.difficulties[2]; //Default to Hard

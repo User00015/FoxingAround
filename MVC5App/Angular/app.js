@@ -1,8 +1,12 @@
 ﻿var app = angular.module('FifthEditionEncounters', ['ngRoute', 'ngResource', 'ngMap', 'environment', 'smart-table']);
 
+
 app
-    .config(['$routeProvider', '$locationProvider','envServiceProvider',
-        function ($routeProvider, $locationProvider, envService) {
+    .constant('_', window._)
+
+    .config([
+        '$routeProvider', '$locationProvider', 'envServiceProvider',
+        function($routeProvider, $locationProvider, envService) {
             $routeProvider
                 .when('/home', { templateUrl: './Angular/Home/home.html', controller: 'HomeController' })
                 //.when('/gallery', { templateUrl: './Angular/Gallery/gallery.html', controller: 'GalleryController' })
@@ -27,15 +31,17 @@ app
                 }
             });
             envService.check();
-        }])
+        }
+    ])
 
-    .run(function ($rootScope) {
-        angular.element(document).on("click", function (e) {
+    .run(function($rootScope) {
+        angular.element(document).on("click", function(e) {
             $rootScope.$broadcast("documentClicked", angular.element(e.target));
         });
-
+        $rootScope._ = window._;
     })
-        .controller('RootController', ['$scope', '$route', '$routeParams', '$location',
+
+    .controller('RootController', ['$scope', '$route', '$routeParams', '$location',
             function ($scope, $route, $routeParams, $location) {
 
             }]);

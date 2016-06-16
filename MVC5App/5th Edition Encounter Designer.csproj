@@ -270,6 +270,7 @@
     <Content Include="Angular\Encounter\EncounterController.js" />
     <Content Include="Angular\Encounter\encounter.html" />
     <Content Include="Angular\Encounter\encounterService.js" />
+    <Content Include="Angular\Factory\lodash.js" />
     <Content Include="Angular\Gallery\gallery.html" />
     <Content Include="Angular\Gallery\GalleryController.js" />
     <Content Include="Angular\Home\Directives\dropdown.js" />
@@ -413,6 +414,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\lodash.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\ng-map.min.js" />
