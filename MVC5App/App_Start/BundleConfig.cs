@@ -13,6 +13,10 @@ namespace MVC5App
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+                "~/Scripts/bootstrap.js",
+                "~/Scripts/respond.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                 "~/Scripts/angular.js",
                 "~/Scripts/angular-resource.js",
@@ -20,6 +24,7 @@ namespace MVC5App
                 "~/Scripts/ng-map.min.js",
                 "~/Scripts/angular-environment.js",
                 "~/Scripts/smart-table.min.js",
+                "~/Scripts/angular-animate.js",
                 "~/Scripts/angular-route.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/angularapp").Include(
@@ -31,15 +36,13 @@ namespace MVC5App
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js",
-                      "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/extensions").Include(
                 "~/Scripts/lodash.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/final.min.css",
+                      "~/Content/animate.css",
                       "~/Content/site.css"));
 
 

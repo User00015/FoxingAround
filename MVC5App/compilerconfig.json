@@ -10,5 +10,9 @@
   {
     "outputFile": "Content/final.css",
     "inputFile": "Content/final.less"
+  },
+  {
+    "outputFile": "Styles/animate.css",
+    "inputFile": "Styles/animate.less"
   }
 ]
