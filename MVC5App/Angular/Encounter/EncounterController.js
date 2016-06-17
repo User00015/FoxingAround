@@ -1,28 +1,23 @@
 ﻿app.controller('EncounterController', ['$scope', 'encounterService', '$modal', function ($scope, encounterService, $modal) {
 
-    encounterService.getMonsters(function (data) {
-        $scope.monsters = data;
-    });
-
-
     $scope.getMonsterDetails = function (id) {
-        encounterService.getMonsterDetails(function (data) {
-            $scope.monsterDetails = data;
-        }, id);
-
         $modal({
             templateUrl: 'Angular/Encounter/Statblock.html',
             controller: 'StatblockModalController',
-            backdrop: true
-
+            backdrop: true,
+            resolve: {
+                monsterId: function () {
+                    return id;
+                }
+            }
         });
     }
 
     $scope.difficulties = [
-        { type: "Easy", value: 0 },
-        { type: "Medium", value: 1 },
-        { type: "Hard", value: 2 },
-        { type: "Deadly", value: 3 }
+{ type: "Easy", value: 0 },
+{ type: "Medium", value: 1 },
+{ type: "Hard", value: 2 },
+{ type: "Deadly", value: 3 }
     ];
 
     //Defaults
@@ -43,6 +38,5 @@
             difficulty: $scope.difficulty.value
         };
         submit(params);
-
     }
 }]);
