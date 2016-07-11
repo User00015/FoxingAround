@@ -2,6 +2,5 @@
 
     encounterService.getMonsterDetails(function (data) {
         $scope.monsterDetails = data;
-
     }, monsterId);
 }])
