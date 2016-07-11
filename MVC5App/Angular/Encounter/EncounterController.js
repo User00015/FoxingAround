@@ -1,4 +1,4 @@
-﻿app.controller('EncounterController', ['$scope', 'encounterService', '$modal', function ($scope, encounterService, $modal) {
+﻿app.controller('EncounterController', ['$scope', 'encounterService', '$modal', '$timeout', function ($scope, encounterService, $modal, $timeout) {
 
     $scope.getMonsterDetails = function (id) {
         $modal({
@@ -24,12 +24,21 @@
     $scope.difficulty = $scope.difficulties[2]; //Default to Hard
     $scope.toggle = true; //Defaults visible
     $scope.levels = _.range(1, 21); //Hard-coded character levels
+    $scope.isLoading = false;
 
     var submit = function (params) {
         encounterService.postMonsters(function (encounter) {
             $scope.encounter = encounter;
+            $scope.isLoading = false;
         }, params);
     };
+
+var testDelay = function() {
+    $scope.isLoading = true;
+    $timeout(function() {
+        $scope.isLoading = false;
+    }, 2000);
+}
 
     $scope.removeMonster = function (id) {
         $scope.encounter.monsters = _.filter($scope.encounter.monsters, function (monster) {
@@ -48,6 +57,7 @@
     }
 
     $scope.createEncounters = function () {
+        $scope.isLoading = true;
         var params = {
             partyLevel: $scope.levelOfCharacters,
             partySize: $scope.numberOfCharacters,

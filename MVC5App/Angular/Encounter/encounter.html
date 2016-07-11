@@ -19,11 +19,11 @@
 
 
 
-        <table st-table="encounter" class="table table-striped table-bordered" ng-show="encounter">
+        <table st-table="encounter" st-pipe="getEncounter" class="table table-striped table-bordered" ng-show="encounter">
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Qty</th>
+                    <th>Quantity</th>
                     <th>Level</th>
                     <th>
                         Experience
@@ -38,14 +38,14 @@
             <tbody ng-show="toggle">
                 <tr ng-repeat="monster in encounter.monsters">
                     <td>{{monster.name}}</td>
-                    <td>
-                        <div>
-                            <button type="button" style="margin-right: 10px" ng-click="subtractMonster(monster)" class="btn btn-danger btn-number">
-                                <i class="glyphicon glyphicon-minus"></i>
-                            </button>
-                            {{monster.quantity}}
-                            <button type="button" style="margin-left: 10px" ng-click="addMonster(monster)" class="btn btn-success btn-number">
+                    <td >
+                        {{monster.quantity}}
+                        <div class="btn-group-vertical btn-group-sm">
+                            <button type="button" ng-click="addMonster(monster)" class="btn btn-sm btn-success  ">
                                 <i class="glyphicon glyphicon-plus"></i>
+                            </button>
+                            <button type="button" ng-click="subtractMonster(monster)" class="btn btn-sm btn-danger ">
+                                <i class="glyphicon glyphicon-minus"></i>
                             </button>
                         </div>
                     </td>
@@ -55,7 +55,7 @@
                         <button type="button" ng-click="getMonsterDetails(monster.id)" class="btn btn btn-info col-sm-5 col-sm-offset-0">
                             <i class="glyphicon glyphicon-info-sign"></i>
                         </button>
-                        <button type="button" ng-click="removeMonster(monster.id)" class="btn btn btn-danger col-sm-5 col-sm-offset-1">
+                        <button type="button" ng-click="removeMonster(monster.id)" class="btn btn btn-danger col-sm-5 col-sm-offset-2">
                             <i class="glyphicon glyphicon-remove-circle"></i>
                         </button>
                     </td>
@@ -63,6 +63,10 @@
             </tbody>
         </table>
 
-        <button type="submit" class="btn btn-default btn-primary" ng-disabled="formEncounter.$invalid" ng-click="createEncounters()">Submit</button>
+        <button type="submit" class="btn btn-default btn-primary" ng-disabled="formEncounter.$invalid || isLoading" ng-click="createEncounters()">
+            <span ng-show="isLoading">
+                <i class="glyphicon glyphicon-refresh spinning"></i>
+            </span>Submit
+        </button>
     </form>
 </div>
