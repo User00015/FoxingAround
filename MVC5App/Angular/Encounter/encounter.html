@@ -32,14 +32,33 @@
                             <i class="glyphicon glyphicon-arrow-down" ng-show="!toggle"></i>
                         </button>
                     </th>
+                    <th>Details / Delete</th>
                 </tr>
             </thead>
             <tbody ng-show="toggle">
-                <tr ng-repeat="monster in encounter.monsters" ng-click="getMonsterDetails(monster.id)">
+                <tr ng-repeat="monster in encounter.monsters">
                     <td>{{monster.name}}</td>
-                    <td>{{monster.quantity}}</td>
+                    <td>
+                        <div>
+                            <button type="button" style="margin-right: 10px" ng-click="subtractMonster(monster)" class="btn btn-danger btn-number">
+                                <i class="glyphicon glyphicon-minus"></i>
+                            </button>
+                            {{monster.quantity}}
+                            <button type="button" style="margin-left: 10px" ng-click="addMonster(monster)" class="btn btn-success btn-number">
+                                <i class="glyphicon glyphicon-plus"></i>
+                            </button>
+                        </div>
+                    </td>
                     <td>{{monster.level}}</td>
                     <td>{{monster.experienceValue}}</td>
+                    <td>
+                        <button type="button" ng-click="getMonsterDetails(monster.id)" class="btn btn btn-info col-sm-5 col-sm-offset-0">
+                            <i class="glyphicon glyphicon-info-sign"></i>
+                        </button>
+                        <button type="button" ng-click="removeMonster(monster.id)" class="btn btn btn-danger col-sm-5 col-sm-offset-1">
+                            <i class="glyphicon glyphicon-remove-circle"></i>
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>
