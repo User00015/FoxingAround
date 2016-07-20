@@ -1,4 +1,31 @@
-﻿<div class="well">
+﻿<style>
+    @media (max-width: 579px) {
+       .btn-responsive {
+            padding: 2px 4px;
+            font-size: 80%;
+            line-height: 1;
+            border-radius: 3px;
+        }  
+    }
+
+    @media (min-width: 580px) and (max-width: 768px) {
+        .btn-responsive {
+            padding: 2px 4px;
+            font-size: 80%;
+            line-height: 1;
+            border-radius: 3px;
+        }
+    }
+
+    @media (min-width: 769px) and (max-width: 992px) {
+        .btn-responsive {
+            padding: 4px 9px;
+            font-size: 90%;
+            line-height: 1.2;
+        }
+    }
+</style>
+<div class="well">
     <form class="form-horizontal" name="formEncounter">
         <div class="form-group">
             <div class="col-md-12">
@@ -26,37 +53,42 @@
                     <th>Quantity</th>
                     <th>Level</th>
                     <th>
-                        Experience
-                        <button class="pull-right btn btn-sm btn-default" type="button" ng-click="toggle = !toggle">
-                            <i class="glyphicon glyphicon-arrow-up" ng-show="toggle"></i>
-                            <i class="glyphicon glyphicon-arrow-down" ng-show="!toggle"></i>
-                        </button>
+                        <span>
+                            Experience
+                            <button class="pull-right btn btn-sm btn-default" type="button" ng-click="toggle = !toggle">
+                                <i class="glyphicon glyphicon-arrow-up" ng-show="toggle"></i>
+                                <i class="glyphicon glyphicon-arrow-down" ng-show="!toggle"></i>
+                            </button>
+                        </span>
                     </th>
-                    <th>Details / Delete</th>
                 </tr>
             </thead>
             <tbody ng-show="toggle">
                 <tr ng-repeat="monster in encounter.monsters">
                     <td>{{monster.name}}</td>
-                    <td >
-                        {{monster.quantity}}
-                        <div class="btn-group-vertical btn-group-sm">
-                            <button type="button" ng-click="addMonster(monster)" class="btn btn-sm btn-success  ">
-                                <i class="glyphicon glyphicon-plus"></i>
-                            </button>
-                            <button type="button" ng-click="subtractMonster(monster)" class="btn btn-sm btn-danger ">
-                                <i class="glyphicon glyphicon-minus"></i>
-                            </button>
-                        </div>
-                    </td>
+                    <td>{{monster.quantity}}</td>
                     <td>{{monster.level}}</td>
                     <td>{{monster.experienceValue}}</td>
                     <td>
-                        <button type="button" ng-click="getMonsterDetails(monster.id)" class="btn btn btn-info col-sm-5 col-sm-offset-0">
-                            <i class="glyphicon glyphicon-info-sign"></i>
+                        <button type="button" ng-click="addMonster(monster)" class="btn  btn-success btn-responsive">
+                            <i class="fa fa-plus-circle fa-align-left"></i><span>
+                            </span>
                         </button>
-                        <button type="button" ng-click="removeMonster(monster.id)" class="btn btn btn-danger col-sm-5 col-sm-offset-2">
-                            <i class="glyphicon glyphicon-remove-circle"></i>
+                        <!--<button type="button" ng-click="subtractMonster(monster)" class="btn btn-sm btn-danger ">
+                            <i class="fa fa-minus-circle"></i><span>
+                                Subtract
+                            </span>
+                        </button>-->
+
+                        <button type="button" ng-click="getMonsterDetails(monster.id)" class="btn  btn-info btn-responsive">
+                            <i class="fa fa-info"></i><span>
+                            </span>
+                        </button>
+                    </td>
+                    <td>
+                        <button type="button" ng-click="removeMonster(monster.id)" class="btn  btn-danger btn-responsive">
+                            <i class="fa fa-times"></i><span>
+                            </span>
                         </button>
                     </td>
                 </tr>
