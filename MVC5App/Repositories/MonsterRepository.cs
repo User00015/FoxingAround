@@ -18,7 +18,7 @@ namespace MVC5App.Repositories
 
         public IEnumerable<MonsterModel> GetMonsters(IEncounterViewModel encounter)
         {
-            var difficulty = encounter.PartyDifficulty;
+            var difficulty = encounter.PartyViewModel.Difficulty;
             return _allMonsters.Where(p => p.Xp <= difficulty);
         }
 

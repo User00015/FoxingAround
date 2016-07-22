@@ -13,6 +13,8 @@ namespace MVC5App.Tests.Controllers
     {
         private IEncounterService _encounterService;
         private Mock<IMonsterRepository> _monsterRepositoryMock;
+        private PartyViewModel _party;
+        private Difficulty _difficulty;
 
         [SetUp]
         public void Init()
@@ -25,19 +27,26 @@ namespace MVC5App.Tests.Controllers
                 PartySize = 6
             });
 
+            _party = new PartyViewModel
+            {
+                PartyLevel = 3,
+                PartySize = 6,
+                Difficulty = 3
+            };
+            _difficulty = new Difficulty(_party.PartyLevel);
         }
 
         [Test]
         public void PartyOfSixLevelThreesAndTheirTotalXPForAnEasyEncounter()
         {
-            Assert.IsTrue(_encounterService.Encounter.Party.GetDifficulty((int) Difficulty.DifficultyEnum.Easy) == 75 * 6);
+            Assert.IsTrue(_difficulty.Easy * 6 == 75 * 6);
         }
 
 
         [Test]
         public void PartyOfSixLevelThreesAndTheirTotalXPForAMediumEncounter()
         {
-            Assert.IsTrue(_encounterService.Encounter.Party.GetDifficulty((int) Difficulty.DifficultyEnum.Medium) == 150 * 6);
+            Assert.IsTrue(_difficulty.Medium * 6 == 150 * 6);
 
         }
 
@@ -45,7 +54,7 @@ namespace MVC5App.Tests.Controllers
         [Test]
         public void PartyOfSixLevelThreesAndTheirTotalXPForAHardEncounter()
         {
-            Assert.IsTrue(_encounterService.Encounter.Party.GetDifficulty((int) Difficulty.DifficultyEnum.Hard) == 225 * 6);
+            Assert.IsTrue(_difficulty.Hard * 6 == 225 * 6);
 
         }
 
@@ -53,7 +62,7 @@ namespace MVC5App.Tests.Controllers
         [Test]
         public void PartyOfSixLevelThreesAndTheirTotalXPForADeadlyEncounter()
         {
-            Assert.IsTrue(_encounterService.Encounter.Party.GetDifficulty((int) Difficulty.DifficultyEnum.Deadly) == 400 * 6);
+            Assert.IsTrue(_difficulty.Deadly * 6 == 400 * 6);
 
         }
 

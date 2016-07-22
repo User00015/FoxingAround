@@ -1,6 +1,6 @@
 ﻿namespace MVC5App.Services.Interfaces
 {
-    public interface IParty
+    public interface IPartyService
     {
         int TotalDeadlyXP { get; }
         int TotalHardXP { get; }

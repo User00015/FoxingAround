@@ -6,7 +6,7 @@ using MVC5App.ViewModels.Interfaces;
 
 namespace MVC5App.Services
 {
-    public class PartyService : IParty
+    public class PartyService : IPartyService
     {
         private static List<int> _levels = new List<int>();
 
