@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Web.Helpers;
-using Microsoft.Owin;
+﻿using Microsoft.Owin;
 using MVC5App;
-using MVC5App.Models;
 using Newtonsoft.Json;
 using Owin;
 using Newtonsoft.Json.Serialization;

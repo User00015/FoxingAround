@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Amazon.Runtime.Internal;
-using MVC5App.Controllers;
 using MVC5App.DynamoDb;
-using MVC5App.Extensions;
 using MVC5App.Models;
 using MVC5App.Repositories.Interfaces;
-using MVC5App.Services;
-using MVC5App.ViewModels;
 using MVC5App.ViewModels.Interfaces;
 
 namespace MVC5App.Repositories
@@ -24,7 +18,7 @@ namespace MVC5App.Repositories
 
         public IEnumerable<MonsterModel> GetMonsters(IEncounterViewModel encounter)
         {
-            var difficulty = encounter.GetPartyDifficulty;
+            var difficulty = encounter.PartyDifficulty;
             return _allMonsters.Where(p => p.Xp <= difficulty);
         }
 

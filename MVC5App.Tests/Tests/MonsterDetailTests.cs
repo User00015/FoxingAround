@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Moq;
+﻿using Moq;
 using MVC5App.Models;
-using MVC5App.Repositories;
 using MVC5App.Repositories.Interfaces;
-using MVC5App.ViewModels;
 using NUnit.Framework;
 
 namespace MVC5App.Tests.Tests

@@ -1,5 +1,3 @@
-using System;
-
 namespace MVC5App.Services.Models
 {
     public class Difficulty
@@ -157,8 +155,6 @@ namespace MVC5App.Services.Models
                     Hard = 8500;
                     Deadly = 12700;
                     break;
-
-                //We need to cover up to level 20 here
             }
         }
     }

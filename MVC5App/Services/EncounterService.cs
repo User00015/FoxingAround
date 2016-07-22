@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MVC5App.Controllers;
-using MVC5App.DynamoDb;
 using MVC5App.Extensions;
 using MVC5App.Models;
-using MVC5App.Repositories;
 using MVC5App.Repositories.Interfaces;
 using MVC5App.Services.Interfaces;
-using MVC5App.Services.Models;
 using MVC5App.ViewModels;
 using MVC5App.ViewModels.Interfaces;
 
@@ -18,10 +14,10 @@ namespace MVC5App.Services
     {
         private const int Single = 1;
         private const int Pair = 2;
-        private static readonly IEnumerable<int> Group = Enumerable.Range(3, 4);
-        private static readonly IEnumerable<int> Gang = Enumerable.Range(7, 4);
-        private static readonly IEnumerable<int> Mob = Enumerable.Range(11, 4);
-        private static readonly IEnumerable<int> Horde = Enumerable.Range(15, 100);
+        private static readonly IEnumerable<int> GroupSize = Enumerable.Range(3, 4);
+        private static readonly IEnumerable<int> GangSize = Enumerable.Range(7, 4);
+        private static readonly IEnumerable<int> MobSize = Enumerable.Range(11, 4);
+        private static readonly IEnumerable<int> HordeSize = Enumerable.Range(15, 100);
 
         public EncounterViewModel Encounter { get; set; }
 
@@ -41,7 +37,7 @@ namespace MVC5App.Services
         {
             Encounter = new EncounterViewModel
             {
-                Party = new Party(party),
+                Party = new PartyService(party),
             };
 
             Encounter.Monsters = MonsterResolver(Encounter).OrderByDescending(p => p.ExperienceValue);
@@ -62,7 +58,7 @@ namespace MVC5App.Services
                     finalList.Add(new MonsterViewModel
                     {
                         Quantity = quantity,
-                        ExperienceValue = monster.Xp*quantity,
+                        ExperienceValue = monster.Xp,
                         Level = monster.ChallengeRating,
                         Name = monster.Name,
                         Id = monster.Id
@@ -73,7 +69,7 @@ namespace MVC5App.Services
                 }
 
                 //If the total encounter experience is close to the target difficulty, stop. Prevents 'stuffing' an encounter with increasingly smaller/fewer enemies.
-                if (GetMonstersExperienceValue(finalList) > Encounter.GetPartyDifficulty * VariableEncounterExperienceThreshold)
+                if (GetMonstersExperienceValue(finalList) > Encounter.PartyDifficulty * VariableEncounterExperienceThreshold)
                     break;
             }
 
@@ -96,19 +92,19 @@ namespace MVC5App.Services
             {
                 return 1.5;
             }
-            if (Group.Contains(monsters))
+            if (GroupSize.Contains(monsters))
             {
                 return 2;
             }
-            if (Gang.Contains(monsters))
+            if (GangSize.Contains(monsters))
             {
                 return 2.5;
             }
-            if (Mob.Contains(monsters))
+            if (MobSize.Contains(monsters))
             {
                 return 3;
             }
-            if (Horde.Contains(monsters))
+            if (HordeSize.Contains(monsters))
             {
                 return 4;
             }
@@ -118,12 +114,12 @@ namespace MVC5App.Services
 
         public int GetMonstersExperienceValue(IEnumerable<MonsterViewModel> monsters)
         {
-            return (int)monsters.Sum(m => m.ExperienceValue * ApplyMonsterSizeMultiplier(m.Quantity));
+            return (int)monsters.Sum(m => m.ExperienceValue * m.Quantity * ApplyMonsterSizeMultiplier(m.Quantity));
         }
 
         public int CalculateQuantityToAdd(List<MonsterViewModel> finalList, MonsterModel monster)
         {
-            var experienceRemaining = Encounter.GetPartyDifficulty - GetMonstersExperienceValue(finalList);
+            var experienceRemaining = Encounter.PartyDifficulty - GetMonstersExperienceValue(finalList);
 
             var quantity = 0;
             while (quantity * monster.Xp * ApplyMonsterSizeMultiplier(quantity) < experienceRemaining && quantity < MaximumAmountPerMonster)

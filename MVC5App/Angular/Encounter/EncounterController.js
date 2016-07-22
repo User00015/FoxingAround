@@ -33,12 +33,12 @@
         }, params);
     };
 
-var testDelay = function() {
-    $scope.isLoading = true;
-    $timeout(function() {
-        $scope.isLoading = false;
-    }, 2000);
-}
+    var testDelay = function () {
+        $scope.isLoading = true;
+        $timeout(function () {
+            $scope.isLoading = false;
+        }, 2000);
+    }
 
     $scope.removeMonster = function (id) {
         $scope.encounter.monsters = _.filter($scope.encounter.monsters, function (monster) {
@@ -50,10 +50,12 @@ var testDelay = function() {
         monster.quantity = monster.quantity + 1;
     }
 
+    //Not used. If there's a need to fine tune monsters this much, I'll turn it back on.
     $scope.subtractMonster = function (monster) {
 
+        //Don't drop below 1 monster. Deleting is handled separately.
         if (monster.quantity > 1)
-            monster.quantity = monster.quantity - 1; //Don't drop below 1 monster.
+            monster.quantity = monster.quantity - 1;
     }
 
     $scope.createEncounters = function () {

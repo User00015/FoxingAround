@@ -1,17 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
-using Amazon.DynamoDBv2;
-using MVC5App.Controllers;
 using MVC5App.Services.Interfaces;
+using MVC5App.Services.Models;
 using MVC5App.ViewModels.Interfaces;
 
-namespace MVC5App.Services.Models
+namespace MVC5App.Services
 {
-    public class Party : IParty
+    public class PartyService : IParty
     {
         private static List<int> _levels = new List<int>();
 
-        public Party(IPartyViewModel party)
+        public PartyService(IPartyViewModel party)
         {
             _levels = AddDifficultyLevels(party);
             Difficulty = party.Difficulty;
@@ -22,7 +21,12 @@ namespace MVC5App.Services.Models
             }
         }
 
-        private List<Difficulty> Difficulties { get; } = new List<Difficulty>();
+        private IList<Difficulty> Difficulties { get; } = new List<Difficulty>();
+
+        public int TotalDeadlyXP => Difficulties.Sum(p => p.Deadly);
+        public int TotalHardXP => Difficulties.Sum(p => p.Hard);
+        public int TotalMediumXP => Difficulties.Sum(p => p.Medium);
+        public int TotalEasyXP => Difficulties.Sum(p => p.Easy);
 
         public int GetDifficulty()
         {

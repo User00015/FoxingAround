@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Moq;
-using MVC5App.Controllers;
-using MVC5App.DynamoDb;
-using MVC5App.Repositories;
+﻿using Moq;
 using MVC5App.Repositories.Interfaces;
 using MVC5App.Services;
 using MVC5App.Services.Interfaces;

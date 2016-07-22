@@ -1,15 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Moq;
-using MVC5App.Controllers;
 using MVC5App.DynamoDb;
 using MVC5App.Repositories;
-using MVC5App.Repositories.Interfaces;
 using MVC5App.Services;
-using MVC5App.Services.Interfaces;
-using MVC5App.Services.Models;
 using MVC5App.ViewModels;
-using MVC5App.ViewModels.Interfaces;
 using NUnit.Framework;
 
 namespace MVC5App.Tests.Controllers
@@ -43,7 +37,7 @@ namespace MVC5App.Tests.Controllers
             var mockMonsters = Generator.CreateMonsters(numberOfMonsters);
             _mock.Encounter.Monsters = mockMonsters;
 
-            Assert.IsTrue(_mock.ApplyMonsterSizeMultiplier(_mock.Encounter.Monsters.Count()) == expectedMultiplier);
+            Assert.IsTrue(_mock.ApplyMonsterSizeMultiplier(_mock.Encounter.Monsters.Sum(p => p.Quantity)) == expectedMultiplier);
         }
 
         [Test]

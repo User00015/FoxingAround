@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Moq;
 using MVC5App.Controllers;
@@ -46,7 +45,7 @@ namespace MVC5App.Tests.Controllers
             _encounterMock.Setup(mock => mock.Encounter).Returns(() => new EncounterViewModel
             {
                 Monsters = Generator.CreateMonsters(6),
-                Party = new Party(_party)
+                Party = new PartyService(_party)
             });
         }
 
@@ -161,15 +160,15 @@ namespace MVC5App.Tests.Controllers
                     new MonsterModel { Xp = 1000 }
                 });
 
-            _mockEncounterViewModel.Setup(p => p.Party).Returns(new Party(_party));
+            _mockEncounterViewModel.Setup(p => p.Party).Returns(new PartyService(_party));
             var service = new EncounterService(_mockMonsterRepository.Object)
             {
                 Encounter = new EncounterViewModel
                 {
-                    Party = new Party(_party)
+                    Party = new PartyService(_party)
                 }
             };
-            _mockEncounterViewModel.Setup(p => p.GetPartyDifficulty).Returns(1350);
+            _mockEncounterViewModel.Setup(p => p.PartyDifficulty).Returns(1350);
 
             var encounter = service.MonsterResolver(_mockEncounterViewModel.Object);
 
@@ -186,18 +185,49 @@ namespace MVC5App.Tests.Controllers
                     new MonsterModel { Xp = 9999 }
                 });
 
-            _mockEncounterViewModel.Setup(p => p.Party).Returns(new Party(_party));
+            _mockEncounterViewModel.Setup(p => p.Party).Returns(new PartyService(_party));
             var service = new EncounterService(_mockMonsterRepository.Object)
             {
                 Encounter = new EncounterViewModel
                 {
-                    Party = new Party(_party)
+                    Party = new PartyService(_party)
                 }
             };
-            _mockEncounterViewModel.Setup(p => p.GetPartyDifficulty).Returns(1350);
+            _mockEncounterViewModel.Setup(p => p.PartyDifficulty).Returns(1350);
             var encounter = service.MonsterResolver(_mockEncounterViewModel.Object);
 
             Assert.IsFalse(encounter.Any());
+        }
+
+        [Test]
+        public void AdjustEncounter()
+        {
+            const int smallXp = 50;
+            const int bigXp = 2500;
+           List<MonsterViewModel> monsters = new List<MonsterViewModel>
+           {
+               new MonsterViewModel()
+               {
+                   ExperienceValue = smallXp,
+                   Quantity = 3,
+                  Name = "Small monster"
+               },
+               new MonsterViewModel()
+               {
+                   ExperienceValue = bigXp,
+                   Quantity = 1,
+                  Name = "Big monster"
+               }
+           }; 
+
+            var service = new EncounterService(_mockMonsterRepository.Object);
+            var xp = service.GetMonstersExperienceValue(monsters);
+
+            Assert.IsTrue(xp == (smallXp*3 * 2) + bigXp * 1 * 1);
+
+            monsters[1].Quantity++;
+            xp = service.GetMonstersExperienceValue(monsters);
+            Assert.IsTrue(xp == (smallXp*3*2) + bigXp *2 * 1.5);
         }
     } //Bottom
 }

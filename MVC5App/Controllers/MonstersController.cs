@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Results;
 using MVC5App.DynamoDb;
 using MVC5App.Models;
 using MVC5App.Repositories.Interfaces;
-using MVC5App.Services;
 using MVC5App.Services.Interfaces;
 using MVC5App.ViewModels;
-using Newtonsoft.Json;
 
 namespace MVC5App.Controllers
 {

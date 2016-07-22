@@ -2,10 +2,10 @@
 {
     public interface IParty
     {
-       //int TotalDeadlyXP { get; } 
-       //int TotalHardXP { get; } 
-       //int TotalMediumXP { get; } 
-       //int TotalEasyXP { get; } 
+        int TotalDeadlyXP { get; }
+        int TotalHardXP { get; }
+        int TotalMediumXP { get; }
+        int TotalEasyXP { get; }
 
         int GetDifficulty();
         int GetDifficulty(int difficultyType);

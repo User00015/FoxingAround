@@ -251,11 +251,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Interfaces\IMonsterRepository.cs" />
     <Compile Include="Repositories\MonsterRepository.cs" />
+    <Compile Include="Services\Difficulty.cs" />
     <Compile Include="Services\EncounterService.cs" />
     <Compile Include="Services\Interfaces\IEncounterService.cs" />
     <Compile Include="Services\Interfaces\IParty.cs" />
-    <Compile Include="Services\Models\Difficulty.cs" />
-    <Compile Include="Services\Models\Party.cs" />
+    <Compile Include="Services\PartyService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\EncounterViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IEncounterViewModel.cs" />
@@ -466,6 +466,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Services\Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
