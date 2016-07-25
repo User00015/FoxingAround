@@ -7,7 +7,6 @@ using MVC5App.Models;
 using MVC5App.Repositories.Interfaces;
 using MVC5App.Services;
 using MVC5App.Services.Interfaces;
-using MVC5App.Services.Models;
 using MVC5App.ViewModels;
 using MVC5App.ViewModels.Interfaces;
 using NUnit.Framework;
@@ -24,6 +23,7 @@ namespace MVC5App.Tests.Controllers
         private IPartyViewModel _party;
         private EncounterService _encounterService;
         private Difficulty _difficulty;
+        private PartyService _partyService;
 
 
         [SetUp]
@@ -42,11 +42,12 @@ namespace MVC5App.Tests.Controllers
                 Difficulty = 3
             };
 
+            _partyService = new PartyService(_party);
+
             _difficulty = new Difficulty(_party.PartyLevel);
             _encounterMock.Setup(mock => mock.Encounter).Returns(() => new EncounterViewModel
             {
                 Monsters = Generator.CreateMonsters(6),
-                PartyViewModel = new PartyViewModel()
             });
         }
 
@@ -153,18 +154,16 @@ namespace MVC5App.Tests.Controllers
         public void EncounterResolverXpRange()
         {
 
-            _mockMonsterRepository.Setup(p => p.GetMonsters(_mockEncounterViewModel.Object))
+            _mockMonsterRepository.Setup(p => p.GetMonsters(_partyService))
                 .Returns(() => new List<MonsterModel>
                 {
                     new MonsterModel { Xp = 10 },
                     new MonsterModel { Xp = 1000 }
                 });
 
-            //_mockEncounterViewModel.Setup(p => p.PartyViewModel).Returns(_party);
             var service = new EncounterService(_mockMonsterRepository.Object);
-            _mockEncounterViewModel.Setup(p => p.PartyViewModel.Difficulty).Returns(1350);
-
-            var encounter = service.MonsterResolver(_mockEncounterViewModel.Object);
+            service.CreateEncounter(_party);
+            var encounter = service.MonsterResolver(_partyService);
 
             Assert.IsTrue(encounter.Count() == 1);
         }
@@ -173,22 +172,15 @@ namespace MVC5App.Tests.Controllers
         public void EncounterResolverMonsterIsToBigAndReturnsEmpty()
         {
 
-            _mockMonsterRepository.Setup(p => p.GetMonsters(_mockEncounterViewModel.Object))
+            _mockMonsterRepository.Setup(p => p.GetMonsters(_partyService))
                 .Returns(() => new List<MonsterModel>
                 {
                     new MonsterModel { Xp = 9999 }
                 });
 
-            _mockEncounterViewModel.Setup(p => p.PartyViewModel).Returns(new PartyViewModel());
-            var service = new EncounterService(_mockMonsterRepository.Object)
-            {
-                Encounter = new EncounterViewModel
-                {
-                    PartyViewModel = new PartyViewModel()
-                }
-            };
-            _mockEncounterViewModel.Setup(p => p.PartyViewModel.Difficulty).Returns(1350);
-            var encounter = service.MonsterResolver(_mockEncounterViewModel.Object);
+            var service = new EncounterService(_mockMonsterRepository.Object);
+            service.CreateEncounter(_party);
+            var encounter = service.MonsterResolver(_partyService);
 
             Assert.IsFalse(encounter.Any());
         }

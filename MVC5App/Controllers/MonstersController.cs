@@ -4,6 +4,7 @@ using System.Web.Http;
 using MVC5App.DynamoDb;
 using MVC5App.Models;
 using MVC5App.Repositories.Interfaces;
+using MVC5App.Services;
 using MVC5App.Services.Interfaces;
 using MVC5App.ViewModels;
 
@@ -26,7 +27,7 @@ namespace MVC5App.Controllers
         [HttpGet]
         public IEnumerable<MonsterModel> Get()
         {
-            return _monsterRepository.GetMonsters(new EncounterViewModel());
+            return _monsterRepository.GetMonsters(new PartyService(new PartyViewModel()));
         }
 
         // GET api/<controller>/5

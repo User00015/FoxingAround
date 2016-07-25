@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using MVC5App.Services.Interfaces;
-using MVC5App.Services.Models;
 using MVC5App.ViewModels.Interfaces;
 
 namespace MVC5App.Services
@@ -35,6 +34,10 @@ namespace MVC5App.Services
 
         public int Difficulty { get; }
 
+        public int GetCurrentDifficulty()
+        {
+            return GetDifficulty(Difficulty);
+        }
 
         public int GetDifficulty(int difficultyLevel)
         {

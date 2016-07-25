@@ -10,9 +10,15 @@ namespace MVC5App.ViewModels
     {
         public IEnumerable<MonsterViewModel> Monsters { get; set; }  = new List<MonsterViewModel>();
         public IPartyViewModel PartyViewModel { get; set; }
-        //public IPartyService PartyService { get; set; } = new PartyService(new PartyViewModel());
+        public IDifficultyViewModel Difficulty { get; set; } = new DifficultyViewModel();
+    }
 
-        //public int PartyDifficulty => PartyService.GetDifficulty();
+    public class DifficultyViewModel : IDifficultyViewModel
+    {
+        public int Easy { get; set; }
+        public int Medium { get; set; }
+        public int Hard { get; set; }
+        public int Deadly { get; set; }
         public int ExperienceValue { get; set; }
     }
 }

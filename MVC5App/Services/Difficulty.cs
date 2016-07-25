@@ -1,6 +1,6 @@
-namespace MVC5App.Services.Models
+namespace MVC5App.Services
 {
-    public class Difficulty
+    public class Difficulty : IDifficulty
     {
         public enum DifficultyEnum {Easy, Medium, Hard, Deadly};
         public Difficulty(int level)

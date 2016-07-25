@@ -253,11 +253,13 @@
     <Compile Include="Repositories\MonsterRepository.cs" />
     <Compile Include="Services\Difficulty.cs" />
     <Compile Include="Services\EncounterService.cs" />
+    <Compile Include="Services\IDifficulty.cs" />
     <Compile Include="Services\Interfaces\IEncounterService.cs" />
     <Compile Include="Services\Interfaces\IPartyService.cs" />
     <Compile Include="Services\PartyService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\EncounterViewModel.cs" />
+    <Compile Include="ViewModels\IDifficultyViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IEncounterViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IMonsterViewModel.cs" />
     <Compile Include="ViewModels\Interfaces\IPartyViewModel.cs" />

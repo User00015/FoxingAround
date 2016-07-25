@@ -2,7 +2,6 @@
 using MVC5App.Repositories.Interfaces;
 using MVC5App.Services;
 using MVC5App.Services.Interfaces;
-using MVC5App.Services.Models;
 using MVC5App.ViewModels;
 using NUnit.Framework;
 
