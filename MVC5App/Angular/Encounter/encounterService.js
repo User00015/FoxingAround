@@ -4,9 +4,16 @@
 
     var monstersUrl = envService.read('apiUrl') + '/api/Monsters';
     var detailsUrl = envService.read('apiUrl') + '/api/Monsters/';
+    var updateUrl = envService.read('apiUrl') + '/api/Monsters/ExperienceValues';
 
     self.getMonsters = function(callback) {
         $http.get(monstersUrl).then(function(response) {
+            callback(response.data);
+        });
+    }
+
+    self.updateEncounters = function(callback, monstersList) {
+        $http.post(updateUrl, monstersList).then(function(response) {
             callback(response.data);
         });
     }

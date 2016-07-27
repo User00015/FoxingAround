@@ -23,21 +23,18 @@ namespace MVC5App.Controllers
             _monsterRepository = monsterRepository;
         }
 
-        // GET api/<controller>
         [HttpGet]
         public IEnumerable<MonsterModel> Get()
         {
             return _monsterRepository.GetMonsters(new PartyService(new PartyViewModel()));
         }
 
-        // GET api/<controller>/5
         [HttpGet]
         public MonsterModel Get(int id)
         {
             return _monsterRepository.GetMonster(id);
         }
 
-        //POST api/<controller>
         [HttpPost]
         public EncounterViewModel Post([FromBody] PartyViewModel party)
         {
@@ -45,13 +42,18 @@ namespace MVC5App.Controllers
             return _encounterService.Encounter;
         }
 
-        // PUT api/<controller>/5
         public IHttpActionResult Put(int id, [FromBody]MonsterModel value)
         {
             throw new NotImplementedException();
         }
 
-        // DELETE api/<controller>/5
+        [HttpPost]
+        [Route("Monsters/ExperienceValues")]
+        public int ExperienceValues([FromBody] List<MonsterViewModel> monsterViewModels)
+        {
+            return _encounterService.GetMonstersExperienceValue(monsterViewModels);
+        }
+
         public IHttpActionResult Delete(object item)
         {
             throw new NotImplementedException();
