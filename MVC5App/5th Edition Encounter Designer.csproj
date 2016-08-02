@@ -284,6 +284,17 @@
     <Content Include="Angular\Navbar\NavbarController.js" />
     <Content Include="Angular\Ordering\ordering.html" />
     <Content Include="Angular\Ordering\OrderingController.js" />
+    <Content Include="bower_components\angular-responsive-tables\examples\controller.js" />
+    <Content Include="bower_components\angular-responsive-tables\examples\index.html" />
+    <Content Include="bower_components\angular-responsive-tables\karma.conf.js" />
+    <Content Include="bower_components\angular-responsive-tables\release.js" />
+    <Content Include="bower_components\angular-responsive-tables\release\angular-responsive-tables.css" />
+    <Content Include="bower_components\angular-responsive-tables\release\angular-responsive-tables.js" />
+    <Content Include="bower_components\angular-responsive-tables\release\angular-responsive-tables.min.css" />
+    <Content Include="bower_components\angular-responsive-tables\release\angular-responsive-tables.min.js" />
+    <Content Include="bower_components\angular-responsive-tables\src\directive.js" />
+    <Content Include="bower_components\angular-responsive-tables\src\module.js" />
+    <Content Include="bower_components\angular-responsive-tables\src\style.css" />
     <Content Include="Content\animate.css" />
     <Content Include="Content\animate.min.css" />
     <Content Include="Content\less\animate.css">
@@ -336,6 +347,12 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Scripts\angular-strap.min.js.map" />
+    <Content Include="bower_components\angular-responsive-tables\.bower.json" />
+    <Content Include="bower_components\angular-responsive-tables\bower.json" />
+    <Content Include="bower_components\angular-responsive-tables\LICENSE" />
+    <Content Include="bower_components\angular-responsive-tables\package.json" />
+    <Content Include="bower_components\angular-responsive-tables\README.md" />
+    <Content Include="bower.json" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>

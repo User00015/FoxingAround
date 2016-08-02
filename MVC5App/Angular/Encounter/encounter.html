@@ -1,4 +1,29 @@
-﻿<div class="well">
+﻿<style>
+     table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        /* Zebra striping */
+        tr:nth-of-type(odd) {
+            background: #eee;
+        }
+
+        th {
+            background: #333;
+            color: white;
+            font-weight: bold;
+        }
+
+        td, th {
+            padding: 6px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+   
+</style>
+
+
+<div class="well">
     <form class="form-horizontal" name="formEncounter">
         <div class="form-group">
             <div class="col-md-12">
@@ -18,15 +43,16 @@
         </div>
 
 
-        <div class="table-responsive">
 
-            <table st-table="encounter" st-pipe="getEncounter" class="table table-striped table-bordered" ng-show="encounter">
+            <!--<table st-table="encounter" st-pipe="getEncounter" class="table table-striped table-bordered" ng-show="encounter">-->
+            <table wt-responsive-table class="table table-striped table-bordered" ng-show="encounter">
                 <thead>
                     <tr>
                         <th>Name</th>
                         <th>Quantity</th>
                         <th>Level</th>
-                        <th>Experience ({{encounter.difficulty.experienceValue}}) ({{adjustedDifficulty}})
+                        <th>
+                            Experience ({{encounter.difficulty.experienceValue}}) ({{adjustedDifficulty}})
                         </th>
                         <th>Actions</th>
                         <th>
@@ -71,7 +97,6 @@
                 </tbody>
             </table>
 
-        </div>
         <button type="submit" class="btn btn-default btn-primary" ng-disabled="formEncounter.$invalid || isLoading" ng-click="createEncounters()">
             <span ng-show="isLoading">
                 <i class="glyphicon glyphicon-refresh spinning"></i>

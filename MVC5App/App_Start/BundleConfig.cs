@@ -38,11 +38,13 @@ namespace MVC5App
 
 
             bundles.Add(new ScriptBundle("~/bundles/extensions").Include(
+                "~/bower_components/angular-responsive-tables/release/angular-responsive-tables.min.js",
                 "~/Scripts/lodash.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/final.min.css",
                       "~/Content/animate.css",
+                      "~/bower_components/angular-responsive-tables/release/angular-responsive-tables.css",
                       "~/Content/site.css"));
 
 

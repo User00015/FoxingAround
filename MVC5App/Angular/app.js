@@ -1,4 +1,4 @@
-﻿var app = angular.module('FifthEditionEncounters', ['ngRoute', 'ngAnimate', 'ngResource', 'ngMap', 'environment', 'smart-table', 'mgcrea.ngStrap']);
+﻿var app = angular.module('FifthEditionEncounters', ['ngRoute', 'ngAnimate', 'ngResource', 'ngMap', 'environment', 'wt.responsive', 'mgcrea.ngStrap']);
 
 
 app
