@@ -19,6 +19,10 @@
         border: 1px solid #ccc;
         text-align: left;
     }
+
+    .btn {
+        margin-bottom: 2px;
+    }
 </style>
 
 
@@ -52,7 +56,6 @@
                     <th>Level</th>
                     <th>
                         Experience
-                        ({{encounter.difficulty.experienceValue}} - {{adjustedDifficulty}})
                     </th>
                     <th>Actions</th>
                     <th>
@@ -68,7 +71,13 @@
                     <td>{{monster.name}}</td>
                     <td>{{monster.quantity}}</td>
                     <td>{{monster.level}}</td>
-                    <td>{{monster.experienceValue}}</td>
+                    <td>
+                        {{monster.experienceValue}}
+                        <br/>   
+                            ({{encounter.difficulty.experienceValue}}: {{adjustedDifficulty}})
+                        
+
+                    </td>
                     <td>
                         <button type="button" ng-click="addMonster(monster)" class="btn btn-sm  btn-success ">
                             <i class="fa fa-plus-circle fa-fw"></i><span>
