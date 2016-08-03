@@ -22,13 +22,13 @@
 
     //Defaults
     $scope.difficulty = $scope.difficulties[2]; //Default to Hard
-    $scope.adjustedDifficulty = ""; 
+    $scope.adjustedDifficulty = "";
     $scope.toggle = true; //Defaults visible
     $scope.levels = _.range(1, 21); //Hard-coded character levels
     $scope.isLoading = false;
 
 
-    var getDifficulty = function(xp) {
+    var getDifficulty = function (xp) {
         var difficulties = $scope.encounter.difficulty;
         if (difficulties.easy >= xp) return "Easy";
         if (difficulties.medium >= xp) return "Medium";
@@ -37,12 +37,21 @@
         return "Deadly++";
     };
 
+    var setAdjustedDifficulty = function (xp) {
+        var difficulties = $scope.encounter.difficulty;
+        if (difficulties.easy >= xp) $scope.adjustedDifficulty = "Easy";
+        if (difficulties.medium >= xp) $scope.adjustedDifficulty = "Medium";
+        if (difficulties.hard >= xp) $scope.adjustedDifficulty = "Hard";
+        if (difficulties.deadly >= xp) $scope.adjustedDifficulty = "Deadly";
+        $scope.adjustedDifficulty = "Deadly++";
+    };
+
     var updateEncounters = function () {
         var monstersList = $scope.encounter.monsters;
         encounterService.updateEncounters(function (xp) {
-            var difficulty = $scope.encounter.difficulty;
-            difficulty.experienceValue = xp;
-            $scope.adjustedDifficulty = getDifficulty(xp);
+            $scope.encounter.difficulty.experienceValue = xp;
+            //$scope.adjustedDifficulty = getDifficulty(xp);
+            setAdjustedDifficulty(xp);
         }, monstersList);
     };
 
