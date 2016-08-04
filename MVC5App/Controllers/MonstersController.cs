@@ -51,7 +51,7 @@ namespace MVC5App.Controllers
         [Route("Monsters/ExperienceValues")]
         public int ExperienceValues([FromBody] List<MonsterViewModel> monsterViewModels)
         {
-            return _encounterService.GetMonstersExperienceValue(monsterViewModels);
+            return _encounterService.GetEncountersExperienceValue(monsterViewModels);
         }
 
         public IHttpActionResult Delete(object item)

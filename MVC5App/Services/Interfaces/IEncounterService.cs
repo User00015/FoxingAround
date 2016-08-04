@@ -11,6 +11,6 @@ namespace MVC5App.Services.Interfaces
         int EncounterExperience { get; }
         IEnumerable<MonsterViewModel> MonsterResolver(IPartyService party);
         double ApplyMonsterSizeMultiplier(int monsters);
-        int GetMonstersExperienceValue(IEnumerable<MonsterViewModel> monsters);
+        int GetEncountersExperienceValue(IEnumerable<MonsterViewModel> monsters);
     }
 }

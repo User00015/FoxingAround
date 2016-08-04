@@ -195,7 +195,7 @@ namespace MVC5App.Tests.Controllers
                new MonsterViewModel()
                {
                    ExperienceValue = smallXp,
-                   Quantity = 3,
+                   Quantity = 1,
                   Name = "Small monster"
                },
                new MonsterViewModel()
@@ -207,13 +207,13 @@ namespace MVC5App.Tests.Controllers
            }; 
 
             var service = new EncounterService(_mockMonsterRepository.Object);
-            var xp = service.GetMonstersExperienceValue(monsters);
+            var xp = service.GetEncountersExperienceValue(monsters);
 
-            Assert.IsTrue(xp == (smallXp*3 * 2) + bigXp * 1 * 1);
+            Assert.IsTrue(xp == (smallXp + bigXp) * 1.5);
 
             monsters[1].Quantity++;
-            xp = service.GetMonstersExperienceValue(monsters);
-            Assert.IsTrue(xp == (smallXp*3*2) + bigXp *2 * 1.5);
+            xp = service.GetEncountersExperienceValue(monsters);
+            Assert.IsTrue(xp == (smallXp + bigXp*2) * 2);
         }
     } //Bottom
 }

@@ -32,13 +32,13 @@ namespace MVC5App.Services
             _monsterRepository = monsterRepository;
         }
 
-        public int EncounterExperience => GetMonstersExperienceValue(Encounter.Monsters);
+        public int EncounterExperience => GetEncountersExperienceValue(Encounter.Monsters);
 
         public void CreateEncounter(IPartyViewModel party)
         {
             Encounter = new EncounterViewModel
             {
-               PartyViewModel = party
+                PartyViewModel = party
             };
 
             _partyService = new PartyService(party);
@@ -48,7 +48,7 @@ namespace MVC5App.Services
 
             Encounter.Difficulty = new DifficultyViewModel
             {
-                ExperienceValue = GetMonstersExperienceValue(Encounter.Monsters),
+                ExperienceValue = GetEncountersExperienceValue(Encounter.Monsters),
                 Easy = _partyService.TotalEasyXP,
                 Medium = _partyService.TotalMediumXP,
                 Hard = _partyService.TotalHardXP,
@@ -81,7 +81,7 @@ namespace MVC5App.Services
                 }
 
                 //If the total encounter experience is close to the target difficulty, stop. Prevents 'stuffing' an encounter with increasingly smaller/fewer enemies.
-                if (GetMonstersExperienceValue(finalList) > _partyService.GetCurrentDifficulty() * VariableEncounterExperienceThreshold)
+                if (GetEncountersExperienceValue(finalList) > _partyService.GetCurrentDifficulty() * VariableEncounterExperienceThreshold)
                     break;
             }
 
@@ -124,21 +124,29 @@ namespace MVC5App.Services
         }
 
 
-        public int GetMonstersExperienceValue(IEnumerable<MonsterViewModel> monsters)
+        public int GetEncountersExperienceValue(IEnumerable<MonsterViewModel> monsters)
         {
-            return (int)monsters.Sum(m => m.ExperienceValue * m.Quantity * ApplyMonsterSizeMultiplier(m.Quantity));
+            var monsterViewModels = monsters as IList<MonsterViewModel> ?? monsters.ToList();
+            var numberOfMonsters = monsterViewModels.Aggregate(0, (current, model) => current + model.Quantity);
+            return (int)(monsterViewModels.Sum(m => m.ExperienceValue * m.Quantity) * ApplyMonsterSizeMultiplier(numberOfMonsters));
         }
 
         public int CalculateQuantityToAdd(List<MonsterViewModel> finalList, MonsterModel monster)
         {
-            var experienceRemaining = _partyService.GetCurrentDifficulty() - GetMonstersExperienceValue(finalList);
+            var upperXpLimit = _partyService.GetCurrentDifficulty();
+
+            var numberOfMonsters = finalList.Aggregate(0, (current, model) => current + model.Quantity);
 
             var quantity = 0;
-            while (quantity * monster.Xp * ApplyMonsterSizeMultiplier(quantity) < experienceRemaining && quantity < MaximumAmountPerMonster)
+            var modifiedEncounterExperienceValue = 0;
+            while (modifiedEncounterExperienceValue < upperXpLimit && quantity < MaximumAmountPerMonster )
             {
                 quantity += 1;
+                modifiedEncounterExperienceValue = (int)((finalList.Sum(m => m.ExperienceValue*m.Quantity) + quantity * monster.Xp) * ApplyMonsterSizeMultiplier(numberOfMonsters + quantity));
             }
-            return new Random().Next(quantity - 1, quantity);
+          
+            return new Random().Next(quantity / 2, quantity);
+
         }
     }
 }
