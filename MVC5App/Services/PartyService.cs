@@ -27,17 +27,12 @@ namespace MVC5App.Services
         public int TotalMediumXP => Difficulties.Sum(p => p.Medium);
         public int TotalEasyXP => Difficulties.Sum(p => p.Easy);
 
-        public int GetDifficulty()
+        public int CurrentDifficulty()
         {
             return GetDifficulty(Difficulty);
         }
 
         public int Difficulty { get; }
-
-        public int GetCurrentDifficulty()
-        {
-            return GetDifficulty(Difficulty);
-        }
 
         public int GetDifficulty(int difficultyLevel)
         {
@@ -56,7 +51,7 @@ namespace MVC5App.Services
             }
         }
 
-        private List<int> AddDifficultyLevels(IPartyViewModel party) //TODO - Later on a level will be associated with a character instead of this simple calculation.
+        private List<int> AddDifficultyLevels(IPartyViewModel party) 
         {
             _levels.Clear();
             for (var i = 0; i < party.PartySize; ++i)

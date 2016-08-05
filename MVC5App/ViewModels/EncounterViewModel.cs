@@ -12,13 +12,4 @@ namespace MVC5App.ViewModels
         public IPartyViewModel PartyViewModel { get; set; }
         public IDifficultyViewModel Difficulty { get; set; } = new DifficultyViewModel();
     }
-
-    public class DifficultyViewModel : IDifficultyViewModel
-    {
-        public int Easy { get; set; }
-        public int Medium { get; set; }
-        public int Hard { get; set; }
-        public int Deadly { get; set; }
-        public int ExperienceValue { get; set; }
-    }
 }

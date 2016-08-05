@@ -43,7 +43,6 @@ namespace MVC5App.Services
 
             _partyService = new PartyService(party);
 
-
             Encounter.Monsters = MonsterResolver(_partyService).OrderByDescending(p => p.ExperienceValue);
 
             Encounter.Difficulty = new DifficultyViewModel
@@ -81,7 +80,7 @@ namespace MVC5App.Services
                 }
 
                 //If the total encounter experience is close to the target difficulty, stop. Prevents 'stuffing' an encounter with increasingly smaller/fewer enemies.
-                if (GetEncountersExperienceValue(finalList) > _partyService.GetCurrentDifficulty() * VariableEncounterExperienceThreshold)
+                if (GetEncountersExperienceValue(finalList) > _partyService.CurrentDifficulty() * VariableEncounterExperienceThreshold)
                     break;
             }
 
@@ -133,7 +132,7 @@ namespace MVC5App.Services
 
         public int CalculateQuantityToAdd(List<MonsterViewModel> finalList, MonsterModel monster)
         {
-            var upperXpLimit = _partyService.GetCurrentDifficulty();
+            var upperXpLimit = _partyService.CurrentDifficulty();
 
             var numberOfMonsters = finalList.Aggregate(0, (current, model) => current + model.Quantity);
 
@@ -142,6 +141,8 @@ namespace MVC5App.Services
             while (modifiedEncounterExperienceValue < upperXpLimit && quantity < MaximumAmountPerMonster )
             {
                 quantity += 1;
+
+                //Recalculate existing monsters with the new size multiplier with the additional monster.
                 modifiedEncounterExperienceValue = (int)((finalList.Sum(m => m.ExperienceValue*m.Quantity) + quantity * monster.Xp) * ApplyMonsterSizeMultiplier(numberOfMonsters + quantity));
             }
           

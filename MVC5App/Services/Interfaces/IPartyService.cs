@@ -7,7 +7,7 @@
         int TotalMediumXP { get; }
         int TotalEasyXP { get; }
 
-        int GetDifficulty();
+        int CurrentDifficulty();
         int GetDifficulty(int difficultyType);
         int Difficulty { get;  }
     }

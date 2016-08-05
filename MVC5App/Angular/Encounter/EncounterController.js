@@ -1,13 +1,13 @@
 ﻿app.controller('EncounterController', ['$scope', 'encounterService', '$modal', '$timeout', function ($scope, encounterService, $modal, $timeout) {
 
-    $scope.getMonsterDetails = function (id) {
+    $scope.getMonsterDetails = function (monster) {
         $modal({
             templateUrl: 'Angular/Encounter/Statblock.html',
             controller: 'StatblockModalController',
             backdrop: true,
             resolve: {
                 monsterId: function () {
-                    return id;
+                    return monster.id;
                 }
             }
         });
@@ -22,13 +22,13 @@
 
     //Defaults
     $scope.difficulty = $scope.difficulties[2]; //Default to Hard
-    $scope.adjustedDifficulty = ""; 
+    $scope.adjustedDifficulty = "";
     $scope.toggle = true; //Defaults visible
     $scope.levels = _.range(1, 21); //Hard-coded character levels
     $scope.isLoading = false;
 
 
-    var getDifficulty = function(xp) {
+    var getDifficulty = function (xp) {
         var difficulties = $scope.encounter.difficulty;
         if (difficulties.easy >= xp) return "Easy";
         if (difficulties.medium >= xp) return "Medium";
@@ -61,26 +61,20 @@
         }, 2000);
     }
 
-    $scope.removeMonster = function (id) {
-        $scope.encounter.monsters = _.filter($scope.encounter.monsters, function (monster) {
-            return monster.id !== id;
-        });
+    $scope.removeMonster = function (monster) {
+        if (monster.quantity > 1) {
+            monster.quantity = monster.quantity - 1;
+        } else {
+            $scope.encounter.monsters = _.filter($scope.encounter.monsters, function (m) {
+                return m.id !== monster.id;
+            });
+        }
         updateEncounters();
     }
 
     $scope.addMonster = function (monster) {
         monster.quantity = monster.quantity + 1;
         updateEncounters();
-    }
-
-    //Not used. If there's a need to fine tune monsters this much, I'll turn it back on.
-    $scope.subtractMonster = function (monster) {
-
-        //Don't drop below 1 monster. Deleting is handled separately.
-        if (monster.quantity > 1) {
-            monster.quantity = monster.quantity - 1;
-            updateEncounters();
-        }
     }
 
     $scope.createEncounters = function () {

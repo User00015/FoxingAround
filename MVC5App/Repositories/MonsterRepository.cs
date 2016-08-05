@@ -20,7 +20,7 @@ namespace MVC5App.Repositories
 
         public IEnumerable<MonsterModel> GetMonsters(IPartyService encounter)
         {
-            var xp = encounter.GetDifficulty();
+            var xp = encounter.CurrentDifficulty();
             return _allMonsters.Where(p => p.Xp <= xp);
         }
 

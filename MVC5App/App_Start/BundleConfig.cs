@@ -20,7 +20,6 @@ namespace MVC5App
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                 "~/Scripts/angular.js",
                 "~/Scripts/angular-resource.js",
-                "~/Scripts/angular-strap.js",
                 "~/Scripts/ng-map.min.js",
                 "~/Scripts/angular-environment.js",
                 "~/Scripts/smart-table.min.js",
@@ -39,6 +38,9 @@ namespace MVC5App
 
             bundles.Add(new ScriptBundle("~/bundles/extensions").Include(
                 "~/bower_components/angular-responsive-tables/release/angular-responsive-tables.min.js",
+                "~/bower_components/angular-animate/angular-animate.js",
+                "~/bower_components/angular-strap/dist/angular-strap.min.js",
+                "~/bower_components/angular-strap/dist/angular-strap.tpl.min.js",
                 "~/Scripts/lodash.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(

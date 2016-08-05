@@ -29,17 +29,17 @@
 <div class="well">
     <form class="form-horizontal" name="formEncounter">
         <div class="form-group">
-            <div class="col-md-12">
+            <div class="col-md-4">
                 <label for="NumberOfCharactersSelect" class="control-label">Number of characters</label>
                 <select class="form-control" name="numOfChars" id="NumberOfCharactersSelect" placeholder="" ng-model="numberOfCharacters" required ng-options="level as level for level in levels"></select>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-4">
                 <label for="LevelOfCharacters" class="control-label">Level of Characters</label>
                 <select class="form-control" name="levelOfChars" id="LevelOfCharacters" required ng-model="levelOfCharacters" ng-options="level as level for level in levels"></select>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-4">
                 <label for="Difficulty" class="control-label">Difficulty</label>
                 <select class="form-control" id="Difficulty" placeholder="" ng-model="difficulty" ng-options="difficulty.type for difficulty in difficulties track by difficulty.value"></select>
             </div>
@@ -56,6 +56,12 @@
                     <th>Level</th>
                     <th>
                         Experience
+                        <i class="fa fa-question-circle"
+                                data-trigger="hover"
+                                data-placement="top"
+                                data-title="Experience is presented for individual monsters before quantity and size multipliers are applied. The value in parenthesis is the total encounter value, including quantity and size multipliers."
+                                bs-tooltip>
+                        </i>
                     </th>
                     <th>Actions</th>
                     <th>
@@ -84,20 +90,15 @@
                                 Add
                             </span>
                         </button>
-                        <!--<button type="button" ng-click="subtractMonster(monster)" class="btn btn-sm btn-danger ">
-                            <i class="fa fa-minus-circle"></i><span>
-                                Subtract
-                            </span>
-                        </button>-->
 
-                        <button type="button" ng-click="getMonsterDetails(monster.id)" class="btn btn-sm  btn-info ">
+                        <button type="button" ng-click="getMonsterDetails(monster)" class="btn btn-sm  btn-info ">
                             <i class="fa fa-fw fa-info"></i><span>
                                 Details
                             </span>
                         </button>
                     </td>
                     <td>
-                        <button type="button" ng-click="removeMonster(monster.id)" class="btn  btn-danger ">
+                        <button type="button" ng-click="removeMonster(monster)" class="btn  btn-danger ">
                             <i class="fa fa-times"></i><span>
                             </span>
                         </button>
@@ -109,7 +110,7 @@
         <button type="submit" class="btn btn-default btn-primary" ng-disabled="formEncounter.$invalid || isLoading" ng-click="createEncounters()">
             <span ng-show="isLoading">
                 <i class="glyphicon glyphicon-refresh spinning"></i>
-            </span>Submit
+            </span>Create Encounter
         </button>
     </form>
 </div>
