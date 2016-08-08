@@ -29,19 +29,25 @@
 <div class="well">
     <form class="form-horizontal" name="formEncounter">
         <div class="form-group">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label for="NumberOfCharactersSelect" class="control-label">Number of characters</label>
                 <select class="form-control" name="numOfChars" id="NumberOfCharactersSelect" placeholder="" ng-model="numberOfCharacters" required ng-options="level as level for level in levels"></select>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label for="LevelOfCharacters" class="control-label">Level of Characters</label>
                 <select class="form-control" name="levelOfChars" id="LevelOfCharacters" required ng-model="levelOfCharacters" ng-options="level as level for level in levels"></select>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label for="Difficulty" class="control-label">Difficulty</label>
                 <select class="form-control" id="Difficulty" placeholder="" ng-model="difficulty" ng-options="difficulty.type for difficulty in difficulties track by difficulty.value"></select>
+            </div>
+            <div class="col-md-3">
+                <label for="Terrain" class="control-label">Terrain</label>
+                <select class="form-control" id="Terrain" placeholder="" ng-model="environment" ng-options="environment.type for environment in environments track by environment.value">
+                    <option value=""></option>
+                </select>
             </div>
         </div>
 

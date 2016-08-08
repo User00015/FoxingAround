@@ -2265,7 +2265,7 @@ var $$AnimateQueueProvider = ['$animateProvider', function($animateProvider) {
         // calls to $postDigest calls we can ensure that the flag is enabled at the
         // very end of the post digest queue. Since all of the animations in $animate
         // use $postDigest, it's important that the code below executes at the end.
-        // This basically means that the page is fully downloaded and compiled before
+        // This basically means that the Page is fully downloaded and compiled before
         // any animations are triggered.
         $rootScope.$$postDigest(function() {
           $rootScope.$$postDigest(function() {
@@ -2494,7 +2494,7 @@ var $$AnimateQueueProvider = ['$animateProvider', function($animateProvider) {
       // this is a hard disable of all animations for the application or on
       // the element itself, therefore  there is no need to continue further
       // past this point if not enabled
-      // Animations are also disabled if the document is currently hidden (page is not visible
+      // Animations are also disabled if the document is currently hidden (Page is not visible
       // to the user), because browsers slow down or do not flush calls to requestAnimationFrame
       var skipAnimations = !animationsEnabled || documentHidden || disabledElementsLookup.get(node);
       var existingAnimation = (!skipAnimations && activeAnimationsLookup.get(node)) || {};
@@ -3810,11 +3810,11 @@ var ngAnimateSwapDirective = ['$animate', '$rootScope', function($animate, $root
  * </div>
  *
  * <!-- home.html -->
- * <a href="#/banner-page">
+ * <a href="#/banner-Page">
  *   <img src="./banner.jpg" class="banner" ng-animate-ref="banner">
  * </a>
  *
- * <!-- banner-page.html -->
+ * <!-- banner-Page.html -->
  * <img src="./banner.jpg" class="banner" ng-animate-ref="banner">
  * ```
  *
@@ -3942,7 +3942,7 @@ var ngAnimateSwapDirective = ['$animate', '$rootScope', function($animate, $root
         }]);
     </file>
     <file name="home.html">
-      <h2>Welcome to the home page</h1>
+      <h2>Welcome to the home Page</h1>
       <p>Please click on an element</p>
       <a class="record"
          ng-href="#/profile/{{ record.id }}"
@@ -4048,7 +4048,7 @@ var ngAnimateSwapDirective = ['$animate', '$rootScope', function($animate, $root
  * ```
  *
  * The `$animate` service contains a variety of other methods like `enter`, `leave`, `animate` and `setClass`. To learn more about what's
- * possible be sure to visit the {@link ng.$animate $animate service API page}.
+ * possible be sure to visit the {@link ng.$animate $animate service API Page}.
  *
  *
  * ## Callbacks and Promises

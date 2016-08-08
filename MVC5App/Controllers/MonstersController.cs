@@ -1,12 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Results;
 using MVC5App.DynamoDb;
 using MVC5App.Models;
 using MVC5App.Repositories.Interfaces;
 using MVC5App.Services;
 using MVC5App.Services.Interfaces;
 using MVC5App.ViewModels;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Environment = MVC5App.Models.Environment;
 
 namespace MVC5App.Controllers
 {
@@ -26,7 +34,7 @@ namespace MVC5App.Controllers
         [HttpGet]
         public IEnumerable<MonsterModel> Get()
         {
-            return _monsterRepository.GetMonsters(new PartyService(new PartyViewModel()));
+            return _monsterRepository.GetMonsters();
         }
 
         [HttpGet]
@@ -42,13 +50,18 @@ namespace MVC5App.Controllers
             return _encounterService.Encounter;
         }
 
-        public IHttpActionResult Put(int id, [FromBody]MonsterModel value)
+        //public IHttpActionResult Put(int id, [FromBody]MonsterModel value)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        [HttpPut]
+        public dynamic Put()
         {
-            throw new NotImplementedException();
+          throw new NotImplementedException(); 
         }
 
         [HttpPost]
-        [Route("Monsters/ExperienceValues")]
         public int ExperienceValues([FromBody] List<MonsterViewModel> monsterViewModels)
         {
             return _encounterService.GetEncountersExperienceValue(monsterViewModels);
@@ -63,5 +76,7 @@ namespace MVC5App.Controllers
         {
             return _encounterService.Encounter;
         }
+
+       
     }
 }

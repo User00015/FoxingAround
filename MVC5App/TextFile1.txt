@@ -80,3 +80,58 @@ An encounter in 5e is two tables and the following rules:
 		19			2,400		4,900		7,300		10,900
 		20			2,800		5,700		8,500		12,700
 
+
+
+
+
+
+		 //using (StreamReader r = new StreamReader("C:/Website/MVC5App/terrain.json"))
+            //{
+            //    JObject data = (JObject) JToken.ReadFrom(new JsonTextReader(r));
+            //    var namesToken = data.SelectTokens("$..name").Select(s => (string)s).ToList();
+            //    //var tagsToken = data.SelectTokens("$..tags").Select(s => (string)s).ToList();
+            //    var envToken = data.SelectTokens("$..environment").ToList();
+
+            //    List<Environment> foo = envToken.Select(item => JsonConvert.DeserializeObject<Environment>(item.ToString())).ToList();
+
+            //    var zipped = namesToken.Zip(foo, (s, envionment) => new Terrain()
+            //    {
+            //        Name = s,
+            //        TerrainType = envionment,
+            //    });
+            //    var allMonsters = _monsterRepository.GetMonsters();
+
+            //    foreach (var monster in allMonsters)
+            //    {
+            //        var firstOrDefault = zipped.FirstOrDefault(t => t.Name == monster.Name);
+            //        if (firstOrDefault == null) continue;
+            //        var envToAdd = firstOrDefault.TerrainType;
+            //        monster.Environment = envToAdd;
+            //    }
+            //    //return allMonsters;zipped
+            //    _tableDataService.BatchStore(allMonsters);
+            //}
+            //return "put called";
+
+
+			 //public class Envionment
+        //{
+        //    public string Arctic { get; set; }
+        //    public string Coastal { get; set; }
+        //    public string Desert { get; set; }
+        //    public string Forest { get; set; }
+        //    public string Grassland { get; set; }
+        //    public string Hill { get; set; }
+        //    public string Mountain { get; set; }
+        //    public string Swamp { get; set; }
+        //    public string Underdark { get; set; }
+        //    public string Underwater { get; set; }
+        //    public string Urban { get; set; }
+        //}
+
+        public class Terrain
+        {
+            public string Name { get; set; }
+            public Environment TerrainType { get; set; }
+            public string Tags { get; set; }
+        }

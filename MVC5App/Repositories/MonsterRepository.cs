@@ -28,5 +28,10 @@ namespace MVC5App.Repositories
         {
             return _allMonsters.SingleOrDefault(monster => monster.Id == id);
         }
+
+        public IEnumerable<MonsterModel> GetMonsters()
+        {
+            return _allMonsters;
+        }
     }
 }

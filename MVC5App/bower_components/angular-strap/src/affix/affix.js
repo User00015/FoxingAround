@@ -56,7 +56,7 @@ angular.module('mgcrea.ngStrap.affix', ['mgcrea.ngStrap.helpers.dimensions', 'mg
           windowEl.on('resize', this.$debouncedOnResize);
 
           // Both of these checkPosition() calls are necessary for the case where
-          // the user hits refresh after scrolling to the bottom of the page.
+          // the user hits refresh after scrolling to the bottom of the Page.
           this.checkPosition();
           this.checkPositionWithEventLoop();
 

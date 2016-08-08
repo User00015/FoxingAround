@@ -9,5 +9,6 @@ namespace MVC5App.Repositories.Interfaces
     {
         IEnumerable<MonsterModel> GetMonsters(IPartyService encounter);
         MonsterModel GetMonster(int id);
+        IEnumerable<MonsterModel> GetMonsters();
     }
 }

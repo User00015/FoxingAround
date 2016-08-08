@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Amazon.DynamoDBv2.DataModel;
+using MVC5App.Controllers;
 
 namespace MVC5App.Models
 {
@@ -42,6 +43,6 @@ namespace MVC5App.Models
         public List<SpecialAbility> SpecialAbilities { get; set; }
         public List<Action> Actions { get; set; } 
         public List<LegendaryAction> LegendaryActions { get; set; }
-
+        public Environment Environment { get; set; }
     }
 }

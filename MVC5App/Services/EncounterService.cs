@@ -7,6 +7,7 @@ using MVC5App.Repositories.Interfaces;
 using MVC5App.Services.Interfaces;
 using MVC5App.ViewModels;
 using MVC5App.ViewModels.Interfaces;
+using Environment = MVC5App.Models.Environment;
 
 namespace MVC5App.Services
 {
