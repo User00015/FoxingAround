@@ -1,4 +1,6 @@
-﻿namespace MVC5App.Services.Interfaces
+﻿using MVC5App.Models;
+
+namespace MVC5App.Services.Interfaces
 {
     public interface IPartyService
     {
@@ -10,5 +12,6 @@
         int CurrentDifficulty();
         int GetDifficulty(int difficultyType);
         int Difficulty { get;  }
+        int Environment { get; set; }
     }
 }

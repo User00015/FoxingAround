@@ -20,7 +20,7 @@ namespace MVC5App.Services
         private static readonly IEnumerable<int> MobSize = Enumerable.Range(11, 4);
         private static readonly IEnumerable<int> HordeSize = Enumerable.Range(15, 100);
 
-        public EncounterViewModel Encounter { get; set; }
+        public EncounterViewModel Encounter { get; set; } = new EncounterViewModel();
 
         private readonly IMonsterRepository _monsterRepository;
         private PartyService _partyService;
@@ -33,19 +33,13 @@ namespace MVC5App.Services
             _monsterRepository = monsterRepository;
         }
 
-        public int EncounterExperience => GetEncountersExperienceValue(Encounter.Monsters);
+        public int EncounterExperience => GetEncountersExperienceValue(Encounter.Monsters); //Unit Testing
 
         public void CreateEncounter(IPartyViewModel party)
         {
-            Encounter = new EncounterViewModel
-            {
-                PartyViewModel = party
-            };
-
             _partyService = new PartyService(party);
 
             Encounter.Monsters = MonsterResolver(_partyService).OrderByDescending(p => p.ExperienceValue);
-
             Encounter.Difficulty = new DifficultyViewModel
             {
                 ExperienceValue = GetEncountersExperienceValue(Encounter.Monsters),
@@ -54,13 +48,15 @@ namespace MVC5App.Services
                 Hard = _partyService.TotalHardXP,
                 Deadly = _partyService.TotalDeadlyXP
             };
+            Encounter.EncounterExperience = GetEncountersExperienceValue(Encounter.Monsters);
         }
 
         public IEnumerable<MonsterViewModel> MonsterResolver(IPartyService party)
         {
             var finalList = new List<MonsterViewModel>();
 
-            foreach (var monster in _monsterRepository.GetMonsters(party).Shuffle())
+            var monsters = _monsterRepository.GetMonsters(party).Where(p => p.Environment.HasEnvironment(party.Environment)).Shuffle();
+            foreach (var monster in monsters)
             {
                 //Find the amount of a monster to be added to an encounter
                 var quantity = CalculateQuantityToAdd(finalList, monster);

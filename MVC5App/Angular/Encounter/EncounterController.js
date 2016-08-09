@@ -21,6 +21,7 @@
     ];
 
     $scope.environments = [
+        { type: "", value: -1 },
         { type: "Arctic", value: 0 },
         { type: "Coastal", value: 1 },
         { type: "Desert", value: 2 },
@@ -40,6 +41,7 @@
     $scope.toggle = true; //Defaults visible
     $scope.levels = _.range(1, 21); //Hard-coded character levels
     $scope.isLoading = false;
+    $scope.environment = $scope.environments[0];
 
 
     var getDifficulty = function (xp) {
@@ -63,7 +65,7 @@
     var submit = function (params) {
         encounterService.postMonsters(function (encounter) {
             $scope.encounter = encounter;
-            $scope.adjustedDifficulty = getDifficulty(encounter.difficulty.experienceValue);
+            $scope.adjustedDifficulty = getDifficulty(encounter.encounterExperience );
             $scope.isLoading = false;
         }, params);
     };
@@ -97,7 +99,7 @@
             partyLevel: $scope.levelOfCharacters,
             partySize: $scope.numberOfCharacters,
             difficulty: $scope.difficulty.value,
-            environment: $scope.environments.value
+            environment: $scope.environment.value
         };
         submit(params);
     }

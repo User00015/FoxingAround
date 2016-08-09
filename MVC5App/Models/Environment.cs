@@ -1,3 +1,5 @@
+using System;
+
 namespace MVC5App.Models
 {
     public class Environment : IEnvironment
@@ -13,5 +15,56 @@ namespace MVC5App.Models
         public string Underdark { get; set; }
         public string Underwater { get; set; }
         public string Urban { get; set; }
+
+
+        private enum Env
+        {
+            Arctic,
+            Coastal,
+            Desert,
+            Forest,
+            Grassland,
+            Hill,
+            Mountain,
+            Swamp,
+            Underdark,
+            Underwater,
+            Urban
+        }
+
+        private bool ExistsInEnvironment(Env env)
+        {
+            switch (env)
+            {
+                case Env.Arctic:
+                    return Arctic == "yes";
+                case Env.Coastal:
+                    return Coastal == "yes";
+                case Env.Desert:
+                    return Desert == "yes";
+                case Env.Forest:
+                    return Forest == "yes";
+                case Env.Grassland:
+                    return Grassland == "yes";
+                case Env.Hill:
+                    return Hill == "yes";
+                case Env.Mountain:
+                    return Mountain == "yes";
+                case Env.Swamp:
+                    return Swamp == "yes";
+                case Env.Underdark:
+                    return Underdark == "yes";
+                case Env.Underwater:
+                    return Underwater == "yes";
+                case Env.Urban:
+                    return Urban == "yes";
+                default:
+                    return true;
+            }
+        }
+        public bool HasEnvironment(int environment)
+        {
+            return ExistsInEnvironment((Env)environment);
+        }
     }
 }

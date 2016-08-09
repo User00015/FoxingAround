@@ -11,8 +11,7 @@ namespace MVC5App.ViewModels
     public class EncounterViewModel : IEncounterViewModel
     {
         public IEnumerable<MonsterViewModel> Monsters { get; set; }  = new List<MonsterViewModel>();
-        public IPartyViewModel PartyViewModel { get; set; }
+        public int EncounterExperience { get; set;  }
         public IDifficultyViewModel Difficulty { get; set; } = new DifficultyViewModel();
-        public IEnvironment Environment { get; set; } = new Environment();
     }
 }
