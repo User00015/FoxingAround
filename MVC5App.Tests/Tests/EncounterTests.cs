@@ -36,7 +36,8 @@ namespace MVC5App.Tests.Controllers
             {
                 PartyLevel = 3,
                 PartySize = 6,
-                Difficulty = 3
+                Difficulty = 3,
+                Environment = -1
             };
 
             /* Party difficulties:
