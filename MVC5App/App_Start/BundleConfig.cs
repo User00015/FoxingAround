@@ -39,9 +39,14 @@ namespace MVC5App
             bundles.Add(new ScriptBundle("~/bundles/extensions").Include(
                 "~/bower_components/angular-responsive-tables/release/angular-responsive-tables.min.js",
                 "~/bower_components/angular-animate/angular-animate.js",
+                "~/bower_components/a0-angular-storage/dist/angular-storage.min.js",
+                "~/bower_components/angular-jwt/dist/angular-jwt.min.js",
                 "~/bower_components/angular-strap/dist/angular-strap.min.js",
                 "~/bower_components/angular-strap/dist/angular-strap.tpl.min.js",
-                "~/Scripts/lodash.min.js"));
+                "~/Scripts/lodash.min.js").
+
+                IncludeDirectory(
+                "~/bower_components/auth0-angular/src", "*.js", true));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/final.min.css",

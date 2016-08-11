@@ -93,6 +93,13 @@
         updateEncounters();
     }
 
+    $scope.savedEncounter = function() {
+        encounterService.getSavedEncounter(function(encounter) {
+            $scope.encounter = encounter;
+            $scope.adjustedDifficulty = getDifficulty(encounter.encounterExperience);
+        });
+    }
+
     $scope.createEncounters = function () {
         $scope.isLoading = true;
         var params = {

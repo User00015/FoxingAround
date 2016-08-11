@@ -1,17 +1,17 @@
-﻿var app = angular.module('FifthEditionEncounters', ['ngRoute', 'ngAnimate', 'ngResource', 'ngMap', 'environment', 'wt.responsive', 'mgcrea.ngStrap']);
+﻿var app = angular.module('FifthEditionEncounters', ['ngRoute', 'ngAnimate', 'ngResource', 'ngMap', 'environment', 'wt.responsive', 'mgcrea.ngStrap', 'auth0', 'angular-storage', 'angular-jwt']);
 
 
 app
     .constant('_', window._)
-
     .config([
-        '$routeProvider', '$locationProvider', 'envServiceProvider',
-        function($routeProvider, $locationProvider, envService) {
+        '$routeProvider', '$locationProvider', 'envServiceProvider', 'authProvider', 'jwtInterceptorProvider', '$httpProvider',
+        function ($routeProvider, $locationProvider, envService, authProvider, jwtInterceptorProvider, $httpProvider) {
             $routeProvider
                 .when('/home', { templateUrl: './Angular/Home/home.html', controller: 'HomeController' })
                 //.when('/gallery', { templateUrl: './Angular/Gallery/gallery.html', controller: 'GalleryController' })
                 .when('/encounter', { templateUrl: './Angular/Encounter/encounter.html', controller: 'EncounterController' })
-                .when('/about', { templateUrl: './Angular/about/about.html', controller: 'AboutController' })
+                .when('/login', { templateUrl: './Angular/Login/login.html', controller: 'LoginController' })
+                .when('/about', { templateUrl: './Angular/About/about.html', controller: 'AboutController' })
                 .otherwise({ redirectTo: '/home' });
 
             $locationProvider.html5Mode(true);
@@ -31,15 +31,58 @@ app
                 }
             });
             envService.check();
+
+            authProvider.init({
+                domain: 'foxing-around.auth0.com',
+                clientID: 'eYDiisAw4OLNYJwybpX1sLuUmPuyaJ91',
+                loginUrl: '/login'
+            });
+
+            authProvider.on('loginSuccess', ['$location', 'profilePromise', 'idToken', 'store',
+                    function ($location, profilePromise, idToken, store) {
+
+                        console.log("Login Success");
+                        profilePromise.then(function (profile) {
+                            store.set('profile', profile);
+                            store.set('token', idToken);
+                        });
+
+                        $location.path('/');
+                    }]);
+
+            //Called when login fails
+            authProvider.on('loginFailure', function () {
+                console.log("Error: Login failed");
+            });
+
+            jwtInterceptorProvider.tokenGetter = function(store) {
+                return store.get('token');
+            };
+
+            $httpProvider.interceptors.push('jwtInterceptor');
         }
     ])
 
-    .run(function($rootScope) {
-        angular.element(document).on("click", function(e) {
+    .run(['$rootScope', 'auth', 'store', 'jwtHelper', function ($rootScope, auth, store, jwtHelper) {
+        angular.element(document).on("click", function (e) {
             $rootScope.$broadcast("documentClicked", angular.element(e.target));
         });
         $rootScope._ = window._;
-    })
+
+        $rootScope.$on('$locationChangeStart', function() {
+            if (!auth.isAuthenticated) {
+                var token = store.get('token');
+                if (token) {
+                    if (!jwtHelper.isTokenExpired(token)) {
+                        auth.authenticate(store.get('profile'), token);
+                    } else {
+                        console.log("couldn't refresh login");
+                    }
+                }
+            }
+        });
+        auth.hookEvents();
+    }])
 
     .controller('RootController', ['$scope', '$route', '$routeParams', '$location',
             function ($scope, $route, $routeParams, $location) {
