@@ -41,7 +41,6 @@ app
             authProvider.on('loginSuccess', ['$location', 'profilePromise', 'idToken', 'store',
                     function ($location, profilePromise, idToken, store) {
 
-                        console.log("Login Success");
                         profilePromise.then(function (profile) {
                             store.set('profile', profile);
                             store.set('token', idToken);

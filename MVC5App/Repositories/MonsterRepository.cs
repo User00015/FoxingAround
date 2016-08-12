@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Web.DynamicData;
+using Amazon.DynamoDBv2;
 using MVC5App.DynamoDb;
 using MVC5App.Models;
 using MVC5App.Repositories.Interfaces;
@@ -12,10 +14,12 @@ namespace MVC5App.Repositories
     public class MonsterRepository : IMonsterRepository
     {
         private readonly IEnumerable<MonsterModel> _allMonsters;
+        private readonly ITableDataService _tableDataService;
 
         public MonsterRepository(ITableDataService tableDataService)
         {
-            _allMonsters = tableDataService.GetAll<MonsterModel>().ToList();
+            _tableDataService = tableDataService;
+            _allMonsters = _tableDataService.GetAll<MonsterModel>().ToList();
         }
 
         public IEnumerable<MonsterModel> GetMonsters(IPartyService encounter)
@@ -32,6 +36,23 @@ namespace MVC5App.Repositories
         public IEnumerable<MonsterModel> GetMonsters()
         {
             return _allMonsters;
+        }
+
+        public List<List<MonsterModel>> GetSavedEncounters(SavedEncountersViewModel model)
+        {
+            var foo = _tableDataService.GetItem<SavedMonsterEncounters>(model.Email).MonsterEncounters.Select(p => p.MonsterIds).ToList();
+            var monsters = new List<MonsterModel>();
+
+            foreach (var encounter in foo)
+            {
+                var monstersInEncounter = encounter.Select(p => p);
+                var tt = _allMonsters.Where(item => monstersInEncounter.Any(p => p == item.Id));
+                monsters.AddRange(new List<MonsterModel>() {);
+            }
+
+            return monsters;
+
+
         }
     }
 }

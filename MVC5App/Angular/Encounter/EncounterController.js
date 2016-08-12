@@ -1,4 +1,4 @@
-﻿app.controller('EncounterController', ['$scope', 'encounterService', '$modal', '$timeout', function ($scope, encounterService, $modal, $timeout) {
+﻿app.controller('EncounterController', ['$scope', 'encounterService', '$modal', '$timeout', 'store', function ($scope, encounterService, $modal, $timeout, store) {
 
     $scope.getMonsterDetails = function (monster) {
         $modal({
@@ -65,7 +65,7 @@
     var submit = function (params) {
         encounterService.postMonsters(function (encounter) {
             $scope.encounter = encounter;
-            $scope.adjustedDifficulty = getDifficulty(encounter.encounterExperience );
+            $scope.adjustedDifficulty = getDifficulty(encounter.encounterExperience);
             $scope.isLoading = false;
         }, params);
     };
@@ -93,11 +93,15 @@
         updateEncounters();
     }
 
-    $scope.savedEncounter = function() {
-        encounterService.getSavedEncounter(function(encounter) {
+    $scope.savedEncounter = function () {
+        var profile = store.get('profile');
+        console.log(profile.email);
+        var params = { email: profile.email}
+
+        encounterService.getSavedEncounters(function (encounter) {
             $scope.encounter = encounter;
             $scope.adjustedDifficulty = getDifficulty(encounter.encounterExperience);
-        });
+        }, params);
     }
 
     $scope.createEncounters = function () {

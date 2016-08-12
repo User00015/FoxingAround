@@ -126,7 +126,7 @@ namespace MVC5App.Tests.Controllers
                 Monsters = mockMonster
             });
 
-            var encounter = new MonstersController(_dataMock.Object, _encounterMock.Object, _mockMonsterRepository.Object);
+            var encounter = new MonstersController(_encounterMock.Object, _mockMonsterRepository.Object);
             var test = encounter.Encounter().Monsters.ToList();
 
             Assert.IsTrue(test.Count == 0);
