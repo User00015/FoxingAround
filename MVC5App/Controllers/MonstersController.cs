@@ -52,11 +52,9 @@ namespace MVC5App.Controllers
 
         [Authorize]
         [HttpPost]
-        public List<EncounterViewModel> SavedEncounters([FromBody] SavedEncountersViewModel model)
+        public IEnumerable<EncounterViewModel> SavedEncounters([FromBody] SavedEncountersViewModel model)
         {
-            var monsters = _monsterRepository.GetSavedEncounters(model);
-
-            return monsters;
+            return _monsterRepository.GetSavedEncounters(model);
         }
 
         [HttpPost]

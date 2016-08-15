@@ -15,11 +15,11 @@ namespace MVC5App.Models
     {
         [DynamoDBHashKey]
         public string Email { get; set; }
-        public List<MonsterList> MonsterEncounters { get; set; }
+        public EncountersList MonsterEncounters { get; set; }
     }
 
-    public class MonsterList
+    public class EncountersList
     {
-        public List<MonsterViewModel> MonsterIds { get; set; }
+        public List<EncounterViewModel> Encounters { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using MVC5App.Models;
 using MVC5App.Repositories.Interfaces;
 using MVC5App.Services;
 using MVC5App.Services.Interfaces;
+using MVC5App.ViewModels;
 using MVC5App.ViewModels.Interfaces;
 
 namespace MVC5App.Repositories
@@ -38,19 +39,9 @@ namespace MVC5App.Repositories
             return _allMonsters;
         }
 
-        public List<Encounters> GetSavedEncounters(SavedEncountersViewModel model)
+        public IEnumerable<EncounterViewModel> GetSavedEncounters(SavedEncountersViewModel model)
         {
-            var foo = _tableDataService.GetItem<SavedMonsterEncounters>(model.Email).MonsterEncounters.Select(p => p.MonsterIds).ToList();
-
-            return foo
-                .Select(encounter => encounter.Select(p => p))
-                .Select(monstersInEncounter =>_allMonsters.Where(item => monstersInEncounter.Any(p => p == item.Id)))
-                .Select(tt => new Encounters()
-                {
-                    MonsterModels = new List<MonsterModel>(tt)
-                }).ToList();
-
-
+            return _tableDataService.GetItem<SavedMonsterEncounters>(model.Email).MonsterEncounters.Encounters;
         }
     }
 
