@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Amazon.DynamoDBv2.DataModel;
+using MVC5App.ViewModels;
 
 namespace MVC5App.Models
 {
@@ -19,6 +20,6 @@ namespace MVC5App.Models
 
     public class MonsterList
     {
-        public List<int> MonsterIds { get; set; }
+        public List<MonsterViewModel> MonsterIds { get; set; }
     }
 }

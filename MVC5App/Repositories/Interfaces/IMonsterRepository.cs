@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using MVC5App.Models;
 using MVC5App.Services.Interfaces;
+using MVC5App.ViewModels;
 using MVC5App.ViewModels.Interfaces;
 
 namespace MVC5App.Repositories.Interfaces
@@ -10,6 +11,6 @@ namespace MVC5App.Repositories.Interfaces
         IEnumerable<MonsterModel> GetMonsters(IPartyService encounter);
         MonsterModel GetMonster(int id);
         IEnumerable<MonsterModel> GetMonsters();
-        List<List<MonsterModel>> GetSavedEncounters(SavedEncountersViewModel model);
+        List<EncounterViewModel> GetSavedEncounters(SavedEncountersViewModel model);
     }
 }

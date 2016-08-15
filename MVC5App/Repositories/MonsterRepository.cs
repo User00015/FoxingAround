@@ -38,21 +38,24 @@ namespace MVC5App.Repositories
             return _allMonsters;
         }
 
-        public List<List<MonsterModel>> GetSavedEncounters(SavedEncountersViewModel model)
+        public List<Encounters> GetSavedEncounters(SavedEncountersViewModel model)
         {
             var foo = _tableDataService.GetItem<SavedMonsterEncounters>(model.Email).MonsterEncounters.Select(p => p.MonsterIds).ToList();
-            var monsters = new List<MonsterModel>();
 
-            foreach (var encounter in foo)
-            {
-                var monstersInEncounter = encounter.Select(p => p);
-                var tt = _allMonsters.Where(item => monstersInEncounter.Any(p => p == item.Id));
-                monsters.AddRange(new List<MonsterModel>() {);
-            }
-
-            return monsters;
+            return foo
+                .Select(encounter => encounter.Select(p => p))
+                .Select(monstersInEncounter =>_allMonsters.Where(item => monstersInEncounter.Any(p => p == item.Id)))
+                .Select(tt => new Encounters()
+                {
+                    MonsterModels = new List<MonsterModel>(tt)
+                }).ToList();
 
 
         }
+    }
+
+    public class Encounters
+    {
+        public List<MonsterModel> MonsterModels { get; set; } = new List<MonsterModel>();
     }
 }

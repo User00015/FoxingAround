@@ -8,6 +8,7 @@ using System.Web.Http;
 using System.Web.Http.Results;
 using MVC5App.DynamoDb;
 using MVC5App.Models;
+using MVC5App.Repositories;
 using MVC5App.Repositories.Interfaces;
 using MVC5App.Services;
 using MVC5App.Services.Interfaces;
@@ -45,12 +46,13 @@ namespace MVC5App.Controllers
         public EncounterViewModel Post([FromBody] PartyViewModel party)
         {
             _encounterService.CreateEncounter(party);
+            //return _encounterService.Encounter;
             return _encounterService.Encounter;
         }
 
         [Authorize]
         [HttpPost]
-        public List<List<MonsterModel>> SavedEncounters([FromBody] SavedEncountersViewModel model)
+        public List<EncounterViewModel> SavedEncounters([FromBody] SavedEncountersViewModel model)
         {
             var monsters = _monsterRepository.GetSavedEncounters(model);
 
