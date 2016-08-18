@@ -750,11 +750,6 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Scripts\angular-strap.min.js.map" />
-    <Content Include="bower_components\angular-responsive-tables\.bower.json" />
-    <Content Include="bower_components\angular-responsive-tables\bower.json" />
-    <Content Include="bower_components\angular-responsive-tables\LICENSE" />
-    <Content Include="bower_components\angular-responsive-tables\package.json" />
-    <Content Include="bower_components\angular-responsive-tables\README.md" />
     <Content Include="bower.json" />
     <Content Include="bower_components\angular-strap\.bower.json" />
     <Content Include="bower_components\angular-strap\.bowerrc" />
@@ -939,6 +934,11 @@
     <Content Include="bower_components\a0-angular-storage\History.md" />
     <Content Include="bower_components\a0-angular-storage\package.json" />
     <Content Include="bower_components\a0-angular-storage\README.md" />
+    <Content Include="bower_components\angular-responsive-tables\.bower.json" />
+    <Content Include="bower_components\angular-responsive-tables\bower.json" />
+    <Content Include="bower_components\angular-responsive-tables\LICENSE" />
+    <Content Include="bower_components\angular-responsive-tables\package.json" />
+    <Content Include="bower_components\angular-responsive-tables\README.md" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>
