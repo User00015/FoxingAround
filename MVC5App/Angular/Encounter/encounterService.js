@@ -5,7 +5,8 @@
     var monstersUrl = envService.read('apiUrl') + '/api/Monsters';
     var detailsUrl = envService.read('apiUrl') + '/api/Monsters/';
     var updateUrl = envService.read('apiUrl') + '/api/Monsters/ExperienceValues';
-    var savedEncountersUrl = envService.read('apiUrl') + '/api/Monsters/SavedEncounters';
+    var loadEncountersUrl = envService.read('apiUrl') + '/api/Monsters/LoadEncounters';
+    var saveEncountersUrl = envService.read('apiUrl') + '/api/Monsters/SaveEncounters';
 
     self.getMonsters = function(callback) {
         $http.get(monstersUrl).then(function(response) {
@@ -33,8 +34,14 @@
     }
 
     self.getSavedEncounters = function(callback, email) {
-        $http.post(savedEncountersUrl, email).then(function(response) {
+        $http.post(loadEncountersUrl, email).then(function(response) {
             callback(response.data);
+        });
+    }
+
+    self.saveEncounters = function(callback, email) {
+        $http.post(saveEncountersUrl, email).then(function(response) {
+            callback(response);
         });
     }
 

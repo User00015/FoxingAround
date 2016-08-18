@@ -5,7 +5,8 @@ namespace MVC5App.ViewModels.Interfaces
 {
     public interface IEncounterViewModel
     {
-        IEnumerable<MonsterViewModel> Monsters { get; set; }
+        List<MonsterViewModel> Monsters { get; set; }
         int EncounterExperience { get; set; }
+        DifficultyViewModel Difficulty { get; set; }
     }
 }

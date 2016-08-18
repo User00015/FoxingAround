@@ -298,6 +298,8 @@
   <ItemGroup>
     <Content Include="Angular\About\about.html" />
     <Content Include="Angular\About\ContactsController.js" />
+    <Content Include="Angular\Encounter\Directives\encounterTable.html" />
+    <Content Include="Angular\Encounter\Directives\encounterTableDirective.js" />
     <Content Include="Angular\Encounter\Statblock.html" />
     <Content Include="Angular\Encounter\StatblockModalController.js" />
     <Content Include="Angular\Encounter\EncounterController.js" />

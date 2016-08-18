@@ -46,16 +46,25 @@ namespace MVC5App.Controllers
         public EncounterViewModel Post([FromBody] PartyViewModel party)
         {
             _encounterService.CreateEncounter(party);
-            //return _encounterService.Encounter;
             return _encounterService.Encounter;
         }
 
         [Authorize]
         [HttpPost]
-        public IEnumerable<EncounterViewModel> SavedEncounters([FromBody] SavedEncountersViewModel model)
+        public IEnumerable<EncounterViewModel> LoadEncounters([FromBody] SavedEncountersViewModel model)
         {
             return _monsterRepository.GetSavedEncounters(model);
         }
+
+        [Authorize]
+        [HttpPost]
+        public IHttpActionResult SaveEncounters([FromBody] SavedEncountersViewModel model)
+        {
+            _monsterRepository.SaveEncounters(model);
+
+            return Ok();
+        }
+
 
         [HttpPost]
         public int ExperienceValues([FromBody] List<MonsterViewModel> monsterViewModels)

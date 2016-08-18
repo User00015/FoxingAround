@@ -44,8 +44,8 @@
     $scope.environment = $scope.environments[0];
 
 
-    var getDifficulty = function (xp) {
-        var difficulties = $scope.encounter.difficulty;
+    var getDifficulty = function (difficulties) {
+        var xp = difficulties.experienceValue;
         if (difficulties.easy >= xp) return "Easy";
         if (difficulties.medium >= xp) return "Medium";
         if (difficulties.hard >= xp) return "Hard";
@@ -58,14 +58,14 @@
         encounterService.updateEncounters(function (xp) {
             var difficulty = $scope.encounter.difficulty;
             difficulty.experienceValue = xp;
-            $scope.adjustedDifficulty = getDifficulty(xp);
+            $scope.adjustedDifficulty = getDifficulty(difficulty);
         }, monstersList);
     };
 
     var submit = function (params) {
         encounterService.postMonsters(function (encounter) {
             $scope.encounter = encounter;
-            $scope.adjustedDifficulty = getDifficulty(encounter.encounterExperience);
+            $scope.adjustedDifficulty = getDifficulty(encounter.difficulty);
             $scope.isLoading = false;
         }, params);
     };
@@ -93,14 +93,26 @@
         updateEncounters();
     }
 
-    $scope.savedEncounter = function () {
+    $scope.loadEncounter = function () {
         var profile = store.get('profile');
-        console.log(profile.email);
         var params = { email: profile.email}
 
         encounterService.getSavedEncounters(function (encounter) {
             $scope.encounter = encounter;
-            $scope.adjustedDifficulty = getDifficulty(encounter.encounterExperience);
+            $scope.adjustedDifficulty = getDifficulty(encounter.difficulty);
+        }, params);
+    }
+
+    $scope.saveEncounter = function() {
+        var profile = store.get('profile');
+        var encounters = _.concat([], $scope.encounter);
+        
+        var params = {
+            email: profile.email,
+            encounters: encounters
+        };
+        encounterService.saveEncounters(function(result) {
+            console.log("Save Encounter response: " + result.statusText+ " " + result.status);
         }, params);
     }
 

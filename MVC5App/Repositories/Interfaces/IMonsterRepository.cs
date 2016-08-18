@@ -12,5 +12,6 @@ namespace MVC5App.Repositories.Interfaces
         MonsterModel GetMonster(int id);
         IEnumerable<MonsterModel> GetMonsters();
         IEnumerable<EncounterViewModel> GetSavedEncounters(SavedEncountersViewModel model);
+        void SaveEncounters(SavedEncountersViewModel model);
     }
 }

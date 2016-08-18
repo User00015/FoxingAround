@@ -41,12 +41,12 @@ namespace MVC5App.Repositories
 
         public IEnumerable<EncounterViewModel> GetSavedEncounters(SavedEncountersViewModel model)
         {
-            return _tableDataService.GetItem<SavedMonsterEncounters>(model.Email).MonsterEncounters.Encounters;
+            return _tableDataService.GetItem<SavedEncountersViewModel>(model.Email).Encounters;
         }
-    }
 
-    public class Encounters
-    {
-        public List<MonsterModel> MonsterModels { get; set; } = new List<MonsterModel>();
+        public void SaveEncounters(SavedEncountersViewModel model)
+        {
+            _tableDataService.Store(model);
+        }
     }
 }

@@ -70,7 +70,8 @@
                     </th>
                     <th>Actions</th>
                     <th>
-                        <button class="btn btn-sm btn-default" type="button" ng-click="toggle = !toggle">
+                        <!--<button class="btn btn-sm btn-default" type="button" ng-click="toggle = !toggle">-->
+                        <button class="btn btn-sm btn-default" type="button" ng-click="saveEncounter()">
                             <i class="glyphicon glyphicon-arrow-up" ng-show="toggle"></i>
                             <i class="glyphicon glyphicon-arrow-down" ng-show="!toggle"></i>
                         </button>
@@ -120,7 +121,7 @@
     </form>
 
 
-    <button type="submit" class="btn btn-default btn-primary" ng-click="savedEncounter()">
+    <button type="submit" class="btn btn-default btn-primary" ng-click="loadEncounter()">
         Load Saved Encounter
     </button>
 </div>

@@ -7,7 +7,6 @@ using MVC5App.Repositories.Interfaces;
 using MVC5App.Services.Interfaces;
 using MVC5App.ViewModels;
 using MVC5App.ViewModels.Interfaces;
-using Environment = MVC5App.Models.Environment;
 
 namespace MVC5App.Services
 {
@@ -39,7 +38,7 @@ namespace MVC5App.Services
         {
             _partyService = new PartyService(party);
 
-            Encounter.Monsters = MonsterResolver(_partyService).OrderByDescending(p => p.ExperienceValue);
+            Encounter.Monsters = MonsterResolver(_partyService).OrderByDescending(p => p.ExperienceValue).ToList();
             Encounter.Difficulty = new DifficultyViewModel
             {
                 ExperienceValue = GetEncountersExperienceValue(Encounter.Monsters),
@@ -139,7 +138,7 @@ namespace MVC5App.Services
             {
                 quantity += 1;
 
-                //Recalculate existing monsters with the new size multiplier with the additional monster.
+                //Recalculate already existing monsters with the new size multiplier, and include the additional monster.
                 modifiedEncounterExperienceValue = (int)((finalList.Sum(m => m.ExperienceValue*m.Quantity) + quantity * monster.Xp) * ApplyMonsterSizeMultiplier(numberOfMonsters + quantity));
             }
           
