@@ -45,73 +45,12 @@
             </div>
             <div class="col-md-3">
                 <label for="Terrain" class="control-label">Terrain</label>
-                <select class="form-control" id="Terrain" placeholder="" ng-model="environment" ng-options="environment.type for environment in environments track by environment.value">
-                </select>
+                <select class="form-control" id="Terrain" placeholder="" ng-model="environment" ng-options="environment.type for environment in environments track by environment.value"></select>
             </div>
         </div>
 
-
-
         <!--<table st-table="encounter" st-pipe="getEncounter" class="table table-striped table-bordered" ng-show="encounter">-->
-        <table wt-responsive-table class="table table-striped responsive" ng-show="encounter">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Quantity</th>
-                    <th>Level</th>
-                    <th>
-                        Experience
-                        <i class="fa fa-question-circle"
-                                data-trigger="hover"
-                                data-placement="top"
-                                data-title="Experience is presented for individual monsters before quantity and size multipliers are applied. The value in parenthesis is the total encounter value, including quantity and size multipliers."
-                                bs-tooltip>
-                        </i>
-                    </th>
-                    <th>Actions</th>
-                    <th>
-                        <!--<button class="btn btn-sm btn-default" type="button" ng-click="toggle = !toggle">-->
-                        <button class="btn btn-sm btn-default" type="button" ng-click="saveEncounter()">
-                            <i class="glyphicon glyphicon-arrow-up" ng-show="toggle"></i>
-                            <i class="glyphicon glyphicon-arrow-down" ng-show="!toggle"></i>
-                        </button>
-                    </th>
-                </tr>
-            </thead>
-            <tbody ng-show="toggle">
-                <tr ng-repeat="monster in encounter.monsters">
-                    <td>{{monster.name}}</td>
-                    <td>{{monster.quantity}}</td>
-                    <td>{{monster.level}}</td>
-                    <td>
-                        {{monster.experienceValue}}
-                        <br/>   
-                            ({{encounter.difficulty.experienceValue}}: {{adjustedDifficulty}})
-                        
-
-                    </td>
-                    <td>
-                        <button type="button" ng-click="addMonster(monster)" class="btn btn-sm  btn-success ">
-                            <i class="fa fa-plus-circle fa-fw"></i><span>
-                                Add
-                            </span>
-                        </button>
-
-                        <button type="button" ng-click="getMonsterDetails(monster)" class="btn btn-sm  btn-info ">
-                            <i class="fa fa-fw fa-info"></i><span>
-                                Details
-                            </span>
-                        </button>
-                    </td>
-                    <td>
-                        <button type="button" ng-click="removeMonster(monster)" class="btn  btn-danger ">
-                            <i class="fa fa-times"></i><span>
-                            </span>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <encounter-table encounter="encounter"></encounter-table>
 
         <button type="submit" class="btn btn-default btn-primary" ng-disabled="formEncounter.$invalid || isLoading" ng-click="createEncounters()">
             <span ng-show="isLoading">
@@ -122,6 +61,11 @@
 
 
     <button type="submit" class="btn btn-default btn-primary" ng-click="loadEncounter()">
-        Load Saved Encounter
+        <span ng-show="isLoading">
+            <i class="glyphicon glyphicon-refresh spinning"></i>
+        </span>Load Saved Encounter
     </button>
+    <div ng-repeat="savedEncounter in savedEncounters" ng-model="savedEncounter">
+        <encounter-table encounter="savedEncounter"></encounter-table>
+    </div>
 </div>
