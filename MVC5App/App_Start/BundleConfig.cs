@@ -43,6 +43,7 @@ namespace MVC5App
                 "~/bower_components/angular-jwt/dist/angular-jwt.min.js",
                 "~/bower_components/angular-strap/dist/angular-strap.min.js",
                 "~/bower_components/angular-strap/dist/angular-strap.tpl.min.js",
+                "~/Scripts/mixins/lodash.js",
                 "~/Scripts/lodash.min.js").
 
                 IncludeDirectory(

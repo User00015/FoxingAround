@@ -3,12 +3,15 @@
         restrict: "AE",
         templateUrl: "Angular/Encounter/Directives/encounterTable.html",
         scope: {
-            encounter: '='
+            encounter: '=',
+            save: '&'
         },
         link: function (scope, element, attr) {
 
             scope.adjustedDifficulty = "";
             scope.toggle = true; //Defaults visible
+
+            var saveHandler = scope.save(); //scope.save()(encounter)
 
             scope.getMonsterDetails = function (monster) {
                 $modal({
@@ -64,35 +67,29 @@
                 updateEncounters();
             }
 
-            scope.loadEncounter = function () {
-                var profile = store.get('profile');
-                var params = { email: profile.email }
+            //scope.loadEncounter = function () {
+            //    var profile = store.get('profile');
+            //    var params = { email: profile.email }
 
-                encounterService.getSavedEncounters(function (encounter) {
-                    scope.encounter = encounter;
-                    scope.adjustedDifficulty = getDifficulty(encounter.difficulty);
-                }, params);
-            }
+            //    encounterService.getSavedEncounters(function (encounter) {
+            //        scope.encounter = encounter;
+            //        scope.adjustedDifficulty = getDifficulty(encounter.difficulty);
+            //    }, params);
+            //}
 
             scope.saveEncounter = function (encounter) {
-                var profile = store.get('profile');
-                var savedEncounters = [];
-                savedEncounters.push(encounter);
+                saveHandler(encounter);
+           
 
-                encounterService.getSavedEncounters(function (encounters) {
-                    debugger;
-                    savedEncounters.push(encounters);
-                    //savedEncounters = savedEncounters.push(encounters);
-                    //savedEncounters = savedEncounters.push()
-
-                    //var params = {
-                    //    email: profile.email,
-                    //    encounters: savedEncounters
-                    //};
-                    //encounterService.saveEncounters(function (result) {
-                    //    console.log("Save Encounter response: " + result.statusText + " " + result.status);
-                    //}, params);
-                }, { email: profile.email });
+                //    //var params = {
+                //    //    email: profile.email,
+                //    //    encounters: savedEncounters
+                //    //};
+                //    //encounterService.saveEncounters(function (result) {
+                //    //    console.log("Save Encounter response: " + result.statusText + " " + result.status);
+                //    //}, params);
+                //    console.log(savedEncounters);
+                //}, { email: profile.email });
 
             }
         }

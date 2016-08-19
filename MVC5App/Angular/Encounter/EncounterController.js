@@ -9,6 +9,8 @@
 { type: "Deadly", value: 3 }
     ];
 
+    var profile = store.get('profile');
+
     $scope.environments = [
         { type: "", value: -1 },
         { type: "Arctic", value: 0 },
@@ -31,6 +33,33 @@
     $scope.isLoading = false;
     $scope.environment = $scope.environments[0];
 
+    $scope.saveNewEncounter = function (item) {
+        encounterService.getSavedEncounters(function (savedEncounters) {
+
+            var allEncounters = _.compact(_.concat(savedEncounters, item));
+
+            var params = {
+                email: profile.email,
+                encounters: allEncounters
+            };
+            encounterService.saveEncounters(function (result) {
+                console.log("Save Encounter response: " + result.statusText + " " + result.status);
+            }, params);
+            console.log(allEncounters);
+        }, { email: profile.email });
+
+    };
+
+    $scope.updateEncounter = function (item) {
+         _.replace($scope.savedEncounters, item.$$hashKey, item);
+         var params = {
+             email: profile.email,
+             encounters: $scope.savedEncounters
+         };
+         encounterService.saveEncounters(function (result) {
+             console.log("Save Encounter response: " + result.statusText + " " + result.status);
+         }, params);
+    };
 
     $scope.createEncounters = function () {
         $scope.isLoading = true;
@@ -55,7 +84,6 @@
     }
 
     $scope.loadEncounter = function () {
-        var profile = store.get('profile');
         var params = { email: profile.email }
 
         encounterService.getSavedEncounters(function (encounter) {
