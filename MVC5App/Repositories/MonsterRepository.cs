@@ -41,7 +41,7 @@ namespace MVC5App.Repositories
 
         public IEnumerable<EncounterViewModel> GetSavedEncounters(SavedEncountersViewModel model)
         {
-            return _tableDataService.GetItem<SavedEncountersViewModel>(model.Email).Encounters;
+            return _tableDataService.GetItem<SavedEncountersViewModel>(model.Email)?.Encounters;
         }
 
         public void SaveEncounters(SavedEncountersViewModel model)
