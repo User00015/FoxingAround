@@ -32,7 +32,7 @@
             };
 
             scope.$watch("encounter", function () {
-                if (_.isUndefined(scope.encounter)) 
+                if (_.isUndefined(scope.encounter))
                     return;
 
                 scope.adjustedDifficulty = getDifficulty(scope.encounter.difficulty);
@@ -74,17 +74,26 @@
                 }, params);
             }
 
-            scope.saveEncounter = function () {
+            scope.saveEncounter = function (encounter) {
                 var profile = store.get('profile');
-                var encounters = _.concat([], scope.encounter);
+                var savedEncounters = [];
+                savedEncounters.push(encounter);
 
-                var params = {
-                    email: profile.email,
-                    encounters: encounters
-                };
-                encounterService.saveEncounters(function (result) {
-                    console.log("Save Encounter response: " + result.statusText + " " + result.status);
-                }, params);
+                encounterService.getSavedEncounters(function (encounters) {
+                    debugger;
+                    savedEncounters.push(encounters);
+                    //savedEncounters = savedEncounters.push(encounters);
+                    //savedEncounters = savedEncounters.push()
+
+                    //var params = {
+                    //    email: profile.email,
+                    //    encounters: savedEncounters
+                    //};
+                    //encounterService.saveEncounters(function (result) {
+                    //    console.log("Save Encounter response: " + result.statusText + " " + result.status);
+                    //}, params);
+                }, { email: profile.email });
+
             }
         }
     }
