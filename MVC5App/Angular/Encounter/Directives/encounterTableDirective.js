@@ -35,7 +35,7 @@
             };
 
             scope.$watch("encounter", function () {
-                if (_.isUndefined(scope.encounter))
+                if (_.isUndefined(scope.encounter) || _.isNull(scope.encounter))
                     return;
 
                 scope.adjustedDifficulty = getDifficulty(scope.encounter.difficulty);
@@ -59,7 +59,12 @@
                         return m.id !== monster.id;
                     });
                 }
-                updateEncounters();
+
+                if (_.size(scope.encounter.monsters) === 0) {
+                    scope.encounter = null;
+                } else {
+                    updateEncounters();
+                }
             }
 
             scope.addMonster = function (monster) {
@@ -79,7 +84,7 @@
 
             scope.saveEncounter = function (encounter) {
                 saveHandler(encounter);
-           
+
 
                 //    //var params = {
                 //    //    email: profile.email,

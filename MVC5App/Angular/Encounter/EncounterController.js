@@ -35,34 +35,41 @@
 
     $scope.saveNewEncounter = function (item) {
         if (profile == null) return;
+        $scope.savedEncounters = _.filter($scope.savedEncounters, function (enc) {
+            return _.size(enc.monsters) > 0;
+        });
+        $scope.savedEncounters = _.compact(_.concat($scope.savedEncounters, item));
 
-        encounterService.getSavedEncounters(function (savedEncounters) {
-
-            var allEncounters = _.compact(_.concat(savedEncounters, item));
-
-            var params = {
-                email: profile.email,
-                encounters: allEncounters
-            };
-            encounterService.saveEncounters(function (result) {
-                console.log("Save Encounter response: " + result.statusText + " " + result.status);
-            }, params);
-            console.log(allEncounters);
-        }, { email: profile.email });
+        //var params = {
+        //    email: profile.email,
+        //    encounters: allEncounters
+        //};
+        //encounterService.saveEncounters(function (result) {
+        //    console.log("Save Encounter response: " + result.statusText + " " + result.status);
+        //}, params);
+        console.log($scope.savedEncounters);
+        $scope.encounter = null;
 
     };
 
     $scope.updateEncounter = function (item) {
         if (profile == null) return;
 
-         _.replace($scope.savedEncounters, item.$$hashKey, item);
-         var params = {
-             email: profile.email,
-             encounters: $scope.savedEncounters
-         };
-         encounterService.saveEncounters(function (result) {
-             console.log("Save Encounter response: " + result.statusText + " " + result.status);
-         }, params);
+        $scope.savedEncounters = _.filter($scope.savedEncounters, function (enc) {
+            return _.size(enc.monsters) > 0;
+        });
+
+        if (item != null) {
+            _.replace($scope.savedEncounters, item.$$hashKey, item);
+        }
+        var params = {
+            email: profile.email,
+            encounters: $scope.savedEncounters
+        };
+        console.log($scope.savedEncounters);
+        //encounterService.saveEncounters(function (result) {
+        //    console.log("Save Encounter response: " + result.statusText + " " + result.status);
+        //}, params);
     };
 
     $scope.createEncounters = function () {
@@ -92,7 +99,8 @@
         var params = { email: profile.email }
 
         encounterService.getSavedEncounters(function (encounter) {
-            $scope.savedEncounters = encounter;
+            $scope.savedEncounters = null;
+            $scope.savedEncounters = _.compact(_.concat($scope.savedEncounters, encounter));
         }, params);
     }
 

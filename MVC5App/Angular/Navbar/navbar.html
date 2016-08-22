@@ -22,10 +22,14 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="nav-item" ng-if="!isLoggedIn()">
-                    <a class="navbar-link" href="#" ng-click="signIn()">Sign In</a>
+                    <a class="navbar-link" href="#" ng-click="signIn()">
+                        <i class="fa fa-sign-in fa-fw" aria-hidden="true"></i>Sign In
+                    </a>
                 </li>
                 <li class="nav-item" ng-if="isLoggedIn()">
-                    <a class="navbar-link" href="#" ng-click="signOut()">Sign Out</a>
+                    <a class="navbar-link" href="#" ng-click="signOut()">
+                        <i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>Sign Out
+                    </a>
                 </li>
             </ul>
         </div>

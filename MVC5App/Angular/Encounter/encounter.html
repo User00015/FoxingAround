@@ -63,7 +63,12 @@
     <button type="submit" class="btn btn-default btn-primary" ng-click="loadEncounter()">
         <span ng-show="isLoading">
             <i class="glyphicon glyphicon-refresh spinning"></i>
-        </span>Load Saved Encounter
+        </span>Load Encounters
+    </button>
+    <button type="submit" class="btn btn-default btn-primary" ng-click="updateEncounter()">
+        <span ng-show="isLoading">
+            <i class="glyphicon glyphicon-refresh spinning"></i>
+        </span>Save All
     </button>
     <div ng-repeat="savedEncounter in savedEncounters" ng-model="savedEncounter">
         <encounter-table encounter="savedEncounter" save="updateEncounter"></encounter-table>
