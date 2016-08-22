@@ -46,7 +46,7 @@ app
                             store.set('token', idToken);
                         });
 
-                        $location.path('/');
+                        //$location.path('/'); //TODO - Log in page maybe? If so, redirect here.
                     }]);
 
             //Called when login fails
@@ -54,7 +54,7 @@ app
                 console.log("Error: Login failed");
             });
 
-            jwtInterceptorProvider.tokenGetter = function(store) {
+            jwtInterceptorProvider.tokenGetter = function (store) {
                 return store.get('token');
             };
 
@@ -62,25 +62,22 @@ app
         }
     ])
 
-    .run(['$rootScope', 'auth', 'store', 'jwtHelper', function ($rootScope, auth, store, jwtHelper) {
+    .run(['$rootScope', 'auth', 'store', 'jwtHelper',  function ($rootScope, auth, store, jwtHelper, authManager) {
         angular.element(document).on("click", function (e) {
             $rootScope.$broadcast("documentClicked", angular.element(e.target));
         });
         $rootScope._ = window._;
 
-        $rootScope.$on('$locationChangeStart', function() {
+        $rootScope.$on('$locationChangeStart', function () {
             if (!auth.isAuthenticated) {
                 var token = store.get('token');
                 if (token) {
                     if (!jwtHelper.isTokenExpired(token)) {
                         auth.authenticate(store.get('profile'), token);
-                    } else {
-                        console.log("couldn't refresh login");
                     }
                 }
             }
         });
-        auth.hookEvents();
     }])
 
     .controller('RootController', ['$scope', '$route', '$routeParams', '$location',

@@ -34,6 +34,8 @@
     $scope.environment = $scope.environments[0];
 
     $scope.saveNewEncounter = function (item) {
+        if (profile == null) return;
+
         encounterService.getSavedEncounters(function (savedEncounters) {
 
             var allEncounters = _.compact(_.concat(savedEncounters, item));
@@ -51,6 +53,8 @@
     };
 
     $scope.updateEncounter = function (item) {
+        if (profile == null) return;
+
          _.replace($scope.savedEncounters, item.$$hashKey, item);
          var params = {
              email: profile.email,
@@ -84,6 +88,7 @@
     }
 
     $scope.loadEncounter = function () {
+        if (profile == null) return;
         var params = { email: profile.email }
 
         encounterService.getSavedEncounters(function (encounter) {
