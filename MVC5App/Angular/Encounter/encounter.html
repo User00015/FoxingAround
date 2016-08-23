@@ -70,6 +70,13 @@
             <i class="glyphicon glyphicon-refresh spinning"></i>
         </span>Save All
     </button>
+    <a class="btn btn-sm">
+        <i class="fa fa-exclamation-triangle fa-2x" style="color: #f0ad4e" ng-if="encounterChanged" 
+           data-trigger="hover"
+           data-placement="top"
+           data-title="Changes detected"
+           bs-tooltip></i>
+    </a>
     <div ng-repeat="savedEncounter in savedEncounters" ng-model="savedEncounter">
         <encounter-table encounter="savedEncounter" save="updateEncounter"></encounter-table>
     </div>

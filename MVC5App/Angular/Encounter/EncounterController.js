@@ -32,6 +32,7 @@
     $scope.levels = _.range(1, 21); //Hard-coded character levels
     $scope.isLoading = false;
     $scope.environment = $scope.environments[0];
+    $scope.encounterChanged = false;
 
     $scope.saveNewEncounter = function (item) {
         if (profile == null) return;
@@ -47,7 +48,7 @@
             encounters: $scope.savedEncounters
         };
         encounterService.saveEncounters(function (result) {
-            console.log("Save Encounter response: " + result.statusText + " " + result.status);
+            $scope.$broadcast("saved", true);
         }, params);
         $scope.encounter = null;
 
@@ -68,9 +69,13 @@
             encounters: $scope.savedEncounters
         };
         encounterService.saveEncounters(function (result) {
-            console.log("Save Encounter response: " + result.statusText + " " + result.status);
+            $scope.$broadcast("saved", true);
         }, params);
     };
+
+    $scope.$on("encounterChanged", function(encounter) {
+        $scope.encounterChanged = true;
+    });
 
     $scope.createEncounters = function () {
         $scope.isLoading = true;

@@ -10,8 +10,14 @@
 
             scope.adjustedDifficulty = "";
             scope.toggle = true; //Defaults visible
+            scope.isSaved = true;
 
             var saveHandler = scope.save(); //scope.save()(encounter)
+
+            scope.$on("saved", function() {
+                scope.isSaved = true;
+            });
+
 
             scope.getMonsterDetails = function (monster) {
                 $modal({
@@ -49,6 +55,8 @@
                     difficulty.experienceValue = xp;
                     scope.adjustedDifficulty = getDifficulty(difficulty);
                 }, monstersList);
+                scope.isSaved = false;
+                scope.$emit("encounterChanged");
             };
 
             scope.removeMonster = function (monster) {
@@ -84,6 +92,7 @@
 
             scope.saveEncounter = function (encounter) {
                 saveHandler(encounter);
+                scope.isSaved = true;
 
 
                 //    //var params = {
