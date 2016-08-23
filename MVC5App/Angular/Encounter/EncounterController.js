@@ -35,19 +35,20 @@
 
     $scope.saveNewEncounter = function (item) {
         if (profile == null) return;
+
         $scope.savedEncounters = _.filter($scope.savedEncounters, function (enc) {
             return _.size(enc.monsters) > 0;
         });
+
         $scope.savedEncounters = _.compact(_.concat($scope.savedEncounters, item));
 
-        //var params = {
-        //    email: profile.email,
-        //    encounters: allEncounters
-        //};
-        //encounterService.saveEncounters(function (result) {
-        //    console.log("Save Encounter response: " + result.statusText + " " + result.status);
-        //}, params);
-        console.log($scope.savedEncounters);
+        var params = {
+            email: profile.email,
+            encounters: $scope.savedEncounters
+        };
+        encounterService.saveEncounters(function (result) {
+            console.log("Save Encounter response: " + result.statusText + " " + result.status);
+        }, params);
         $scope.encounter = null;
 
     };
@@ -66,10 +67,9 @@
             email: profile.email,
             encounters: $scope.savedEncounters
         };
-        console.log($scope.savedEncounters);
-        //encounterService.saveEncounters(function (result) {
-        //    console.log("Save Encounter response: " + result.statusText + " " + result.status);
-        //}, params);
+        encounterService.saveEncounters(function (result) {
+            console.log("Save Encounter response: " + result.statusText + " " + result.status);
+        }, params);
     };
 
     $scope.createEncounters = function () {
