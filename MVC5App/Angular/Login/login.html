@@ -1,2 +1,15 @@
-﻿<a href="#" ng-click="signIn()" class="btn btn-primary btn-lg btn-block">Sign In</a>
-<a href="#" ng-click="signOut()" class="btn btn-primary btn-lg btn-block">Sign Out</a>
+﻿<div id="login-container">
+    <form ng-submit="submit()">
+        <fieldset>
+            <input type="text" name="user" ng-model="user" ng-disabled="loading" />
+            <br>
+            <input type="password" name="pass" ng-model="pass" ng-disabled="loading" />
+            <br>
+            <button type="submit" ng-disabled="loading">submit</button>
+        </fieldset>
+    </form>
+
+    <!-- <a href="" ng-click="reset()">Reset</a> -->
+
+    <a href="" ng-click="doGoogleAuthWithPopup()">Login with Google</a><br />
+</div>

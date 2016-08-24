@@ -1,4 +1,4 @@
-﻿app.controller('EncounterController', ['$scope', 'encounterService', '$modal', '$timeout', 'store', function ($scope, encounterService, $modal, $timeout, store) {
+﻿app.controller('EncounterController', ['$scope', 'encounterService', '$modal', '$timeout', 'store', 'LoginService', function ($scope, encounterService, $modal, $timeout, store, loginService) {
 
 
 
@@ -8,8 +8,6 @@
 { type: "Hard", value: 2 },
 { type: "Deadly", value: 3 }
     ];
-
-    var profile = store.get('profile');
 
     $scope.environments = [
         { type: "", value: -1 },
@@ -34,29 +32,22 @@
     $scope.environment = $scope.environments[0];
     $scope.encounterChanged = false;
 
-    $scope.saveNewEncounter = function (item) {
-        if (profile == null) return;
-
+    var finishAddingNewEncounter = function (item) {
         $scope.savedEncounters = _.filter($scope.savedEncounters, function (enc) {
             return _.size(enc.monsters) > 0;
         });
 
         $scope.savedEncounters = _.compact(_.concat($scope.savedEncounters, item));
-
-        var params = {
-            email: profile.email,
-            encounters: $scope.savedEncounters
-        };
-        encounterService.saveEncounters(function (result) {
-            $scope.$broadcast("saved", true);
-        }, params);
         $scope.encounter = null;
+    }
 
+    $scope.saveNewEncounter = function (item) {
+        loginService.signIn().then(function() {
+            finishAddingNewEncounter(item);
+        });
     };
 
-    $scope.updateEncounter = function (item) {
-        if (profile == null) return;
-
+    var finishUpdating = function (item) {
         $scope.savedEncounters = _.filter($scope.savedEncounters, function (enc) {
             return _.size(enc.monsters) > 0;
         });
@@ -65,15 +56,22 @@
             _.replace($scope.savedEncounters, item.$$hashKey, item);
         }
         var params = {
-            email: profile.email,
+            email: store.get('profile').email,
             encounters: $scope.savedEncounters
         };
-        encounterService.saveEncounters(function (result) {
+        encounterService.saveEncounters(function () {
             $scope.$broadcast("saved", true);
         }, params);
     };
 
-    $scope.$on("encounterChanged", function(encounter) {
+    $scope.updateEncounter = function (item) {
+        loginService.signIn().then(function () {
+            finishUpdating(item);
+        });
+    };
+
+
+    $scope.$on("encounterChanged", function () {
         $scope.encounterChanged = true;
     });
 
@@ -90,24 +88,27 @@
             $scope.encounter = encounter;
             $scope.isLoading = false;
         }, params);
-    }
+    };
 
     var testDelay = function () {
         $scope.isLoading = true;
         $timeout(function () {
             $scope.isLoading = false;
         }, 2000);
-    }
+    };
 
-    $scope.loadEncounter = function () {
-        if (profile == null) return;
-        var params = { email: profile.email }
+    var finishLoading = function () {
+        var params = { email: store.get('profile').email }
 
         encounterService.getSavedEncounters(function (encounter) {
             $scope.savedEncounters = null;
             $scope.savedEncounters = _.compact(_.concat($scope.savedEncounters, encounter));
         }, params);
+    };
+
+    $scope.loadEncounter = function () {
+        loginService.signIn().then(function () {
+            finishLoading();
+        });
     }
-
-
 }]);
