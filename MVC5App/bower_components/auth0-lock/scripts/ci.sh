@@ -1,5 +1,7 @@
 #!/bin/bash
 
+npm install
+
 source scripts/common.sh
 
 CDN_NAME=${1:-"lock"}

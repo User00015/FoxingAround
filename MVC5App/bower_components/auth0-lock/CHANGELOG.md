@@ -1,3 +1,29 @@
+## [10.2.1] - 2016-08-18
+
+### Fixed
+
+- Allow dots in HRD username and clear errors before leaving the HRD screen (#574)
+
+## [10.2.0] - 2016-08-18
+
+### Changed
+
+- Show a label in the submit button by default (#524)
+- Show the Auth0 badge only in modal mode and on the bottom left of the overlay (#552)
+- Replace the log in / sign up segmented control for tabs (#553)
+
+### Fixed
+
+- German translation corrections (#549)
+
+### Added
+
+- Add `responseMode: "form_post"` option (#526)
+- Add the `hash_parsed` event (#535)
+- Add `zh` translation (#548)
+- Allow to override some options in the `show` method (#550)
+- Add `nb` translation (#560)
+
 ## [10.1.0] - 2016-08-09
 
 ### Added

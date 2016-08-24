@@ -1,5 +1,8 @@
+[![NPM version][npm-image]][npm-url]
 [![Build status][travis-image]][travis-url]
+[![Dependency Status][david-image]][david-url]
 [![License][license-image]][license-url]
+[![Downloads][downloads-image]][downloads-url]
 
 # Lock
 
@@ -11,7 +14,7 @@ From CDN
 
 ```html
 <!-- Latest patch release (recommended for production) -->
-<script src="http://cdn.auth0.com/js/lock/10.1.0/lock.min.js"></script>
+<script src="http://cdn.auth0.com/js/lock/10.2.1/lock.min.js"></script>
 ```
 
 From [bower](http://bower.io)
@@ -96,6 +99,23 @@ Lock will emit events during its lifecycle.
 - `unrecoverable_error`: emitted when there is an unrecoverable error, for instance when no connection is available. Has the error as the only argument.
 - `authenticated`: emitted after a successful authentication. Has the authentication result as the only argument.
 - `authorization_error`: emitted when authorization fails. Has error as the only argument.
+- `hash_parsed`: every time a new Auth0Lock object is initialized in redirect mode (the default), it will attempt to parse the hash part of the url looking for the result of a login attempt. This is a _low level_ event for advanced use cases and _authenticated_ and _authorization_error_ should be preferred when possible. After that this event will be emitted with `null` if it couldn't find anything in the hash. It will be emitted with the same argument as the `authenticated` event after a successful login or with the same argument as `authorization_error` if something went wrong. This event won't be emitted in popup mode because there is no need to parse the url's hash part.
+
+### show(options)
+
+Displays the widget, allowing to override some options.
+
+- **options {Object}**: Allows to customize some aspect of the dialog's appearance and behavior. The options allowed in here are subset of the options allowed in the constructor and will override them: `allowedConnections`, `auth.params`, `allowLogin`, `allowSignUp`, `allowForgotPassword`, `initialScreen` and `rememberLastLogin`. See [below](#customization) for the details.
+
+#### Example
+
+```js
+// without options
+lock.show();
+
+// will override the allowedConnections option passed to the constructor, if any
+lock.show({allowedConnections: ["twitter", "facebook"]})
+```
 
 ### Customization
 
@@ -108,7 +128,15 @@ The appearance of the widget and the mechanics of authentication can be customiz
 - **autofocus {Boolean}**: Determines whether or not the first input on the screen, that is the email or phone number input, should have focus when the Lock is displayed. Defaults to `false` when a `container` option is provided or the Lock is being render on a mobile device. Otherwise it defaults to `true`.
 - **avatar {Object}**: Determines whether or not an avatar and a user name should be displayed on the Lock's header once an email or username has been entered and how to obtain it. By default avatars are fetched from [Gravatar](http://gravatar.com/). Supplying `null` will disable the functionality. To fetch avatar from other provider see [below](#avatar-provider).
 - **container {String}**: The `id` of the html element where the Lock will be rendered. This makes the Lock appear inline instead of in a modal window.
-- **language {String}**: Specifies the language of the widget. Defaults to `"en"`.
+- **language {String}**: Specifies the language of the widget. Defaults to `"en"`. Supported languages are:
+  - `de`: German
+  - `en`: English
+  - `es`: Spanish
+  - `it`: Italian
+  - `nb`: Norwegian bokmål
+  - `pt-BR`: Brazilian Portuguese
+  - `ru`: Russian
+  - `zh`: Chinese
 - **languageDictionary {Object}**: Allows to customize every piece of text displayed in the Lock. Defaults to `{}`. See below [Language Dictionary Specification](#language-dictionary-specification) for the details.
 - **closable {Boolean}**: Determines whether or not the Lock can be closed. When a `container` option is provided its value is always `false`, otherwise it defaults to `true`.
 - **popupOptions {Object}**: Allows to customize the location of the popup in the screen. Any [position and size feature](https://developer.mozilla.org/en-US/docs/Web/API/Window/open#Position_and_size_features) allowed by `window.open` is accepted. Defaults to `{}`.
@@ -121,12 +149,14 @@ Theme options are grouped in the `theme` property of the `options` object.
 ```js
 var options = {
   theme: {
+    labeledSubmitButton: false,
     logo: "https://example.com/assets/logo.png",
     primaryColor: "green"
   }
 };
 ```
 
+- **labeledSubmitButton {Boolean}**: Indicates whether or not the submit button should have a label. Defaults to `true`. When set to `false` a icon will be shown. The labels can be customized through the `languageDictionary`.
 - **logo {String}**: Url for an image that will be placed in the Lock's header. Defaults to Auth0's logo.
 - **primaryColor {String}**: Defines the primary color of the Lock, all colors used in the widget will be calculated from it. This option is useful when providing a custom `logo` to ensure all colors go well together with the logo's color palette. Defaults to `"#ea5323"`.
 
@@ -140,6 +170,7 @@ var options = {
    params: {param1: "value1"},
    redirect: true,
    redirectUrl: "some url",
+   responseMode: "form_post",
    responseType: "token",
    sso: true
   }
@@ -149,7 +180,8 @@ var options = {
 - **params {Object}**: Specifies extra parameters that will be sent when starting a login. Defaults to `{}`.
 - **redirect {Boolean}**: When set to `true`, the default, _redirect mode_ will be used. Otherwise, _popup mode_ is chosen. See [below](#popup-mode) for more details.
 - **redirectUrl {String}**: The url Auth0 will redirect back after authentication. Defaults to the empty string `""` (no redirect URL).
-- **responseType {String}**:  Should be set to `"token"` for Single Page Applications, and `"code"` otherwise. Defaults to `"code"` when `callbackURL` is provided, and to `"token"` otherwise.
+- **responseMode {String}**:  Should be set to `"form_post"` if you want the code or the token to be transmitted via an HTTP POST request to the `redirectUrl` instead of being included in its query or fragment parts. Otherwise, it should be ommited.
+- **responseType {String}**:  Should be set to `"token"` for Single Page Applications, and `"code"` otherwise. Also, `"id_token"` is supported for the first case. Defaults to `"code"` when `callbackURL` is provided, and to `"token"` otherwise.
 - **sso {Boolean}**:  Determines whether Single Sign On is enabled or not. Defaults to `true`.
 
 #### Social options
@@ -319,11 +351,8 @@ var options = {
   }
 };
 
-var lock = new Auth0LockPasswordless(clientId, domain, options,
-  function(error, result) {
-    // Will only be executed after an attempt to login has been made (contrast
-    // this with redirect mode in which the function is always executed)
-});
+var lock = new Auth0Lock(clientId, domain, options);
+lock.show();
 ```
 
 
@@ -346,14 +375,13 @@ If you have found a bug or if you have a feature request, please report them at 
 This project is licensed under the MIT license. See the [LICENSE](LICENSE) file for more info.
 
 
-[travis-image]: https://travis-ci.org/auth0/lock.svg?branch=v10
+[travis-image]: https://travis-ci.org/auth0/lock.svg?branch=master
 [travis-url]: https://travis-ci.org/auth0/lock
-
-[npm-image]: https://img.shields.io/npm/v/auth0-lock-next.svg?style=flat-square
-[npm-url]: https://npmjs.org/package/auth0-lock-next
-[david-image]: http://img.shields.io/david/auth0/lock-next.svg?style=flat-square
-[david-url]: https://david-dm.org/auth0/lock-next
-[license-image]: http://img.shields.io/npm/l/auth0-lock-next.svg?style=flat-square
+[npm-image]: https://img.shields.io/npm/v/auth0-lock.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/auth0-lock
+[david-image]: http://img.shields.io/david/auth0/lock.svg?style=flat-square
+[david-url]: https://david-dm.org/auth0/lock
+[license-image]: http://img.shields.io/npm/l/auth0-lock.svg?style=flat-square
 [license-url]: #license
-[downloads-image]: http://img.shields.io/npm/dm/auth0-lock-next.svg?style=flat-square
-[downloads-url]: https://npmjs.org/package/auth0-lock-next
+[downloads-image]: http://img.shields.io/npm/dm/auth0-lock.svg?style=flat-square
+[downloads-url]: https://npmjs.org/package/auth0-lock

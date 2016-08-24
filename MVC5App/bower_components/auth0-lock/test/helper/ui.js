@@ -78,8 +78,8 @@ export const displayLock = (name, opts = {}, done = () => {}) => {
   }
 
   const lock = new Auth0Lock("cid", "domain", opts);
-  setTimeout(() => lock.show(), 100);
-  setTimeout(done, 105);
+  setTimeout(() => lock.show(), 175);
+  setTimeout(done, 200);
   return lock;
 };
 
@@ -145,7 +145,7 @@ export const hasSocialButtons = hasViewFn(".auth0-lock-social-button");
 export const hasSSONotice = hasViewFn(".auth0-sso-notice-container");
 export const hasSubmitButton = hasFn("button.auth0-lock-submit");
 export const hasUsernameInput = hasInputFn("username");
-export const isLoginTabCurrent = lock => isTabCurrent(lock, /login/i);
+export const isLoginTabCurrent = lock => isTabCurrent(lock, /log in/i);
 export const isSignUpTabCurrent = lock => isTabCurrent(lock, /sign up/i);
 export const isSubmitButtonDisabled = hasFn("button.auth0-lock-submit[disabled]");
 
@@ -171,7 +171,7 @@ export const submit = lock => {
   stubWebApis();
 
   const form = q(lock, ".auth0-lock-widget");
-  if (!form || form.tagName !== "FORM") {
+  if (!form || form.tagName.toUpperCase() !== "FORM") {
     throw new Error("Unable to submit form: can't find the element");
   }
 

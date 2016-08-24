@@ -19,6 +19,7 @@
     "angular-strap": "^2.3.9",
     "angular-motion": "^0.4.4",
     "angular-animate": "^1.5.8",
-    "auth0-angular": "^4.2.3"
+    "auth0-angular": "^4.2.3",
+    "auth0-lock": "^10.2.1"
   }
 }
