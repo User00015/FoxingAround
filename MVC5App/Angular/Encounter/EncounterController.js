@@ -61,6 +61,7 @@
         };
         encounterService.saveEncounters(function () {
             $scope.$broadcast("saved", true);
+            $scope.encounterChanged = false;
         }, params);
     };
 
