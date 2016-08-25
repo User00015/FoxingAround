@@ -1,4 +1,15 @@
-﻿<h3 ng-show="encounter">Encounter</h3>
+﻿<h3 ng-show="encounter">
+    Encounter
+    <a class="btn btn-sm " href="" ng-click="saveEncounter(encounter)">
+        <i class="fa fa-check-circle-o fa-3x" style="color: #88c149" ng-if="isSaved"></i>
+        <i class="fa fa-exclamation-triangle fa-3x" style="color: #f0ad4e" ng-if="!isSaved"
+           data-trigger="hover"
+           data-placement="top"
+           data-title="Changes detected"
+           bs-tooltip></i>
+
+    </a>
+</h3>
 <table wt-responsive-table class="table table-striped responsive" ng-show="encounter">
     <thead>
         <tr>
@@ -17,15 +28,7 @@
             <th>Actions</th>
             <th>
                 <!--<button class="btn btn-sm btn-default" type="button" ng-click="toggle = !toggle">-->
-                <a class="btn btn-sm " href="" ng-click="saveEncounter(encounter)">
-                    <i class="fa fa-check-circle-o fa-3x" style="color: #88c149" ng-if="isSaved"></i>
-                    <i class="fa fa-exclamation-triangle fa-3x" style="color: #f0ad4e" ng-if="!isSaved"
-                       data-trigger="hover"
-                       data-placement="top"
-                       data-title="Changes detected"
-                       bs-tooltip></i>
-
-                </a>
+              
             </th>
         </tr>
     </thead>
@@ -59,6 +62,8 @@
                     <i class="fa fa-trash"></i><span>
                     </span>
                 </button>
+
+              
             </td>
         </tr>
     </tbody>
