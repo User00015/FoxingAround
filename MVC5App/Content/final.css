@@ -6302,3 +6302,8 @@ body {
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
 }
+@media only screen and (min-width: 800px) {
+  table tr td:first-child {
+    width: 25%;
+  }
+}
