@@ -14,7 +14,7 @@
 
             var saveHandler = scope.save(); //scope.save()(encounter)
 
-            scope.$on("saved", function() {
+            scope.$on("saved", function () {
                 scope.isSaved = true;
             });
 
@@ -56,7 +56,7 @@
                     scope.adjustedDifficulty = getDifficulty(difficulty);
                 }, monstersList);
                 scope.isSaved = false;
-                scope.$emit("encounterChanged");
+                scope.$emit("encountersChanged");
             };
 
             scope.removeMonster = function (monster) {
@@ -70,6 +70,7 @@
 
                 if (_.size(scope.encounter.monsters) === 0) {
                     scope.encounter = null;
+                    scope.$emit("encountersChanged");
                 } else {
                     updateEncounters();
                 }
