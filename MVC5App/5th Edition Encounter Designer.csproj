@@ -462,8 +462,6 @@
     <Content Include="bower_components\angular-strap\src\typeahead\typeahead.js" />
     <Content Include="bower_components\angular-strap\src\typeahead\typeahead.tpl.html" />
     <Content Include="bower_components\auth0-angular\.gitignore" />
-    <Content Include="bower_components\auth0-angular\build\auth0-angular.js" />
-    <Content Include="bower_components\auth0-angular\build\auth0-angular.min.js" />
     <Content Include="bower_components\auth0-angular\examples\custom-login\index.html" />
     <Content Include="bower_components\auth0-angular\examples\custom-login\scripts\controllers.js" />
     <Content Include="bower_components\auth0-angular\examples\custom-login\scripts\myApp.js" />
@@ -586,16 +584,6 @@
     <Content Include="bower_components\auth0-angular\test\unit\directives\ifUser.directive.test.js" />
     <Content Include="bower_components\auth0-angular\test\unit\services\auth0.service.test.js" />
     <Content Include="bower_components\auth0-lock\.gitignore" />
-    <Content Include="bower_components\auth0-lock\build\de.js" />
-    <Content Include="bower_components\auth0-lock\build\en.js" />
-    <Content Include="bower_components\auth0-lock\build\es.js" />
-    <Content Include="bower_components\auth0-lock\build\it.js" />
-    <Content Include="bower_components\auth0-lock\build\lock.js" />
-    <Content Include="bower_components\auth0-lock\build\lock.min.js" />
-    <Content Include="bower_components\auth0-lock\build\nb.js" />
-    <Content Include="bower_components\auth0-lock\build\pt-br.js" />
-    <Content Include="bower_components\auth0-lock\build\ru.js" />
-    <Content Include="bower_components\auth0-lock\build\zh.js" />
     <Content Include="bower_components\auth0-lock\css\demo.css" />
     <Content Include="bower_components\auth0-lock\css\social_icons.css" />
     <Content Include="bower_components\auth0-lock\examples\bundling\browserify\.gitignore" />
@@ -695,8 +683,6 @@
     <Content Include="bower_components\auth0-lock\test\utils\id_utils.js" />
     <Content Include="bower_components\auth0-lock\test\utils\string_utils.js" />
     <Content Include="bower_components\auth0.js\.gitignore" />
-    <Content Include="bower_components\auth0.js\build\auth0.js" />
-    <Content Include="bower_components\auth0.js\build\auth0.min.js" />
     <Content Include="bower_components\auth0.js\example\index.html" />
     <Content Include="bower_components\auth0.js\Gruntfile.js" />
     <Content Include="bower_components\auth0.js\index.js" />
