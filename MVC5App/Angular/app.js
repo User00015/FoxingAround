@@ -1,11 +1,11 @@
-﻿var app = angular.module('FifthEditionEncounters', ['ngRoute', 'ngAnimate', 'ngResource', 'ngMap', 'environment', 'wt.responsive', 'mgcrea.ngStrap', 'auth0', 'angular-storage', 'angular-jwt']);
+﻿var app = angular.module('FifthEditionEncounters', ['ngRoute', 'ngAnimate', 'ngResource', 'ngMap', 'environment', 'wt.responsive', 'mgcrea.ngStrap', 'auth0.lock', 'angular-storage', 'angular-jwt']);
 
 
 app
     .constant('_', window._)
     .config([
-        '$routeProvider', '$locationProvider', 'envServiceProvider', 'authProvider', 'jwtInterceptorProvider', '$httpProvider',
-        function ($routeProvider, $locationProvider, envService, authProvider, jwtInterceptorProvider, $httpProvider) {
+        '$routeProvider', '$locationProvider', 'envServiceProvider', 'lockProvider', 'jwtInterceptorProvider', '$httpProvider',
+        function ($routeProvider, $locationProvider, envService, lockProvider, jwtInterceptorProvider, $httpProvider) {
             $routeProvider
                 .when('/home', { templateUrl: './Angular/Home/home.html', controller: 'HomeController' })
                 //.when('/gallery', { templateUrl: './Angular/Gallery/gallery.html', controller: 'GalleryController' })
@@ -31,28 +31,18 @@ app
                 }
             });
             envService.check();
+            //var lock = new Auth0Lock(
+            //    'eYDiisAw4OLNYJwybpX1sLuUmPuyaJ91',
+            //    'foxing-around.auth0.com'
+            //);
 
-            authProvider.init({
+
+            lockProvider.init({
                 domain: 'foxing-around.auth0.com',
                 clientID: 'eYDiisAw4OLNYJwybpX1sLuUmPuyaJ91',
-                loginUrl: '/login'
+                callbackURL: '/login'
             });
 
-            authProvider.on('loginSuccess', ['$location', 'profilePromise', 'idToken', 'store',
-                    function ($location, profilePromise, idToken, store) {
-
-                        profilePromise.then(function (profile) {
-                            store.set('profile', profile);
-                            store.set('token', idToken);
-                        });
-
-                        //$location.path('/'); //TODO - Log in page maybe? If so, redirect here.
-                    }]);
-
-            //Called when login fails
-            authProvider.on('loginFailure', function () {
-                console.log("Error: Login failed");
-            });
 
             jwtInterceptorProvider.tokenGetter = function (store) {
                 return store.get('token');
@@ -62,22 +52,41 @@ app
         }
     ])
 
-    .run(['$rootScope', 'auth', 'store', 'jwtHelper',  function ($rootScope, auth, store, jwtHelper, authManager) {
+    .run(['$rootScope', 'store', 'jwtHelper', 'lock', function ($rootScope, store, jwtHelper, lock) {
         angular.element(document).on("click", function (e) {
             $rootScope.$broadcast("documentClicked", angular.element(e.target));
         });
         $rootScope._ = window._;
 
-        $rootScope.$on('$locationChangeStart', function () {
-            if (!auth.isAuthenticated) {
-                var token = store.get('token');
-                if (token) {
-                    if (!jwtHelper.isTokenExpired(token)) {
-                        auth.authenticate(store.get('profile'), token);
-                    }
-                }
-            }
-        });
+        //$rootScope.$on('$locationChangeStart', function () {
+        //    if (!lock.isAuthenticated) {
+        //        var token = store.get('token');
+        //        if (token) {
+        //            if (!jwtHelper.isTokenExpired(token)) {
+        //                lock.authenticate(store.get('profile'), token);
+        //            }
+        //        }
+        //    }
+        //});
+
+        lock.on('authenticated', function (authResult) {
+            console.log(authResult);
+                    lock.getProfile(authResult.idToken, function (error, profile) {
+                        if (error) {
+                            console.log("Error: Login failed");
+                        } else {
+                            store.set('profile', profile);
+                            store.set('token', authResult.idToken);
+                        };
+
+                    });
+                    //profilePromise.then(function (profile) {
+                    //    store.set('profile', profile);
+                    //    store.set('token', idToken);
+                    //});
+
+                    //$location.path('/'); //TODO - Log in page maybe? If so, redirect here.
+                });
     }])
 
     .controller('RootController', ['$scope', '$route', '$routeParams', '$location',

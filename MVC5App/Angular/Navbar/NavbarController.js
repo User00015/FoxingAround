@@ -1,4 +1,4 @@
-﻿app.controller('NavbarController', ['$scope', 'auth', '$location', 'store', 'LoginService', function ($scope, auth, $location, store, loginService) {
+﻿app.controller('NavbarController', ['$scope', 'lock', '$location', 'store', 'LoginService', function ($scope, lock, $location, store, loginService) {
     $scope.isActive = function (viewLocation) {
         return (viewLocation === $location.path());
     };
@@ -8,7 +8,7 @@
     }
 
     $scope.isLoggedIn = function() {
-        return auth.isAuthenticated;
+        return loginService.isAuthenticated();
     }
 
     $scope.signOut = function () {

@@ -338,6 +338,11 @@
     <Content Include="bower_components\angular-jwt\karma-dist-minified.conf.js" />
     <Content Include="bower_components\angular-jwt\karma-src.conf.js" />
     <Content Include="bower_components\angular-jwt\LICENSE.txt" />
+    <Content Include="bower_components\angular-lock\.gitignore" />
+    <Content Include="bower_components\angular-lock\angular-lock.js" />
+    <Content Include="bower_components\angular-lock\dist\angular-lock.js" />
+    <Content Include="bower_components\angular-lock\dist\angular-lock.min.js" />
+    <Content Include="bower_components\angular-lock\gulpfile.js" />
     <Content Include="bower_components\angular-responsive-tables\examples\controller.js" />
     <Content Include="bower_components\angular-responsive-tables\examples\index.html" />
     <Content Include="bower_components\angular-responsive-tables\karma.conf.js" />
@@ -584,6 +589,16 @@
     <Content Include="bower_components\auth0-angular\test\unit\directives\ifUser.directive.test.js" />
     <Content Include="bower_components\auth0-angular\test\unit\services\auth0.service.test.js" />
     <Content Include="bower_components\auth0-lock\.gitignore" />
+    <Content Include="bower_components\auth0-lock\build\de.js" />
+    <Content Include="bower_components\auth0-lock\build\en.js" />
+    <Content Include="bower_components\auth0-lock\build\es.js" />
+    <Content Include="bower_components\auth0-lock\build\it.js" />
+    <Content Include="bower_components\auth0-lock\build\lock.js" />
+    <Content Include="bower_components\auth0-lock\build\lock.min.js">
+      <DependentUpon>lock.js</DependentUpon>
+    </Content>
+    <Content Include="bower_components\auth0-lock\build\pt-br.js" />
+    <Content Include="bower_components\auth0-lock\build\ru.js" />
     <Content Include="bower_components\auth0-lock\css\demo.css" />
     <Content Include="bower_components\auth0-lock\css\social_icons.css" />
     <Content Include="bower_components\auth0-lock\examples\bundling\browserify\.gitignore" />
@@ -933,6 +948,12 @@
     <Content Include="bower_components\auth0.js\LICENSE" />
     <Content Include="bower_components\auth0.js\package.json" />
     <Content Include="bower_components\auth0.js\README.md" />
+    <Content Include="bower_components\angular-lock\.bower.json" />
+    <Content Include="bower_components\angular-lock\bower.json" />
+    <Content Include="bower_components\angular-lock\LICENSE" />
+    <Content Include="bower_components\angular-lock\package.json" />
+    <Content Include="bower_components\angular-lock\README.md" />
+    <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>

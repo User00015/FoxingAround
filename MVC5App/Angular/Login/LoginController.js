@@ -1,4 +1,4 @@
-﻿app.controller('LoginController', ['$scope', 'auth', '$location', 'store', function ($scope, auth, $location, store) {
+﻿app.controller('LoginController', ['$scope', 'lock', '$location', 'store', function ($scope, lock, $location, store) {
 
     //$scope.signIn = function () {
     //    auth.signin({}, function (profile, token) {
@@ -34,7 +34,7 @@
     }
 
     $scope.reset = function () {
-        auth.reset({
+        lock.reset({
             email: 'hello@bye.com',
             password: 'hello',
             connection: 'Username-Password-Authentication'
@@ -44,7 +44,7 @@
     $scope.submit = function () {
         $scope.message.text = 'loading...';
         $scope.loading = true;
-        auth.signin({
+        lock.signin({
             connection: 'Username-Password-Authentication',
             username: $scope.user,
             password: $scope.pass,
@@ -59,7 +59,7 @@
         $scope.message.text = 'loading...';
         $scope.loading = true;
 
-        auth.signin({
+        lock.signin({
             popup: true,
             connection: 'google-oauth2',
             scope: 'openid name email'

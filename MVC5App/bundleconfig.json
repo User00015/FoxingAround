@@ -1,0 +1,8 @@
+[
+  {
+    "outputFileName": "bower_components/auth0-lock/build/lock.min.js",
+    "inputFiles": [
+      "bower_components/auth0-lock/build/lock.js"
+    ]
+  }
+]

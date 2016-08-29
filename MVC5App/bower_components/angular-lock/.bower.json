@@ -1,0 +1,23 @@
+{
+  "name": "angular-lock",
+  "main": "angular-lock.js",
+  "dependencies": {
+    "angular": "*",
+    "auth0-lock": ">= 10.0.0"
+  },
+  "resolutions": {
+    "angular": "1.5.8"
+  },
+  "homepage": "https://github.com/auth0/angular-lock",
+  "version": "1.0.1",
+  "_release": "1.0.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.0.1",
+    "commit": "036fbaa83a43c9b47237f1287a04d803ff7ce779"
+  },
+  "_source": "https://github.com/auth0/angular-lock.git",
+  "_target": "^1.0.1",
+  "_originalSource": "angular-lock",
+  "_direct": true
+}

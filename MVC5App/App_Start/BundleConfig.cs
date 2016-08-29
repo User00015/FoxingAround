@@ -43,6 +43,8 @@ namespace MVC5App
                 "~/bower_components/angular-jwt/dist/angular-jwt.min.js",
                 "~/bower_components/angular-strap/dist/angular-strap.min.js",
                 "~/bower_components/angular-strap/dist/angular-strap.tpl.min.js",
+                "~/bower_components/auth0-lock/build/lock.js",
+                "~/bower_components/angular-lock/dist/angular-lock.js",
                 "~/Scripts/mixins/lodash.js",
                 "~/Scripts/lodash.min.js").
 
