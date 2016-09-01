@@ -31,16 +31,10 @@ app
                 }
             });
             envService.check();
-            //var lock = new Auth0Lock(
-            //    'eYDiisAw4OLNYJwybpX1sLuUmPuyaJ91',
-            //    'foxing-around.auth0.com'
-            //);
-
 
             lockProvider.init({
                 domain: 'foxing-around.auth0.com',
                 clientID: 'eYDiisAw4OLNYJwybpX1sLuUmPuyaJ91'
-                //callbackURL: '/login'
             });
 
 

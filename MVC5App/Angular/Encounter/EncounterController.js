@@ -1,4 +1,4 @@
-﻿app.controller('EncounterController', ['$scope', 'encounterService', '$modal', '$timeout', 'authService', 'LoginService', function ($scope, encounterService, $modal, $timeout, authService, loginService) {
+﻿app.controller('EncounterController', ['$rootScope', '$scope', 'encounterService', '$modal', '$timeout', 'LoginService', function ($rootScope, $scope, encounterService, $modal, $timeout, loginService) {
 
 
 
@@ -43,7 +43,7 @@
     }
 
     $scope.saveNewEncounter = function (item) {
-        loginService.signIn().then(function() {
+        loginService.signIn().then(function () {
             finishAddingNewEncounter(item);
         });
     };
@@ -57,7 +57,7 @@
             _.replace($scope.savedEncounters, item.$$hashKey, item);
         }
         var params = {
-            email: authService.userProfile.email,
+            email: $rootScope.userProfile.email,
             encounters: $scope.savedEncounters
         };
         encounterService.saveEncounters(function () {
@@ -100,7 +100,7 @@
     };
 
     var finishLoading = function () {
-        var params = { email: authService.userProfile.email }
+        var params = { email: $rootScope.userProfile.email }
 
         encounterService.getSavedEncounters(function (encounter) {
             $scope.savedEncounters = null;

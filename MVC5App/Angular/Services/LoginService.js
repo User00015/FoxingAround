@@ -1,4 +1,4 @@
-﻿app.service('LoginService', ['lock', 'store', '$q', 'envService', 'authService', '$rootScope', function (lock, store, $q, envService, authService, $rootScope) {
+﻿app.service('LoginService', [ '$q', 'authService', '$rootScope', function (  $q, authService, $rootScope) {
 
     var self = this;
 

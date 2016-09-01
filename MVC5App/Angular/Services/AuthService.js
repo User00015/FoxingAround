@@ -1,5 +1,5 @@
 ﻿app.service('authService', [
-    '$rootScope', 'lock', 'authManager', 'store',  function($rootScope, lock, authManager, store) {
+    '$rootScope', 'lock', 'authManager',  function($rootScope, lock, authManager) {
 
         var self = this;
 
@@ -7,7 +7,7 @@
             lock.show();
         }
 
-        self.userProfile = JSON.parse(localStorage.getItem('profile')) || {};
+        $rootScope.userProfile = JSON.parse(localStorage.getItem('profile')) || {};
 
         // Logging out just requires removing the user's
         // id_token and profile
