@@ -1,10 +1,10 @@
 {
-  "name": "MVC5App",
+  "name": "wayne",
   "homepage": "https://github.com/User00015/MVC5_Angular_DynamoDB",
   "authors": [
     "User00015 <user00015@gmail.com>"
   ],
-  "description": "",
+  "description": "Foxing Around",
   "main": "",
   "license": "MIT",
   "ignore": [

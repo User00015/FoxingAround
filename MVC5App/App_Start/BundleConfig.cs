@@ -46,10 +46,8 @@ namespace MVC5App
                 "~/bower_components/auth0-lock/build/lock.js",
                 "~/bower_components/angular-lock/dist/angular-lock.js",
                 "~/Scripts/mixins/lodash.js",
-                "~/Scripts/lodash.min.js").
+                "~/Scripts/lodash.min.js"));
 
-                IncludeDirectory(
-                "~/bower_components/auth0-angular/src", "*.js", true));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/final.min.css",

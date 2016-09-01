@@ -39,54 +39,31 @@ app
 
             lockProvider.init({
                 domain: 'foxing-around.auth0.com',
-                clientID: 'eYDiisAw4OLNYJwybpX1sLuUmPuyaJ91',
-                callbackURL: '/login'
+                clientID: 'eYDiisAw4OLNYJwybpX1sLuUmPuyaJ91'
+                //callbackURL: '/login'
             });
 
 
-            jwtInterceptorProvider.tokenGetter = function (store) {
-                return store.get('token');
+            jwtInterceptorProvider.tokenGetter = function () {
+                return localStorage.getItem('id_token');
             };
 
             $httpProvider.interceptors.push('jwtInterceptor');
         }
     ])
 
-    .run(['$rootScope', 'store', 'jwtHelper', 'lock', function ($rootScope, store, jwtHelper, lock) {
+    .run(['$rootScope',  'jwtHelper', 'lock', 'authService', 'authManager', function ($rootScope, jwtHelper, lock, authService, authManager) {
         angular.element(document).on("click", function (e) {
             $rootScope.$broadcast("documentClicked", angular.element(e.target));
         });
         $rootScope._ = window._;
 
-        //$rootScope.$on('$locationChangeStart', function () {
-        //    if (!lock.isAuthenticated) {
-        //        var token = store.get('token');
-        //        if (token) {
-        //            if (!jwtHelper.isTokenExpired(token)) {
-        //                lock.authenticate(store.get('profile'), token);
-        //            }
-        //        }
-        //    }
-        //});
+        var token = localStorage.getItem('id_token');
+        if (token != undefined) authManager.authenticate(); 
 
-        lock.on('authenticated', function (authResult) {
-            console.log(authResult);
-                    lock.getProfile(authResult.idToken, function (error, profile) {
-                        if (error) {
-                            console.log("Error: Login failed");
-                        } else {
-                            store.set('profile', profile);
-                            store.set('token', authResult.idToken);
-                        };
+        authService.registerAuthenticationListener();
 
-                    });
-                    //profilePromise.then(function (profile) {
-                    //    store.set('profile', profile);
-                    //    store.set('token', idToken);
-                    //});
-
-                    //$location.path('/'); //TODO - Log in page maybe? If so, redirect here.
-                });
+        authManager.checkAuthOnRefresh();
     }])
 
     .controller('RootController', ['$scope', '$route', '$routeParams', '$location',

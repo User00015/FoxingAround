@@ -25,6 +25,6 @@
     "commit": "703ddb74149278f3ea692c20440aeda22e651d3b"
   },
   "_source": "https://github.com/auth0/lock.git",
-  "_target": ">= 6.3.0",
+  "_target": "^10.2.1",
   "_originalSource": "auth0-lock"
 }

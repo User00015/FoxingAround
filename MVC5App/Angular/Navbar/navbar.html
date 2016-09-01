@@ -21,12 +21,12 @@
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li class="nav-item" ng-if="!isLoggedIn()">
+                <li class="nav-item" ng-if="!isAuthenticated">
                     <a class="navbar-link" href="#" ng-click="signIn()">
                         <i class="fa fa-sign-in fa-fw" aria-hidden="true"></i>Sign In
                     </a>
                 </li>
-                <li class="nav-item" ng-if="isLoggedIn()">
+                <li class="nav-item" ng-if="isAuthenticated">
                     <a class="navbar-link" href="#" ng-click="signOut()">
                         <i class="fa fa-sign-out fa-fw" aria-hidden="true"></i>Sign Out
                     </a>
