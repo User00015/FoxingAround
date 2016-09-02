@@ -1,10 +1,14 @@
 ﻿app.service('authService', [
-    '$rootScope', 'lock', 'authManager',  function($rootScope, lock, authManager) {
+    '$rootScope', 'lock', 'authManager', function ($rootScope, lock, authManager) {
 
         var self = this;
 
         self.login = function () {
-            lock.show();
+            lock.show({
+                auth: {
+                    redirect: false
+                }
+            });
         }
 
         $rootScope.userProfile = JSON.parse(localStorage.getItem('profile')) || {};
@@ -20,17 +24,18 @@
 
         // Set up the logic for when a user authenticates
         // This method is called from app.run.js
-        self.registerAuthenticationListener = function() {
-            lock.on('authenticated', function(authResult) {
+        self.registerAuthenticationListener = function () {
+            lock.on('authenticated', function (authResult) {
                 localStorage.setItem('id_token', authResult.idToken);
                 authManager.authenticate();
 
-                lock.getProfile(authResult.idToken, function(error, profile) {
+                lock.getProfile(authResult.idToken, function (error, profile) {
                     if (error) {
                         console.log(error);
                     }
 
                     localStorage.setItem('profile', JSON.stringify(profile));
+                    $rootScope.userProfile = JSON.parse(localStorage.getItem('profile')) || {};
                     //$rootScope.$broadcast('userProfileSet', profile);
                 });
             });

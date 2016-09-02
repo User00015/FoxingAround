@@ -40,7 +40,7 @@
         $scope.savedEncounters = _.compact(_.concat($scope.savedEncounters, item));
         $scope.encounter = null;
         $scope.encountersChanged = true;
-    }
+    };
 
     $scope.saveNewEncounter = function (item) {
         loginService.signIn().then(function () {
@@ -49,6 +49,7 @@
     };
 
     var finishUpdating = function (item) {
+        $scope.isSaving = true;
         $scope.savedEncounters = _.filter($scope.savedEncounters, function (enc) {
             return _.size(enc.monsters) > 0;
         });
@@ -63,6 +64,7 @@
         encounterService.saveEncounters(function () {
             $scope.$broadcast("saved", true);
             $scope.encountersChanged = false;
+            $scope.isSaving = false;
         }, params);
     };
 
@@ -78,7 +80,7 @@
     });
 
     $scope.createEncounters = function () {
-        $scope.isLoading = true;
+        $scope.isLoadingNewEncounter = true;
         var params = {
             partyLevel: $scope.levelOfCharacters,
             partySize: $scope.numberOfCharacters,
@@ -88,7 +90,7 @@
 
         encounterService.postMonsters(function (encounter) {
             $scope.encounter = encounter;
-            $scope.isLoading = false;
+            $scope.isLoadingNewEncounter = false;
         }, params);
     };
 
@@ -100,11 +102,14 @@
     };
 
     var finishLoading = function () {
+        $scope.isLoadingSavedEncounters = true;
         var params = { email: $rootScope.userProfile.email }
 
         encounterService.getSavedEncounters(function (encounter) {
             $scope.savedEncounters = null;
             $scope.savedEncounters = _.compact(_.concat($scope.savedEncounters, encounter));
+            $scope.encountersChanged = false;
+            $scope.isLoadingSavedEncounters = false;
         }, params);
     };
 
