@@ -47,7 +47,6 @@
                 scope.adjustedDifficulty = getDifficulty(scope.encounter.difficulty);
             });
 
-
             var updateEncounters = function () {
                 var monstersList = scope.encounter.monsters;
                 encounterService.updateEncounters(function (xp) {
@@ -81,31 +80,9 @@
                 updateEncounters();
             }
 
-            //scope.loadEncounter = function () {
-            //    var profile = store.get('profile');
-            //    var params = { email: profile.email }
-
-            //    encounterService.getSavedEncounters(function (encounter) {
-            //        scope.encounter = encounter;
-            //        scope.adjustedDifficulty = getDifficulty(encounter.difficulty);
-            //    }, params);
-            //}
-
             scope.saveEncounter = function (encounter) {
                 saveHandler(encounter);
                 scope.isSaved = true;
-
-
-                //    //var params = {
-                //    //    email: profile.email,
-                //    //    encounters: savedEncounters
-                //    //};
-                //    //encounterService.saveEncounters(function (result) {
-                //    //    console.log("Save Encounter response: " + result.statusText + " " + result.status);
-                //    //}, params);
-                //    console.log(savedEncounters);
-                //}, { email: profile.email });
-
             }
         }
     }

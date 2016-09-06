@@ -36,7 +36,7 @@
 
                     localStorage.setItem('profile', JSON.stringify(profile));
                     $rootScope.userProfile = JSON.parse(localStorage.getItem('profile')) || {};
-                    //$rootScope.$broadcast('userProfileSet', profile);
+                    $rootScope.$broadcast('authenticated', true);
                 });
             });
         }

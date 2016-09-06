@@ -1,9 +1,5 @@
 ﻿[
   {
-    "outputFile": "Content/Temp.css",
-    "inputFile": "Content/Temp.less"
-  },
-  {
     "outputFile": "Content/cerulean-bootstrap.css",
     "inputFile": "Content/cerulean-bootstrap.less"
   },
@@ -14,9 +10,5 @@
   {
     "outputFile": "Styles/animate.css",
     "inputFile": "Styles/animate.less"
-  },
-  {
-    "outputFile": "Angular/Encounter/EncounterController.es5.js",
-    "inputFile": "Angular/Encounter/EncounterController.js"
   }
 ]
