@@ -55,11 +55,7 @@ app.controller('loginController', function(lock) {
 
 <div ng-controller="loginController as login">
 
-...
-
   <button ng-click="login.lock.show()">Log In</button>
-
-...
 
 </div>
 ```
@@ -68,11 +64,14 @@ Then, set up a listener for the `authenticated` event.
 
 ```js
 app.run(function(lock) {
+  
+  // For use with UI Router
+  lock.interceptHash();
 
   lock.on('authenticated', function(authResult) {
     localStorage.setItem('id_token', authResult.idToken);
 
-    lock.getProfile(result.idToken, function(error, profile) {
+    lock.getProfile(authResult.idToken, function(error, profile) {
       if (error) {
         console.log(error);
       }

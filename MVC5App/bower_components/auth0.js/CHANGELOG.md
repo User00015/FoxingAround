@@ -1,3 +1,60 @@
+# Change Log
+
+## [7.5.0](https://github.com/auth0/lock/tree/7.5.0) (2016-11-22)
+[Full Changelog](https://github.com/auth0/lock/compare/7.4.0...7.5.0)
+
+**Closed issues**
+- silentAuthentication does not use auth0 constructor options [\#235](https://github.com/auth0/auth0.js/issues/235)
+
+**Added**
+- Added nonce to mitigate replay attacks [\#242](https://github.com/auth0/auth0.js/pull/242) ([glena](https://github.com/glena))
+- Audience scope constructor options [\#237](https://github.com/auth0/auth0.js/pull/237) ([glena](https://github.com/glena))
+
+## [7.4.0](https://github.com/auth0/lock/tree/7.4.0) (2016-11-01)
+[Full Changelog](https://github.com/auth0/lock/compare/7.3.0...7.4.0)
+
+**Added**
+- Add userinfo and tokeninfo to auth0.js [\#227](https://github.com/auth0/auth0.js/pull/227) ([glena](https://github.com/glena))
+- Handle fetching new tokens (aka refresh of tokens) using authorize prompt none in an iframe [\#226](https://github.com/auth0/auth0.js/pull/226) ([glena](https://github.com/glena))
+
+## [7.3.0](https://github.com/auth0/lock/tree/7.3.0) (2016-10-20)
+[Full Changelog](https://github.com/auth0/lock/compare/7.2.1...7.3.0)
+
+**Changed**
+- Add CSRF token when using popup mode and user and pass login [\#218](https://github.com/auth0/auth0.js/pull/218) ([hernanhht](https://github.com/hernanhht))
+- Bump winchan@0.1.4 [\#213](https://github.com/auth0/auth0.js/pull/213) ([cristiandouce](https://github.com/cristiandouce))
+
+**Fixed**
+- Use response_type on startPasswordless [\#217](https://github.com/auth0/auth0.js/pull/217) ([glena](https://github.com/glena))
+
+
+## [7.2.1](https://github.com/auth0/lock/tree/7.2.1) (2016-09-23)
+[Full Changelog](https://github.com/auth0/lock/compare/7.2.0...7.2.1)
+
+**Fixed**
+- Fix popup mode when no id_token is returned [\#206](https://github.com/auth0/auth0.js/pull/206) ([rolodato](https://github.com/rolodato))
+
+
+## [7.2.0](https://github.com/auth0/lock/tree/7.2.0) (2016-09-12)
+[Full Changelog](https://github.com/auth0/lock/compare/7.1.0...7.2.0)
+
+**Closed issues:**
+- Logout function is using deprecated endpoint [\#190](https://github.com/auth0/auth0.js/issues/190)
+- Remove dependency on unmaintained query-string module [\#184](https://github.com/auth0/auth0.js/issues/184)
+- Security Vulnerability in indirect dependency "Negotiator" [\#178](https://github.com/auth0/auth0.js/issues/178)
+- reqwest version used expect a window object [\#170](https://github.com/auth0/auth0.js/issues/170)
+- Use new v2/logout endpoint [\#74](https://github.com/auth0/auth0.js/issues/74)
+
+
+**Added:**
+- Allow to use v2 logout endpoint [\#201](https://github.com/auth0/auth0.js/pull/201) ([hzalaz](https://github.com/hzalaz))
+
+**Changed:**
+- Bump to latest reqwest@2.0.5 [\#202](https://github.com/auth0/auth0.js/pull/202) ([cristiandouce](https://github.com/cristiandouce))
+- Use qs@6.2.1 instead nore-querystring fork [\#200](https://github.com/auth0/auth0.js/pull/200) ([hzalaz](https://github.com/hzalaz))
+- Bump winchan version [\#199](https://github.com/auth0/auth0.js/pull/199) ([cristiandouce](https://github.com/cristiandouce))
+
+
 ## [7.1.0] - 2016-08-12
 
 ### Added

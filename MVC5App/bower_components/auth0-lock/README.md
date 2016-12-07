@@ -14,7 +14,7 @@ From CDN
 
 ```html
 <!-- Latest patch release (recommended for production) -->
-<script src="http://cdn.auth0.com/js/lock/10.2.1/lock.min.js"></script>
+<script src="http://cdn.auth0.com/js/lock/10.7.2/lock.min.js"></script>
 ```
 
 From [bower](http://bower.io)
@@ -59,7 +59,7 @@ var domain = "YOUR_DOMAIN_AT.auth0.com";
 var lock = new Auth0Lock(clientId, domain);
 
 lock.on("authenticated", function(authResult) {
-  lock.getProfile(authResult.idToken, function(error, profile) {
+  lock.getUserInfo(authResult.accessToken, function(error, profile) {
     if (error) {
       // Handle error
       return;
@@ -75,15 +75,24 @@ lock.on("authenticated", function(authResult) {
 
 ### getProfile(idToken, callback)
 
+> *Note:* this method is soon to be deprecated, use `getUserInfo` instead.
+
 Once the user has logged in and you are in possesion of and id token, you can obtain the profile with `getProfile`.
 
 - **idToken {String}**: User id token.
 - **callback {Function}**: Will be invoked after the user profile been retrieved.
 
+### getUserInfo(accessToken, callback)
+
+Once the user has logged in and you are in possesion of and access token, you can obtain the profile with `getUserInfo`.
+
+- **accessToken {String}**: User access token.
+- **callback {Function}**: Will be invoked after the user profile been retrieved.
+
 #### Example
 
 ```js
-lock.getProfile(idToken, function(error, profile) {
+lock.getUserInfo(accessToken, function(error, profile) {
   if (!error) {
     alert("hello " + profile.name);
   }
@@ -105,7 +114,7 @@ Lock will emit events during its lifecycle.
 
 Displays the widget, allowing to override some options.
 
-- **options {Object}**: Allows to customize some aspect of the dialog's appearance and behavior. The options allowed in here are subset of the options allowed in the constructor and will override them: `allowedConnections`, `auth.params`, `allowLogin`, `allowSignUp`, `allowForgotPassword`, `initialScreen` and `rememberLastLogin`. See [below](#customization) for the details.
+- **options {Object}**: Allows to customize some aspect of the dialog's appearance and behavior. The options allowed in here are subset of the options allowed in the constructor and will override them: `allowedConnections`, `auth.params`, `allowLogin`, `allowSignUp`, `allowForgotPassword`, `initialScreen`, `rememberLastLogin` and `flashMessage`. See [below](#customization) for the details.
 
 #### Example
 
@@ -141,6 +150,9 @@ The appearance of the widget and the mechanics of authentication can be customiz
 - **closable {Boolean}**: Determines whether or not the Lock can be closed. When a `container` option is provided its value is always `false`, otherwise it defaults to `true`.
 - **popupOptions {Object}**: Allows to customize the location of the popup in the screen. Any [position and size feature](https://developer.mozilla.org/en-US/docs/Web/API/Window/open#Position_and_size_features) allowed by `window.open` is accepted. Defaults to `{}`.
 - **rememberLastLogin {Boolean}**: Determines whether or not to show a screen that allows you to quickly log in with the account you used the last time when the `initialScreen` option is set to to `"login"` (the default). Defaults to `true`.
+- **flashMessage {Object}**: Shows an `error` or `success` flash message when Lock is shown.
+  + **type {String}**: The message type, it should be `error` or `success`.
+  + **text {String}**: The text to show.
 
 #### Theming options
 
@@ -151,7 +163,15 @@ var options = {
   theme: {
     labeledSubmitButton: false,
     logo: "https://example.com/assets/logo.png",
-    primaryColor: "green"
+    primaryColor: "green",
+    authButtons: {
+      connectionName: {
+        displayName: "...", 
+        primaryColor: "...", 
+        foregroundColor: "...", 
+        icon: "http://.../logo.png"
+      }
+    }
   }
 };
 ```
@@ -159,6 +179,11 @@ var options = {
 - **labeledSubmitButton {Boolean}**: Indicates whether or not the submit button should have a label. Defaults to `true`. When set to `false` a icon will be shown. The labels can be customized through the `languageDictionary`.
 - **logo {String}**: Url for an image that will be placed in the Lock's header. Defaults to Auth0's logo.
 - **primaryColor {String}**: Defines the primary color of the Lock, all colors used in the widget will be calculated from it. This option is useful when providing a custom `logo` to ensure all colors go well together with the logo's color palette. Defaults to `"#ea5323"`.
+- **authButtons {Object}**: Allows the customization of the custom oauth2 login buttons.
+  + **displayName {String}**: The name to show instead of the connection name.
+  + **primaryColor {String}**: The button's background color. Defaults to `"#eb5424"`.
+  + **foregroundColor {String}**: The button's text color. Defaults to `"#FFFFFF"`.
+  + **icon {String}**: The icon's url for the connection. For example:`"http://site.com/logo.png"`.
 
 #### Authentication options
 
@@ -172,7 +197,10 @@ var options = {
    redirectUrl: "some url",
    responseMode: "form_post",
    responseType: "token",
-   sso: true
+   sso: true:
+   connectionScopes: {
+    connectionName: [ 'scope1', 'scope2' ]
+   }
   }
 };
 ```
@@ -181,8 +209,9 @@ var options = {
 - **redirect {Boolean}**: When set to `true`, the default, _redirect mode_ will be used. Otherwise, _popup mode_ is chosen. See [below](#popup-mode) for more details.
 - **redirectUrl {String}**: The url Auth0 will redirect back after authentication. Defaults to the empty string `""` (no redirect URL).
 - **responseMode {String}**:  Should be set to `"form_post"` if you want the code or the token to be transmitted via an HTTP POST request to the `redirectUrl` instead of being included in its query or fragment parts. Otherwise, it should be ommited.
-- **responseType {String}**:  Should be set to `"token"` for Single Page Applications, and `"code"` otherwise. Also, `"id_token"` is supported for the first case. Defaults to `"code"` when `callbackURL` is provided, and to `"token"` otherwise.
+- **responseType {String}**:  Should be set to `"token"` for Single Page Applications, and `"code"` otherwise. Also, `"id_token"` is supported for the first case. Defaults to `"code"` when `redirectUrl` is provided, and to `"token"` otherwise.
 - **sso {Boolean}**:  Determines whether Single Sign On is enabled or not. Defaults to `true`.
+- **connectionScopes {Object}**:  Allows to set scopes to be sent to the oauth2/social connection for authentication.
 
 #### Social options
 
@@ -198,12 +227,12 @@ var options = {
 - **allowSignUp {Boolean}**: When set to `false` hides the _login and sign up tabs_ in the _login screen_, making the _sign up screen_ unreachable. Defaults to `true`. Keep in mind that if the database connection has sign ups _disabled_ or you are using a _custom database_ with coesn't have a _create script_, then the sign up screen won't be available.
 - **defaultDatabaseConnection {String}**: Specifies the database connection that will be used when there is more than one available.
 - **initialScreen {String}**: Name of the screen that will be shown when the widget is opened. Valid values are `"login"`, `"signUp"`, and `"forgotPassword"`. If this option is left unspecified, the widget will pick the first screen that is available from the previous list. Is recommended that you set `allowLogin` to `"false"` when you set `initialScreen` to `"forgotPassword"`, otherwise a back button will be shown in the forgot password screen and it might not be clear to the user where is she/he going back.
-- **loginAfterSignUp {String}**: Determines whether or not the user will be automatically signed in after a successful sign up. Defaults to `true`.
+- **loginAfterSignUp {Boolean}**: Determines whether or not the user will be automatically signed in after a successful sign up. Defaults to `true`.
 - **forgotPasswordLink {String}**: URL for a page that allows the user to reset her password. When set to a non-empty string, the user will be linked to the provided URL when clicking the _"Don't remember your password?"_ link in the _login screen_.
 - **mustAcceptTerms {Boolean}**: When set to `true` displays a checkbox input along the terms and conditions that must be checked before signing up. The terms and conditions can be specified via the `languageDictionary` option, see the example below. Defaults to `false`.
 - **prefill {Object}**: Allows to set the initial value for the _email_ and/or _username_ inputs, e.g. `{prefill: {email: "someone@auth0.com", username: "someone"}}`. When omitted no initial value will be provided.
 - **signUpLink {String}**: URL for a page that allows the user to sign up. When set to a non-empty string, the user will be linked to the provided URL when clicking the _sign up_ tab in the _login screen_.
-- **usernameStyle {String}**: Determines what will be used to identify the user. Possible values are `"username"` and `"email"`. Defaults to `"email"`.
+- **usernameStyle {String}**: Determines what will be used to identify the user for a Database connection that has the `requires_username` flag set, otherwise it will be ignored. Possible values are `"username"` and `"email"` and by default both `username` and `email` are allowed.
 
 #### Enterprise options
 
@@ -225,7 +254,9 @@ var options = {
 
 #### Other options
 
-- **assetsUrl {String}**: Will be used as the assets base url. Defaults to Auth0's the CDN url when `domain` has the format `*.auth0.com`. Otherwise, it defaults to `domain`.
+- **configurationBaseUrl {String}**: Overrides client settings base url. By default it uses Auth0's CDN url when `domain` has the format `*.auth0.com`. Otherwise, it uses the provided `domain`.
+- **languageBaseUrl {String}**: Overrides the language source url for Auth0's provided translations. By default it uses to Auth0's CDN url `https://cdn.auth0.com`.
+- **hashCleanup {Boolean}**: When enabled, it will remove the hash part of the callback url after the user authentication. Defaults to `true`.
 
 #### Language Dictionary Specification
 
@@ -356,7 +387,7 @@ lock.show();
 ```
 
 
-More information can be found in [Auth0's documentation](https://auth0.com/docs/libraries/lock/authentication-modes#popup-mode).
+More information can be found in [Auth0's documentation](https://auth0.com/docs/libraries/lock/v10/popup-mode).
 
 ## Browser Compatibility
 
@@ -375,7 +406,7 @@ If you have found a bug or if you have a feature request, please report them at 
 This project is licensed under the MIT license. See the [LICENSE](LICENSE) file for more info.
 
 
-[travis-image]: https://travis-ci.org/auth0/lock.svg?branch=master
+[travis-image]: https://img.shields.io/travis/auth0/lock.svg?style=flat-square&branch=master
 [travis-url]: https://travis-ci.org/auth0/lock
 [npm-image]: https://img.shields.io/npm/v/auth0-lock.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/auth0-lock

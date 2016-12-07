@@ -7,12 +7,11 @@ This library will help you work with [JWTs](http://jwt.io/).
 * **Decode a JWT** from your AngularJS app
 * Check the **expiration date** of the JWT
 * Automatically **send the JWT in every request** made to the server
-* Use **refresh tokens to always send a not expired JWT** to the server
 * Manage the user's authentication state with **authManager**
 
 ## Installing it
 
-You have several options:
+You have several options: Install with either bower or npm and link to the installed file from html using script tag.
 
 ```bash
 bower install angular-jwt
@@ -20,10 +19,6 @@ bower install angular-jwt
 
 ```bash
 npm install angular-jwt
-```
-
-```html
-<script type="text/javascript" src="https://cdn.rawgit.com/auth0/angular-jwt/master/dist/angular-jwt.js"></script>
 ```
 
 ## jwtHelper
@@ -80,7 +75,7 @@ angular
       tokenGetter: ['myService', function(myService) {
         myService.doSomething();
         return localStorage.getItem('id_token');
-      }];
+      }]
     });
 
     $httpProvider.interceptors.push('jwtInterceptor');
@@ -106,13 +101,13 @@ angular
       tokenGetter: ['myService', function(myService) {
         myService.doSomething();
         return localStorage.getItem('id_token');
-      }];
+      }]
     });
 
     $httpProvider.interceptors.push('jwtInterceptor');
   })
   .controller('Controller', function Controller($http) {
-    // This request will NOT send the token as it has skipAuthentication
+    // This request will NOT send the token as it has skipAuthorization
     $http({
       url: '/hola',
       skipAuthorization: true,
@@ -135,7 +130,10 @@ angular
 
       whiteListedDomains: ['api.myapp.com', 'localhost']
     });
+  });
 ```
+
+Note that you only need to provide the domain. Protocols (ex: `http://`) and port numbers should be omitted. 
 
 ### Not Sending the JWT for Template Requests
 
@@ -188,12 +186,12 @@ angular
       skipAuthorization: true,
       method: 'GET'
     });
-  }
+  });
 ```
 
-## Managing Authentication state with authManager
+## Managing Authentication state with `authManager`
 
-Almost all applications that implement authentication need some indication of whether the user is authenticated or not. The **authManager** service provides a way to determine if users are authenticated or not. This can be useful for conditionally showing and hiding different parts of the UI.
+Almost all applications that implement authentication need some indication of whether the user is authenticated or not and the **authManager** service provides a way to do this. Typical cases include conditionally showing and hiding different parts of the UI, checking whether the user is authenticated when the page is refreshed, and restricting routes to authenticated users.
 
 ```html
   <button ng-if="!isAuthenticated">Log In</button>
@@ -213,6 +211,57 @@ angular
 
   });
 ```
+
+**Note:** If your `tokenGetter` relies on request `options`, be mindful that `checkAuthOnRefresh()` will pass `null` as `options` since the call happens in the run phase of the Angular lifecycle and no requests are fired through the Angular app. If you are using requestion `options`, check that `options` isn't `null` in your `tokenGetter` function:
+
+```js
+...
+
+tokenGetter: ['options', function (options) {
+  if (options && options.url.substr(options.url.length - 5) == '.html') {
+    return null;
+  }
+  return localStorage.getItem('id_token');
+}],
+
+...
+```
+
+#### Responding to an Expired Token on Page Refresh
+
+If the user is holding an expired JWT when the page is refreshed, the action that is taken is at your discretion. You may use the `tokenHasExpired` event to listen for expired tokens on page refresh and respond however you like.
+
+```js
+// app.run.js
+
+...
+
+$rootScope.$on('tokenHasExpired', function() {
+  alert('Your session has expired!');
+});
+
+```
+### Limiting Access to Routes
+
+Access to various client-side routes can be limited to users who have an unexpired JWT, which is an indication that they are authenticated. Use `requiresLogin: true` on whichever routes you want to protect.
+
+```js
+...
+
+.state('ping', {
+  url: '/ping',
+  controller: 'PingController',
+  templateUrl: 'components/ping/ping.html',
+  controllerAs: 'vm',
+  data: {
+    requiresLogin: true
+  }
+});
+
+...
+```
+
+> **Note:** Protecting a route on the client side offers no guarantee that a savvy user won't be able to hack their way to that route. In fact, this could be done simply if the user alters the expiry time in their JWT with a tool like [jwt.io](https://jwt.io). Always ensure that sensitive data is kept off the client side and is protected on the server. 
 
 ### Redirecting the User On Unauthorized Requests
 
@@ -241,6 +290,7 @@ angular
     jwtOptionsProvider.config({
       unauthenticatedRedirectPath: '/login'
     });
+  });
 ```
 
 ### Configuring the Unauthenticated Redirector
@@ -256,6 +306,7 @@ angular
         $state.go('app.login');
       }]
     });
+  });
 ```
 
 ### Sending the token as a URL Param
@@ -297,7 +348,7 @@ When you're using the `tokenGetter` function, it's then called with the injector
 jwtOptionsProvider({
   tokenGetter: ['store', '$http', function(store, $http) {
     ...
-  }];
+  }]
 });
 ```
 

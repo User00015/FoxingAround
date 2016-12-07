@@ -269,13 +269,13 @@
     <Compile Include="Models\ISpecialAbility.cs" />
     <Compile Include="Models\LegendaryAction.cs" />
     <Compile Include="Models\MonsterModel.cs" />
+    <Compile Include="Models\SavedEncountersModel.cs" />
     <Compile Include="Models\SavedEncountersViewModel.cs" />
     <Compile Include="Models\SpecialAbility.cs" />
     <Compile Include="Models\Environment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Interfaces\IMonsterRepository.cs" />
     <Compile Include="Repositories\MonsterRepository.cs" />
-    <Compile Include="Repositories\SavedEncountersModel.cs" />
     <Compile Include="Services\Difficulty.cs" />
     <Compile Include="Services\EncounterService.cs" />
     <Compile Include="Services\IDifficulty.cs" />
@@ -794,6 +794,9 @@
     <Content Include="bower_components\angular-lock\package.json" />
     <Content Include="bower_components\angular-lock\README.md" />
     <None Include="bundleconfig.json" />
+    <Content Include="bundleconfig.json.bindings">
+      <DependentUpon>bundleconfig.json</DependentUpon>
+    </Content>
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
       <DependentUpon>compilerconfig.json</DependentUpon>

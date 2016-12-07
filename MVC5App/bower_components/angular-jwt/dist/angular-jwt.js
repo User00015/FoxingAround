@@ -21,6 +21,31 @@ angular.module('angular-jwt.authManager', [])
 
       var config = jwtOptions.getConfig();
 
+      function invokeToken(tokenGetter) {
+        var token = null;
+        if (Array.isArray(tokenGetter)) {
+          token = $injector.invoke(tokenGetter, this, {options: null});
+        } else {
+          token = tokenGetter();
+        }
+        return token;
+      }
+
+      function invokeRedirector(redirector) {
+        if (Array.isArray(redirector) || angular.isFunction(redirector)) {
+          return $injector.invoke(redirector, config, {});
+        } else {
+          throw new Error('unauthenticatedRedirector must be a function');
+        }
+      }
+
+      function isAuthenticated() {
+        var token = invokeToken(config.tokenGetter);
+        if (token) {
+          return !jwtHelper.isTokenExpired(token);
+        }
+      }
+
       $rootScope.isAuthenticated = false;
 
       function authenticate() {
@@ -33,16 +58,12 @@ angular.module('angular-jwt.authManager', [])
 
       function checkAuthOnRefresh() {
         $rootScope.$on('$locationChangeStart', function () {
-          var tokenGetter = config.tokenGetter;
-          var token = null;
-          if (Array.isArray(tokenGetter)) {
-            token = $injector.invoke(tokenGetter, this, {});
-          } else {
-            token = config.tokenGetter();
-          }
+          var token = invokeToken(config.tokenGetter);
           if (token) {
             if (!jwtHelper.isTokenExpired(token)) {
               authenticate();
+            } else {
+              $rootScope.$broadcast('tokenHasExpired', token);
             }
           }
         });
@@ -50,21 +71,38 @@ angular.module('angular-jwt.authManager', [])
 
       function redirectWhenUnauthenticated() {
         $rootScope.$on('unauthenticated', function () {
-          var redirector = config.unauthenticatedRedirector;
-          if (Array.isArray(redirector)) {
-            $injector.invoke(redirector, this, {});
-          } else {
-            config.unauthenticatedRedirector($location);
-          }
+          invokeRedirector(config.unauthenticatedRedirector);
           unauthenticate();
         });
       }
 
+      function verifyRoute(event, next) {
+        if (!next) {
+          return false;
+        }
+
+        var routeData = (next.$$route) ? next.$$route : next.data;
+
+        if (routeData && routeData.requiresLogin === true) {
+          var token = invokeToken(config.tokenGetter);
+          if (!token || jwtHelper.isTokenExpired(token)) {
+            event.preventDefault();
+            invokeRedirector(config.unauthenticatedRedirector);
+          }
+        }
+      }
+
+      var eventName = ($injector.has('$state')) ? '$stateChangeStart' : '$routeChangeStart';
+      $rootScope.$on(eventName, verifyRoute);
+
       return {
         authenticate: authenticate,
         unauthenticate: unauthenticate,
+        getToken: function(){ return invokeToken(config.tokenGetter); },
+        redirect: function() { return invokeRedirector(config.unauthenticatedRedirector); },
         checkAuthOnRefresh: checkAuthOnRefresh,
-        redirectWhenUnauthenticated: redirectWhenUnauthenticated
+        redirectWhenUnauthenticated: redirectWhenUnauthenticated,
+        isAuthenticated: isAuthenticated
       }
     }]
   });
@@ -223,9 +261,9 @@ angular.module('angular-jwt.options', [])
         },
         loginPath: '/',
         unauthenticatedRedirectPath: '/',
-        unauthenticatedRedirector: function(location) {
-          location.path(this.unauthenticatedRedirectPath);
-        }
+        unauthenticatedRedirector: ['$location', function($location) {
+          $location.path(this.unauthenticatedRedirectPath);
+        }]
       };
 
       function JwtOptions() {

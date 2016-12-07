@@ -1,7 +1,7 @@
 .auth0-lock
   @require "_normalize"
 
-@require "social_icons.css"
+@import "social_icons"
 @import "_animate"
 @import "_transitions"
 @import "_mixins&keyframes"
@@ -9,6 +9,7 @@
 headerHeight = 118px
 submitHeight = 70px
 iphoneBar = 68px
+tabsHeight = 40px
 
 @media screen and (max-width: 480px)
   html.auth0-lock-html body
@@ -46,6 +47,22 @@ iphoneBar = 68px
 
     &.auth0-global-message-success
       background #7ED321
+
+    &.global-message-enter
+      height 0
+      paddingTop 0
+      paddingBottom 0
+    &.global-message-enter.global-message-enter-active
+      transition all 0.2s
+      height auto
+      paddingTop 10px
+      paddingBottom 10px
+
+    &.global-message-leave
+      transition all 0.2s
+      height 0
+      paddingTop 0
+      paddingBottom 0
 
     span
       -webkit-animation-delay .2s
@@ -232,8 +249,8 @@ iphoneBar = 68px
     position relative
 
   .auth0-lock-header-logo
-    width 50px
-    height 55px
+    width auto
+    height 58px
     display inline-block
     margin 0 0 11px
     vertical-align middle
@@ -477,7 +494,7 @@ iphoneBar = 68px
     font-size 12px
     color rgba(black,.54)
     line-height 22px
-    padding 10px 20px
+    padding 10px
     position relative
     a
       color rgba(black,.87)
@@ -513,6 +530,10 @@ iphoneBar = 68px
         vertical-align middle
         &.icon-text
           margin -4px 0 0 5px
+    
+    .auth0-label-submit
+      height 42px
+      line-height 42px
 
     +breakpoint("mobile")
       &:hover:not([disabled])
@@ -880,7 +901,7 @@ iphoneBar = 68px
       //mobile view
       @media screen and (max-width: 480px)
         height 100%
-        // overflow auto
+        overflow-y scroll
 
     .auth0-lock-cred-pane
       //mobile view
@@ -897,12 +918,6 @@ iphoneBar = 68px
         display table
         width 100%
 
-    &.auth0-lock-iphone
-      .auth0-lock-body-content
-        //mobile view
-        @media screen and (max-width: 480px)
-          min-height "calc(100vh - %s)" % (headerHeight + submitHeight + iphoneBar)
-
     .auth0-lock-content
       //mobile view
       @media screen and (max-width: 480px)
@@ -913,17 +928,30 @@ iphoneBar = 68px
       .auth0-lock-form p
         @media screen and (max-width: 480px)
           font-size 14px
+    
+    .auth0-lock-tabs-container
+      //mobile view
+      @media screen and (max-width: 480px)
+        position absolute
+        top 0
+        left 0
+        width 100%
+        margin 0
 
 
     .auth0-lock-terms
       @media screen and (max-width: 480px)
         position absolute
-        bottom 0
+        bottom -42px
         width 100%
         left 0
         -webkit-box-sizing border-box
         -moz-box-sizing border-box
         box-sizing border-box
+    
+    .auth0-lock-sign-up-terms-agreement label input
+      @media screen and (max-width: 480px)
+        top 2px
 
     .auth0-lock-submit
       //mobile view
@@ -939,6 +967,12 @@ iphoneBar = 68px
       //mobile view
       @media screen and (max-width: 480px)
         border-radius 0
+    
+    &.auth0-lock-iphone
+      .auth0-lock-body-content
+        //mobile view
+        @media screen and (max-width: 480px)
+          min-height "calc(100vh - %s)" % (headerHeight + submitHeight + iphoneBar)
 
     &.auth0-lock-no-submit
       .auth0-lock-body-content
@@ -946,33 +980,36 @@ iphoneBar = 68px
         @media screen and (max-width: 480px)
           min-height "calc(100vh - %s)" % headerHeight
 
-    &.auth0-lock-iphone
-      &.auth0-lock-no-submit
+      &.auth0-lock-iphone
         .auth0-lock-body-content
           //mobile view
           @media screen and (max-width: 480px)
             min-height "calc(100vh - %s)" % (headerHeight + iphoneBar)
 
     &.auth0-lock-with-terms
-      .auth0-lock-content
+      .auth0-lock-body-content
         //mobile view
         @media screen and (max-width: 480px)
-          top calc(50% - 32px) // - terms
+          margin-bottom 42px
 
     &.auth0-lock-with-tabs
       .auth0-lock-body-content
         //mobile view
         @media screen and (max-width: 480px)
-          min-height "calc(100vh - %s - 40px)" % (headerHeight + submitHeight) // - header - submit - tabs
+          min-height "calc(100vh - %s)" % (headerHeight + submitHeight + tabsHeight)
           padding-top 40px
-
-      // .auth0-lock-content
-      //   //mobile view
-      //   @media screen and (max-width: 480px)
-      //     position relative
-      //     top auto
-      //     -webkit-transform none
-      //     transform none
+          
+      &.auth0-lock-with-terms
+        .auth0-lock-body-content
+          //mobile view
+          @media screen and (max-width: 480px)
+            min-height "calc(100vh - %s - 42px)" % (headerHeight + submitHeight + tabsHeight) // - header - submit - tabs - terms
+      
+      &.auth0-lock-iphone
+        .auth0-lock-body-content
+          //mobile view
+          @media screen and (max-width: 480px)
+            min-height "calc(100vh - %s)" % (headerHeight + submitHeight + tabsHeight + iphoneBar)
 
   // Opened in frame
 
@@ -1028,14 +1065,7 @@ iphoneBar = 68px
 .auth0-lock.auth0-lock
   .auth0-lock-tabs-container
     margin -20px -20px 20px
-
-    //mobile view
-    @media screen and (max-width: 480px)
-      position absolute
-      top 0
-      left 0
-      width 100%
-      margin 0
+    height tabsHeight
 
   .auth0-lock-tabs
     background white
@@ -1257,6 +1287,7 @@ iphoneBar = 68px
 .auth0-lock .auth0-lock-sign-up-terms-agreement
   label input
     margin-right 5px
+    position relative
 
 input[type="button"]
    cursor pointer

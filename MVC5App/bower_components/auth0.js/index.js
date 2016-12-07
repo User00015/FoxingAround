@@ -6,6 +6,7 @@ var Base64Url         = require('./lib/base64_url');
 var assert_required   = require('./lib/assert_required');
 var is_array          = require('./lib/is-array');
 var index_of          = require('./lib/index-of');
+var nonceGenerator    = require('./lib/nonce-generator');
 
 var qs                = require('qs');
 var xtend             = require('xtend');
@@ -20,6 +21,8 @@ var same_origin       = require('./lib/same-origin');
 var json_parse        = require('./lib/json-parse');
 var LoginError        = require('./lib/LoginError');
 var use_jsonp         = require('./lib/use_jsonp');
+
+var SilentAuthenticationHandler = require('./lib/SilentAuthenticationHandler');
 
 /**
  * Check if running in IE.
@@ -157,6 +160,9 @@ function Auth0 (options) {
   };
   this._useCordovaSocialPlugins = false || options.useCordovaSocialPlugins;
   this._sendClientInfo = null != options.sendSDKClientInfo ? options.sendSDKClientInfo : true;
+
+  this._scope = options.scope || null;
+  this._audience = options.audience || null;
 }
 
 /**
@@ -289,6 +295,8 @@ Auth0.prototype._configureOfflineMode = function(options) {
 
 Auth0.prototype._getUserInfo = function (profile, id_token, callback) {
 
+  console.warn("DEPRECATION NOTICE: This method will be soon deprecated, use `getUserInfo` instead.")
+
   if (!(profile && !profile.user_id)) {
     return callback(null, profile);
   }
@@ -328,6 +336,56 @@ Auth0.prototype._getUserInfo = function (profile, id_token, callback) {
     type:         'json',
     crossOrigin:  !same_origin(protocol, domain),
     data:         {id_token: id_token}
+  }).fail(function (err) {
+    fail(err.status, err.responseText);
+  }).then(function (userinfo) {
+    callback(null, userinfo);
+  });
+
+};
+
+/**
+ * Get user information from API
+ *
+ * @param {Object} profile
+ * @param {String} id_token
+ * @param {Function} callback
+ * @private
+ */
+
+Auth0.prototype.getUserInfo = function (access_token, callback) {
+
+  if ('function' !== typeof callback) {
+    throw new Error('A callback function is required');
+  }
+  if (!access_token || typeof access_token !== 'string') {
+    return callback(new Error('Invalid token'));
+  }
+
+  var _this = this;
+  var protocol = 'https:';
+  var domain = this._domain;
+  var endpoint = '/userinfo';
+  var url = joinUrl(protocol, domain, endpoint);
+
+  var fail = function (status, description) {
+    var error = new Error(status + ': ' + (description || ''));
+
+    // These two properties are added for compatibility with old versions (no Error instance was returned)
+    error.error = status;
+    error.error_description = description;
+
+    callback(error);
+  };
+
+  return reqwest({
+    url:          same_origin(protocol, domain) ? endpoint : url,
+    method:       'post',
+    type:         'json',
+    crossOrigin:  !same_origin(protocol, domain),
+    headers: {
+      'Authorization': 'Bearer ' + access_token
+    }
   }).fail(function (err) {
     fail(err.status, err.responseText);
   }).then(function (userinfo) {
@@ -438,9 +496,10 @@ Auth0.prototype.decodeJwt = function (jwt) {
  *
  */
 
-Auth0.prototype.parseHash = function (hash) {
+Auth0.prototype.parseHash = function (hash, options) {
+  options = options || {};
   hash = hash || window.location.hash;
-  hash = hash.substr(1).replace(/^\//, '');
+  hash = hash.replace(/^#?\/?/, '');
   var parsed_qs = qs.parse(hash);
 
   if (parsed_qs.hasOwnProperty('error')) {
@@ -486,6 +545,13 @@ Auth0.prototype.parseHash = function (hash) {
     if (prof.iss && prof.iss !== 'https://' + this._domain + '/') {
       return invalidJwt(
         'The domain configured (https://' + this._domain + '/) does not match with the domain set in the token (' + prof.iss + ').');
+    }
+
+    var nonce = options.nonce || window.localStorage.getItem('com.auth0.auth.nonce');
+    window.localStorage.removeItem('com.auth0.auth.nonce');
+
+    if ((nonce || prof.nonce) && prof.nonce !== nonce) {
+      return invalidJwt('The nonce does not match.');
     }
   }
 
@@ -705,6 +771,33 @@ Auth0.prototype._buildAuthorizationParameters = function(args, blacklist) {
   return query;
 };
 
+Auth0.prototype._buildAuthorizeUrl = function(options) {
+  var constructorOptions = {};
+
+  if (this._scope) {
+    constructorOptions.scope = this._scope;
+  }
+
+  if (this._audience) {
+    constructorOptions.audience = this._audience;
+  }
+
+
+  var qs = [
+    this._getMode(options),
+    constructorOptions,
+    options,
+    {
+      client_id: this._clientID,
+      redirect_uri: this._getCallbackURL(options)
+    }
+  ];
+
+  var query = this._buildAuthorizeQueryString(qs);
+
+  return joinUrl('https:', this._domain, '/authorize?' + query);
+}
+
 /**
  * Login user
  *
@@ -718,6 +811,19 @@ Auth0.prototype.login = Auth0.prototype.signin = function (options, callback) {
   // By default, options.sso is true
   if (!checkIfSet(options, 'sso')) {
     options.sso = true;
+  }
+
+  if (this._responseType.indexOf('id_token') > -1 && !options.nonce) {
+    if (typeof options.passcode === 'undefined' && (
+        ((typeof options.username !== 'undefined' || typeof options.email !== 'undefined') && !callback) ||
+        (typeof options.username === 'undefined' && typeof options.email === 'undefined')
+        ) ) {
+      var nonce = nonceGenerator.randomString(16);
+      if (nonce) {
+        options.nonce = nonce;
+        window.localStorage.setItem('com.auth0.auth.nonce', nonce);
+      }
+    }
   }
 
   if (typeof options.passcode !== 'undefined') {
@@ -737,22 +843,15 @@ Auth0.prototype.login = Auth0.prototype.signin = function (options, callback) {
     return this.loginWithPopup(options, callback);
   }
 
+  if (!options.nonce && this._responseType.indexOf('id_token') > -1) {
+    throw new Error('nonce is mandatory');
+  }
+
   this._authorize(options);
 };
 
 Auth0.prototype._authorize = function(options) {
-  var qs = [
-    this._getMode(options),
-    options,
-    {
-      client_id: this._clientID,
-      redirect_uri: this._getCallbackURL(options)
-    }
-  ];
-
-  var query = this._buildAuthorizeQueryString(qs);
-
-  var url = joinUrl('https:', this._domain, '/authorize?' + query);
+  var url = this._buildAuthorizeUrl(options);
 
   if (options.popup) {
     this._buildPopupWindow(options, url);
@@ -936,6 +1035,10 @@ Auth0.prototype.loginWithPopup = function(options, callback) {
     throw new Error('popup mode should receive a mandatory callback');
   }
 
+  if (!options.nonce && this._responseType.indexOf('id_token') > -1) {
+    throw new Error('nonce is mandatory');
+  }
+
   var qs = [this._getMode(options), options, { client_id: this._clientID, owp: true }];
 
   if (this._sendClientInfo) {
@@ -969,7 +1072,7 @@ Auth0.prototype.loginWithPopup = function(options, callback) {
     }
 
     // Handle profile retrieval from id_token and respond
-    if (result.id_token) {
+    if (result.access_token || result.id_token) {
       return callback(null, _this._prepareResult(result));
     }
 
@@ -1069,7 +1172,11 @@ Auth0.prototype.loginWithUsernamePasswordAndSSO = function (options, callback) {
   var popupPosition = this._computePopupPosition(options.popupOptions);
   var popupOptions = xtend(popupPosition, options.popupOptions);
 
-  var popup = WinChan.open({
+  if (!options.nonce && this._responseType.indexOf('id_token') > -1) {
+    throw new Error('nonce is mandatory');
+  }
+
+  var winchanOptions = {
     url: 'https://' + this._domain + '/sso_dbconnection_popup/' + this._clientID,
     relay_url: 'https://' + this._domain + '/relay.html',
     window_features: stringifyPopupSettings(popupOptions),
@@ -1086,7 +1193,17 @@ Auth0.prototype.loginWithUsernamePasswordAndSSO = function (options, callback) {
         scope:      options.scope
       }
     }
-  }, function (err, result) {
+  };
+
+  if (options._csrf) {
+    winchanOptions.params.options._csrf = options._csrf;
+  }
+
+  if (options.device) {
+    winchanOptions.params.options.device = options.device;
+  }
+
+  var popup = WinChan.open(winchanOptions, function (err, result) {
     // Eliminate `_current_popup` reference manually because
     // Winchan removes `.kill()` method from window and also
     // doesn't call `.kill()` by itself
@@ -1300,6 +1417,10 @@ Auth0.prototype.loginWithUsernamePassword = function (options, callback) {
   // TODO We should deprecate this, really hacky and confuses people.
   if (options.popup  && !this._getCallbackOnLocationHash(options)) {
     popup = this._buildPopupWindow(options);
+  }
+
+  if (!options.nonce && this._responseType.indexOf('id_token') > -1) {
+    throw new Error('nonce is mandatory');
   }
 
   // When a callback with more than one argument is specified and sso: true then
@@ -1629,6 +1750,41 @@ Auth0.prototype.getDelegationToken = function (options, callback) {
 };
 
 /**
+ * Fetches a new id_token/access_token from Auth0
+ *
+ * @example
+ *
+ *     auth0.silentAuthentication({}, function(error, result) {
+ *        if (error) {
+ *          console.log(error);
+ *        }
+ *        // result.id_token
+ *     });
+ *
+ * @example
+ *
+ *     auth0.silentAuthentication({callbackUrl: "https://site.com/silentCallback"}, function(error, result) {
+ *        if (error) {
+ *          console.log(error);
+ *        }
+ *        // result.id_token
+ *     });
+ *
+ * @method silentAutnetication
+ * @param {Object} options
+ * @param {function} callback
+ */
+Auth0.prototype.silentAuthentication = function (options, callback) {
+  var usePostMessage = options.usePostMessage || false;
+
+  delete options.usePostMessage;
+
+  options = xtend(options, {prompt:'none'});
+  var handler = new SilentAuthenticationHandler(this, this._buildAuthorizeUrl(options));
+  handler.login(callback, usePostMessage);
+};
+
+/**
  * Trigger logout redirect with
  * params from `query` object
  *
@@ -1642,15 +1798,34 @@ Auth0.prototype.getDelegationToken = function (options, callback) {
  *     auth0.logout({returnTo: 'http://logout'});
  *     // redirects to -> 'https://yourapp.auth0.com/logout?returnTo=http://logout'
  *
+ * @example
+ *
+ *     auth0.logout(null, {version: 'v2'});
+ *     // redirects to -> 'https://yourapp.auth0.com/v2/logout'
+ *
+ * @example
+ *
+ *     auth0.logout({returnTo: 'http://logout'}, {version: 2});
+ *     // redirects to -> 'https://yourapp.auth0.com/v2/logout?returnTo=http://logout'
+ *
  * @method logout
  * @param {Object} query
  */
 
-Auth0.prototype.logout = function (query) {
-  var url = joinUrl('https:', this._domain, '/logout');
+Auth0.prototype.logout = function (query, options) {
+  var pathName = '/logout';
+  options = options || {};
+
+  if (options.version == 'v2') {
+    pathName = '/v2' + pathName
+  }
+
+  var url = joinUrl('https:', this._domain, pathName);
+
   if (query) {
     url += '?' + qs.stringify(query);
   }
+
   this._redirect(url);
 };
 
@@ -1790,9 +1965,8 @@ Auth0.prototype.startPasswordless = function (options, callback) {
         data.authParams = {};
       }
 
-      data.authParams.redirect_uri = this._callbackURL;
-      data.authParams.response_type = this._shouldRedirect && !this._callbackOnLocationHash ?
-        "code" : "token";
+      data.authParams.redirect_uri = options.callbackURL || this._callbackURL;
+      data.authParams.response_type = this._getResponseType(options);
     }
 
     if (options.send) {
@@ -1907,14 +2081,12 @@ Auth0.prototype._prepareResult = function(result) {
     return;
   }
 
-  var idTokenPayload = result.profile
-    ? result.profile
-    : this.decodeJwt(result.id_token);
+  var decodedIdToken = result.id_token ? this.decodeJwt(result.id_token) : undefined;
 
   return {
     accessToken: result.access_token,
     idToken: result.id_token,
-    idTokenPayload: idTokenPayload,
+    idTokenPayload: result.profile || decodedIdToken,
     refreshToken: result.refresh_token,
     state: result.state
   };

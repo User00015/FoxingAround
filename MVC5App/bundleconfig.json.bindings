@@ -1,0 +1,1 @@
+﻿///<binding BeforeBuild='bower_components/auth0-lock/build/lock.min.js' />

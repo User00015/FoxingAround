@@ -58,7 +58,6 @@
             </div>
         </div>
 
-        <!--<table st-table="encounter" st-pipe="getEncounter" class="table table-striped table-bordered" ng-show="encounter">-->
         <encounter-table encounter="encounter" save="saveNewEncounter"></encounter-table>
 
         <button type="submit" class="btn btn-default btn-primary" ng-disabled="formEncounter.$invalid || isLoading" ng-click="createEncounters()">

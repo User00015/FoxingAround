@@ -5,11 +5,15 @@
   angular
     .module('auth0.lock', [])
     .provider('lock', lock);
-  
+
   function lock() {
     if (typeof Auth0Lock !== 'function') {
       throw new Error('Auth0Lock must be loaded.');
     }
+
+    // Stub required functions to allow auth0-angular to initialize
+    Auth0Lock.prototype.getClient = function() { void 0; };
+    Auth0Lock.prototype.parseHash = function() { void 0; };
 
     this.init = function(config) {
       if (!config) {
@@ -18,11 +22,12 @@
       this.clientID = config.clientID;
       this.domain = config.domain;
       this.options = config.options || {};
-    }
+    };
 
-    this.$get = function($rootScope) {
+    this.$get = ["$rootScope", function($rootScope) {
 
       var Lock = new Auth0Lock(this.clientID, this.domain, this.options);
+      var credentials = {clientID: this.clientID, domain: this.domain};
       var lock = {};
       var functions = [];
       for (var i in Lock) {
@@ -64,7 +69,31 @@
           return customFunction;
         })(functions[i]);
       }
+
+      lock.interceptHash = function() {
+        $rootScope.$on('$locationChangeStart', function(event, location) {
+
+          if (/id_token=/.test(location) || /error=/.test(location)) {
+            var auth0 = new Auth0(credentials);
+
+            // Hash simulation for html5Mode(true).
+            var hash = (window.location.hash) ? window.location.hash : '#' + location.replace(/http.?:\/\/[^/]+/,'').slice(1);
+
+            var authResult = auth0.parseHash(hash);
+          }
+
+          if (authResult && authResult.idToken) {
+            Lock.emit('authenticated', authResult);
+          }
+
+          if (authResult && authResult.error) {
+            Lock.emit('authorization_error', authResult);
+          }
+
+        });
+      };
+
       return lock;
-    }
+    }]
   }
 })();

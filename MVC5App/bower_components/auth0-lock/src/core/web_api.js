@@ -80,12 +80,16 @@ class Auth0WebAPI {
     client.startPasswordless(options, err => cb(normalizeError(err)));
   }
 
-  parseHash(lockID, hash = undefined) {
-    return this.clients[lockID].parseHash(hash);
+  parseHash(lockID, hash = '') {
+    return this.clients[lockID].parseHash(decodeURIComponent(hash));
   }
 
   getProfile(lockID, token, callback) {
     return this.clients[lockID].getProfile(token, callback);
+  }
+
+  getUserInfo(lockID, token, callback) {
+    return this.clients[lockID].getUserInfo(token, callback);
   }
 
   getSSOData(lockID, ...args) {
