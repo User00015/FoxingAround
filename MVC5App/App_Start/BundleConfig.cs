@@ -8,23 +8,22 @@ namespace MVC5App
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/bower_components/jquery/dist/jquery.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/Scripts/jquery.validate*"));
+                        "~/bower_components/jquery-validation/dist/*.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                "~/Scripts/bootstrap.min.js",
-                "~/Scripts/respond.js"));
+                "~/bower_components/bootstrap/dist/bootstrap.min.js",
+                "~/bower_components/respond/dest/*.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
-                "~/bower_components/angular/angular.js",
-                "~/bower_components/angular-resource/angular-resource.js",
-                "~/Scripts/ng-map.min.js",
-                "~/bower_components/angular-environment/dist/angular-environment.js",
+                "~/bower_components/angular/angular.min.js",
+                "~/bower_components/angular-resource/angular-resource.min.js",
+                "~/bower_components/angular-environment/dist/angular-environment.min.js",
                 "~/Scripts/smart-table.min.js",
                 "~/bower_components/angular-animate/angular-animate.min.js",
-                "~/bower_components/angular-route/angular-route.js"));
+                "~/bower_components/angular-route/angular-route.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/angularapp").Include(
                 "~/Angular/*.js").IncludeDirectory(

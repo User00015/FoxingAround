@@ -4,5 +4,11 @@
     "inputFiles": [
       "bower_components/auth0-lock/build/lock.js"
     ]
+  },
+  {
+    "outputFileName": "bower_components/ng-maps/dist/map.min.js",
+    "inputFiles": [
+      "bower_components/ng-maps/dist/map.js"
+    ]
   }
 ]
