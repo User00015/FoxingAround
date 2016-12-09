@@ -12,5 +12,6 @@ namespace MVC5App.Services.Interfaces
         IEnumerable<MonsterViewModel> MonsterResolver(IPartyService party);
         double ApplyMonsterSizeMultiplier(int monsters);
         int GetEncountersExperienceValue(IEnumerable<MonsterViewModel> monsters);
+        int CalculateQuantityToAdd(IList<MonsterViewModel> finalList, IMonsterModel monster);
     }
 }

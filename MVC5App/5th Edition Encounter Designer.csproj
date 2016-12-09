@@ -266,6 +266,7 @@
     <Compile Include="Models\Helpers.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\IEnvironment.cs" />
+    <Compile Include="Models\IMonsterModel.cs" />
     <Compile Include="Models\ISpecialAbility.cs" />
     <Compile Include="Models\LegendaryAction.cs" />
     <Compile Include="Models\MonsterModel.cs" />
@@ -282,6 +283,7 @@
     <Compile Include="Services\Interfaces\IEncounterService.cs" />
     <Compile Include="Services\Interfaces\IPartyService.cs" />
     <Compile Include="Services\PartyService.cs" />
+    <Compile Include="Services\RandomNumberGenerator.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\DifficultyViewModel.cs" />
     <Compile Include="ViewModels\EncounterViewModel.cs" />
@@ -1215,10 +1217,6 @@
     <Content Include="bundleconfig.json.bindings">
       <DependentUpon>bundleconfig.json</DependentUpon>
     </Content>
-    <None Include="compilerconfig.json" />
-    <None Include="compilerconfig.json.defaults">
-      <DependentUpon>compilerconfig.json</DependentUpon>
-    </None>
     <Content Include="Content\cerulean-bootstrap.less" />
     <Content Include="Content\variables.less" />
     <Content Include="Content\final.less" />

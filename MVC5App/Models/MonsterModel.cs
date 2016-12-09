@@ -5,7 +5,7 @@ using MVC5App.Controllers;
 namespace MVC5App.Models
 {
     [DynamoDBTable("Monsters")]
-    public class MonsterModel
+    public class MonsterModel : IMonsterModel
     {
         [DynamoDBHashKey]
         public int Id { get; set; } 
