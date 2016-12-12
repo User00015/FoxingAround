@@ -1,3 +1,4 @@
+import urljoin from 'url-join';
 import Immutable, { List, Map, Set } from 'immutable';
 import { isSmallScreen } from '../utils/media_utils';
 import { endsWith } from '../utils/string_utils';
@@ -21,12 +22,16 @@ const {
 
 export function setup(id, clientID, domain, options, hookRunner, emitEventFn) {
   let m = init(id, Immutable.fromJS({
-    assetsUrl: extractAssetsUrlOption(options, domain),
+    clientBaseUrl: extractClientBaseUrlOption(options, domain),
+    tenantBaseUrl: extractTenantBaseUrlOption(options, domain),
+    languageBaseUrl: extractLanguageBaseUrlOption(options, domain),
     auth: extractAuthOptions(options),
     clientID: clientID,
     domain: domain,
     emitEventFn: emitEventFn,
     hookRunner: hookRunner,
+    useTenantInfo: options.__useTenantInfo || false,
+    hashCleanup: options.hashCleanup === false ? false : true,
     allowedConnections: Immutable.fromJS(options.allowedConnections || []),
     ui: extractUIOptions(id, options)
   }));
@@ -48,8 +53,20 @@ export function domain(m) {
   return get(m, "domain");
 }
 
-export function assetsUrl(m) {
-  return get(m, "assetsUrl");
+export function clientBaseUrl(m) {
+  return get(m, "clientBaseUrl");
+}
+
+export function tenantBaseUrl(m) {
+  return get(m, "tenantBaseUrl");
+}
+
+export function useTenantInfo(m) {
+  return get(m, "useTenantInfo");
+}
+
+export function languageBaseUrl(m) {
+  return get(m, "languageBaseUrl");
 }
 
 export function setSubmitting(m, value, error = "") {
@@ -98,7 +115,7 @@ export function stopRendering(m) {
 function extractUIOptions(id, options) {
   const closable = options.container ? false : undefined === options.closable ? true : !!options.closable;
   const theme = options.theme || {};
-  const { labeledSubmitButton, logo, primaryColor } = theme;
+  const { labeledSubmitButton, logo, primaryColor, authButtons } = theme;
 
   const avatar = options.avatar !== null;
   const customAvatarProvider = options.avatar
@@ -123,11 +140,24 @@ function extractUIOptions(id, options) {
     mobile: undefined === options.mobile ? false : !!options.mobile,
     popupOptions: undefined === options.popupOptions ? {} : options.popupOptions,
     primaryColor: typeof primaryColor === "string" ? primaryColor : undefined,
-    rememberLastLogin: undefined === options.rememberLastLogin ? true : !!options.rememberLastLogin
+    rememberLastLogin: undefined === options.rememberLastLogin ? true : !!options.rememberLastLogin,
+    authButtonsTheme: typeof authButtons === "object" ? authButtons : {}
   });
 }
 
-const { get: getUIAttribute } = dataFns(["core", "ui"]);
+const {
+  get: getUI,
+  set: setUI
+} = dataFns(["core", "ui"]);
+
+const {
+  get: tgetUI,
+  set: tsetUI
+} = dataFns(["core", "transient", "ui"]);
+
+const getUIAttribute = (m, attribute) => {
+  return tgetUI(m, attribute) || getUI(m, attribute);
+};
 
 export const ui = {
   containerID: lock => getUIAttribute(lock, "containerID"),
@@ -145,6 +175,7 @@ export const ui = {
   mobile: lock => getUIAttribute(lock, "mobile"),
   popupOptions: lock => getUIAttribute(lock, "popupOptions"),
   primaryColor: lock => getUIAttribute(lock, "primaryColor"),
+  authButtonsTheme: lock => getUIAttribute(lock, "authButtonsTheme"),
   rememberLastLogin: m => tget(
     m,
     "rememberLastLogin",
@@ -155,6 +186,7 @@ export const ui = {
 const { get: getAuthAttribute } = dataFns(["core", "auth"]);
 
 export const auth = {
+  connectionScopes: m => getAuthAttribute(m, "connectionScopes"),
   params: m => tget(m, "authParams") || getAuthAttribute(m, "params"),
   redirect: lock => getAuthAttribute(lock, "redirect"),
   redirectUrl: lock => getAuthAttribute(lock, "redirectUrl"),
@@ -165,6 +197,7 @@ export const auth = {
 
 function extractAuthOptions(options) {
   let {
+    connectionScopes,
     params,
     redirect,
     redirectUrl,
@@ -173,6 +206,7 @@ function extractAuthOptions(options) {
     sso
   } = options.auth || {};
 
+  connectionScopes = typeof connectionScopes === "object" ? connectionScopes : {};
   params = typeof params === "object" ? params : {};
   redirectUrl = typeof redirectUrl === "string" && redirectUrl ? redirectUrl : undefined;
   redirect = typeof redirect === "boolean" ? redirect : true;
@@ -186,6 +220,7 @@ function extractAuthOptions(options) {
   }
 
   return Immutable.fromJS({
+    connectionScopes,
     params,
     redirect,
     redirectUrl,
@@ -201,7 +236,15 @@ export function withAuthOptions(m, opts) {
     .toJS();
 }
 
-function extractAssetsUrlOption(opts, domain) {
+function extractClientBaseUrlOption(opts, domain) {
+  if (opts.clientBaseUrl && typeof opts.clientBaseUrl === "string") {
+    return opts.clientBaseUrl;
+  }
+
+  if (opts.configurationBaseUrl && typeof opts.configurationBaseUrl === "string") {
+    return opts.configurationBaseUrl;
+  }
+
   if (opts.assetsUrl && typeof opts.assetsUrl === "string") {
     return opts.assetsUrl;
   }
@@ -219,6 +262,48 @@ function extractAssetsUrlOption(opts, domain) {
     return domainUrl;
   }
 }
+
+export function extractTenantBaseUrlOption(opts, domain) {
+  if (opts.configurationBaseUrl && typeof opts.configurationBaseUrl === "string") {
+    return opts.configurationBaseUrl;
+  }
+
+  if (opts.assetsUrl && typeof opts.assetsUrl === "string") {
+    return opts.assetsUrl;
+  }
+
+  const domainUrl = "https://" + domain;
+  const hostname = parseUrl(domainUrl).hostname;
+  const DOT_AUTH0_DOT_COM = ".auth0.com";
+  const AUTH0_US_CDN_URL = "https://cdn.auth0.com";
+
+  const parts = hostname.split(".");
+  const tenant_name = parts[0];
+  var domain;
+
+  if (endsWith(hostname, DOT_AUTH0_DOT_COM)) {
+    domain = parts.length > 3
+      ? "https://cdn." + parts[parts.length - 3] + DOT_AUTH0_DOT_COM
+      : AUTH0_US_CDN_URL;
+  } else {
+    domain = domainUrl;
+  }
+
+  return urljoin(domain, 'tenants', 'v1', `${tenant_name}.js`);
+}
+
+function extractLanguageBaseUrlOption(opts, domain) {
+  if (opts.languageBaseUrl && typeof opts.languageBaseUrl === "string") {
+    return opts.languageBaseUrl;
+  }
+
+  if (opts.assetsUrl && typeof opts.assetsUrl === "string") {
+    return opts.assetsUrl;
+  }
+
+  return "https://cdn.auth0.com"
+}
+
 
 export function render(m) {
   return tset(m, "render", true);
@@ -288,7 +373,11 @@ export function hasOnlyConnections(m, type = undefined, ...strategies) {
 }
 
 export function hasSomeConnections(m, type = undefined, ...strategies) {
-  return connections(m, type, ...strategies).count() > 0;
+  return countConnections(m, type, ...strategies) > 0;
+}
+
+export function countConnections(m, type = undefined, ...strategies) {
+  return connections(m, type, ...strategies).count();
 }
 
 export function findConnection(m, name) {
@@ -322,7 +411,14 @@ export function runHook(m, str, ...args) {
 }
 
 export function emitEvent(m, str, ...args) {
-  setTimeout(() => get(m, "emitEventFn")(str, ...args), 0);
+  setTimeout(() => {
+    const emitEventFn = get(m, "emitEventFn");
+    const hadListener = emitEventFn(str, ...args);
+    // Handle uncaught custom error
+    if (str === "unrecoverable_error" && !hadListener) {
+      throw new Error(...args);
+    }
+  }, 0);
 }
 
 export function loginErrorMessage(m, error, type) {
@@ -353,6 +449,14 @@ export function loginErrorMessage(m, error, type) {
     code = INVALID_MAP[type];
   }
 
+  if (code === "a0.mfa_registration_required") {
+    code = "lock.mfa_registration_required";
+  }
+
+  if (code === "a0.mfa_invalid_code") {
+    code = "lock.mfa_invalid_code";
+  }
+
   return i18n.str(m, ["error", "login", code])
     || i18n.str(m, ["error", "login", "lock.fallback"]);
 }
@@ -370,6 +474,10 @@ export function hasStopped(m) {
   return get(m, "stopped");
 }
 
+export function hashCleanup(m) {
+  return get(m, "hashCleanup");
+}
+
 export function emitHashParsedEvent(m, parsedHash) {
   emitEvent(m, "hash_parsed", parsedHash);
 }
@@ -380,6 +488,10 @@ export function emitAuthenticatedEvent(m, result) {
 
 export function emitAuthorizationErrorEvent(m, error) {
   emitEvent(m, "authorization_error", error);
+}
+
+export function emitUnrecoverableErrorEvent(m, error) {
+  emitEvent(m, "unrecoverable_error", error);
 }
 
 export function showBadge(m) {
@@ -393,8 +505,36 @@ export function overrideOptions(m, opts) {
     m = tset(m, "allowedConnections", Immutable.fromJS(opts.allowedConnections));
   }
 
+  if (opts.flashMessage) {
+    const key = "success" === opts.flashMessage.type ? "globalSuccess" : "globalError";
+    m = tset(m, key, opts.flashMessage.text);
+  }
+
   if (opts.auth && opts.auth.params) {
     m = tset(m, "authParams", Immutable.fromJS(opts.auth.params));
+  }
+
+  if (opts.theme) {
+    if (opts.theme.primaryColor) {
+      m = tset(m, ["ui", "primaryColor"], opts.theme.primaryColor);
+    }
+
+    if (opts.theme.logo) {
+      m = tset(m, ["ui", "logo"], opts.theme.logo);
+    }
+  }
+
+  if (opts.language || opts.languageDictionary) {
+
+    if (opts.language) {
+      m = tset(m, ["ui", "language"], opts.language);
+    }
+
+    if (opts.languageDictionary) {
+      m = tset(m, ["ui", "dict"], opts.languageDictionary);
+    }
+
+    m = i18n.initI18n(m);
   }
 
   if (typeof opts.rememberLastLogin === "boolean") {

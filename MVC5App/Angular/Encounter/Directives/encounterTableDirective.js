@@ -14,7 +14,7 @@
 
             var saveHandler = scope.save(); //scope.save()(encounter)
 
-            scope.$on("saved", function() {
+            scope.$on("saved", function () {
                 scope.isSaved = true;
             });
 
@@ -47,7 +47,6 @@
                 scope.adjustedDifficulty = getDifficulty(scope.encounter.difficulty);
             });
 
-
             var updateEncounters = function () {
                 var monstersList = scope.encounter.monsters;
                 encounterService.updateEncounters(function (xp) {
@@ -56,7 +55,7 @@
                     scope.adjustedDifficulty = getDifficulty(difficulty);
                 }, monstersList);
                 scope.isSaved = false;
-                scope.$emit("encounterChanged");
+                scope.$emit("encountersChanged");
             };
 
             scope.removeMonster = function (monster) {
@@ -70,6 +69,7 @@
 
                 if (_.size(scope.encounter.monsters) === 0) {
                     scope.encounter = null;
+                    scope.$emit("encountersChanged");
                 } else {
                     updateEncounters();
                 }
@@ -80,31 +80,9 @@
                 updateEncounters();
             }
 
-            //scope.loadEncounter = function () {
-            //    var profile = store.get('profile');
-            //    var params = { email: profile.email }
-
-            //    encounterService.getSavedEncounters(function (encounter) {
-            //        scope.encounter = encounter;
-            //        scope.adjustedDifficulty = getDifficulty(encounter.difficulty);
-            //    }, params);
-            //}
-
             scope.saveEncounter = function (encounter) {
                 saveHandler(encounter);
                 scope.isSaved = true;
-
-
-                //    //var params = {
-                //    //    email: profile.email,
-                //    //    encounters: savedEncounters
-                //    //};
-                //    //encounterService.saveEncounters(function (result) {
-                //    //    console.log("Save Encounter response: " + result.statusText + " " + result.status);
-                //    //}, params);
-                //    console.log(savedEncounters);
-                //}, { email: profile.email });
-
             }
         }
     }

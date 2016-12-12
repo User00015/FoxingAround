@@ -6302,3 +6302,14 @@ body {
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
 }
+@media only screen and (min-width: 800px) {
+  table tr td:first-child {
+    width: 25%;
+  }
+}
+.navbar-brand {
+  padding: 1px 15px;
+}
+.navbar-brand > .image {
+  height: 100%;
+}

@@ -1,11 +1,11 @@
-﻿var app = angular.module('FifthEditionEncounters', ['ngRoute', 'ngAnimate', 'ngResource', 'ngMap', 'environment', 'wt.responsive', 'mgcrea.ngStrap', 'auth0', 'angular-storage', 'angular-jwt']);
+﻿var app = angular.module('FifthEditionEncounters', ['ngRoute', 'ngAnimate', 'ngResource', 'environment', 'wt.responsive', 'mgcrea.ngStrap', 'auth0.lock', 'angular-storage', 'angular-jwt']);
 
 
 app
     .constant('_', window._)
     .config([
-        '$routeProvider', '$locationProvider', 'envServiceProvider', 'authProvider', 'jwtInterceptorProvider', '$httpProvider',
-        function ($routeProvider, $locationProvider, envService, authProvider, jwtInterceptorProvider, $httpProvider) {
+        '$routeProvider', '$locationProvider', 'envServiceProvider', 'lockProvider', 'jwtInterceptorProvider', '$httpProvider',
+        function ($routeProvider, $locationProvider, envService, lockProvider, jwtInterceptorProvider, $httpProvider) {
             $routeProvider
                 .when('/home', { templateUrl: './Angular/Home/home.html', controller: 'HomeController' })
                 //.when('/gallery', { templateUrl: './Angular/Gallery/gallery.html', controller: 'GalleryController' })
@@ -32,52 +32,32 @@ app
             });
             envService.check();
 
-            authProvider.init({
+            lockProvider.init({
                 domain: 'foxing-around.auth0.com',
-                clientID: 'eYDiisAw4OLNYJwybpX1sLuUmPuyaJ91',
-                loginUrl: '/login'
+                clientID: 'eYDiisAw4OLNYJwybpX1sLuUmPuyaJ91'
             });
 
-            authProvider.on('loginSuccess', ['$location', 'profilePromise', 'idToken', 'store',
-                    function ($location, profilePromise, idToken, store) {
 
-                        profilePromise.then(function (profile) {
-                            store.set('profile', profile);
-                            store.set('token', idToken);
-                        });
-
-                        //$location.path('/'); //TODO - Log in page maybe? If so, redirect here.
-                    }]);
-
-            //Called when login fails
-            authProvider.on('loginFailure', function () {
-                console.log("Error: Login failed");
-            });
-
-            jwtInterceptorProvider.tokenGetter = function (store) {
-                return store.get('token');
+            jwtInterceptorProvider.tokenGetter = function () {
+                return localStorage.getItem('id_token');
             };
 
             $httpProvider.interceptors.push('jwtInterceptor');
         }
     ])
 
-    .run(['$rootScope', 'auth', 'store', 'jwtHelper',  function ($rootScope, auth, store, jwtHelper, authManager) {
+    .run(['$rootScope',  'jwtHelper', 'lock', 'authService', 'authManager', function ($rootScope, jwtHelper, lock, authService, authManager) {
         angular.element(document).on("click", function (e) {
             $rootScope.$broadcast("documentClicked", angular.element(e.target));
         });
         $rootScope._ = window._;
 
-        $rootScope.$on('$locationChangeStart', function () {
-            if (!auth.isAuthenticated) {
-                var token = store.get('token');
-                if (token) {
-                    if (!jwtHelper.isTokenExpired(token)) {
-                        auth.authenticate(store.get('profile'), token);
-                    }
-                }
-            }
-        });
+        var token = localStorage.getItem('id_token');
+        if (token != undefined) authManager.authenticate(); 
+
+        authService.registerAuthenticationListener();
+
+        authManager.checkAuthOnRefresh();
     }])
 
     .controller('RootController', ['$scope', '$route', '$routeParams', '$location',

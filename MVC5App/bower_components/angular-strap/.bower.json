@@ -1,7 +1,7 @@
 {
   "name": "angular-strap",
   "description": "AngularStrap - AngularJS directives for Bootstrap",
-  "version": "2.3.9",
+  "version": "2.3.10",
   "keywords": [
     "angular",
     "bootstrap"
@@ -51,14 +51,13 @@
     "highlightjs": "^9.1.0",
     "jquery": "^2.2.0"
   },
-  "_release": "2.3.9",
+  "_release": "2.3.10",
   "_resolution": {
     "type": "version",
-    "tag": "v2.3.9",
-    "commit": "29ca138afe34a37cb38e3855b97b46b87f008354"
+    "tag": "v2.3.10",
+    "commit": "0b51f2bdac8a18cac51a5a5fe2edf5412473f535"
   },
   "_source": "https://github.com/mgcrea/angular-strap.git",
   "_target": "^2.3.9",
-  "_originalSource": "angular-strap",
-  "_direct": true
+  "_originalSource": "angular-strap"
 }

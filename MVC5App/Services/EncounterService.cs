@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using Microsoft.Ajax.Utilities;
 using MVC5App.Extensions;
 using MVC5App.Models;
 using MVC5App.Repositories.Interfaces;
@@ -22,10 +24,11 @@ namespace MVC5App.Services
         public EncounterViewModel Encounter { get; set; } = new EncounterViewModel();
 
         private readonly IMonsterRepository _monsterRepository;
-        private PartyService _partyService;
+        private IPartyService _partyService;
         public int MaximumAmountPerMonster { get; set; } = 5;
         public double MinimumExperienceThreshold { get; set; } = .25;
         public double VariableEncounterExperienceThreshold { get; set; } = .9;
+        public IRandomNumber RandomNumber = new RandomNumber();
 
         public EncounterService(IMonsterRepository monsterRepository)
         {
@@ -91,6 +94,7 @@ namespace MVC5App.Services
 
         public double ApplyMonsterSizeMultiplier(int monsters)
         {
+
             if (monsters == Single)
             {
                 return 1;
@@ -126,23 +130,31 @@ namespace MVC5App.Services
             return (int)(monsterViewModels.Sum(m => m.ExperienceValue * m.Quantity) * ApplyMonsterSizeMultiplier(numberOfMonsters));
         }
 
-        public int CalculateQuantityToAdd(List<MonsterViewModel> finalList, MonsterModel monster)
+        public int CalculateQuantityToAdd(IList<MonsterViewModel> finalList, IMonsterModel monster)
         {
-            var upperXpLimit = _partyService.CurrentDifficulty();
+            var maxQuantityToAdd = 0;
 
-            var numberOfMonsters = finalList.Aggregate(0, (current, model) => current + model.Quantity);
-
-            var quantity = 0;
-            var modifiedEncounterExperienceValue = 0;
-            while (modifiedEncounterExperienceValue < upperXpLimit && quantity < MaximumAmountPerMonster )
+            //Don't change finalList. 
+            var tempList = new List<MonsterViewModel>(finalList)
             {
-                quantity += 1;
+                new MonsterViewModel
+                {
+                    Quantity = maxQuantityToAdd,
+                    ExperienceValue = monster.Xp,
+                    Level = monster.ChallengeRating,
+                    Name = monster.Name,
+                    Id = monster.Id
+                }
+            };
 
-                //Recalculate already existing monsters with the new size multiplier, and include the additional monster.
-                modifiedEncounterExperienceValue = (int)((finalList.Sum(m => m.ExperienceValue*m.Quantity) + quantity * monster.Xp) * ApplyMonsterSizeMultiplier(numberOfMonsters + quantity));
+            //Start adding copies of creature until maximum is reached.
+            while (GetEncountersExperienceValue(tempList) < _partyService.CurrentDifficulty() && maxQuantityToAdd < MaximumAmountPerMonster)
+            {
+                tempList.Single(m => m.Id == monster.Id).Quantity += 1;
+                maxQuantityToAdd = tempList.Single(m => m.Id == monster.Id).Quantity - 1;
             }
-          
-            return new Random().Next(quantity / 2, quantity);
+
+            return RandomNumber.Next(maxQuantityToAdd);
 
         }
     }

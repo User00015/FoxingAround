@@ -60,7 +60,7 @@ namespace MVC5App.Tests.Controllers
             _encounterService.Encounter.Monsters = Generator.CreateMonsters(15); //50 * 15 * 4 = 3000
             var deadlyDifficulty = _difficulty.Deadly * _party.PartySize;
             var encounterXp = _encounterService.EncounterExperience;
-                
+
 
             Assert.IsTrue(encounterXp >= deadlyDifficulty);
         }
@@ -70,8 +70,8 @@ namespace MVC5App.Tests.Controllers
         {
 
             _encounterService.Encounter.Monsters = Generator.CreateMonsters(8); // 50 * 8 * 3 = 1200
-            var mediumDifficulty = _difficulty.Medium  * _party.PartySize;
-            var deadlyDifficulty = _difficulty.Deadly  * _party.PartySize;
+            var mediumDifficulty = _difficulty.Medium * _party.PartySize;
+            var deadlyDifficulty = _difficulty.Deadly * _party.PartySize;
             var encounterXp = _encounterService.EncounterExperience;
 
 
@@ -83,8 +83,8 @@ namespace MVC5App.Tests.Controllers
         {
 
             _encounterService.Encounter.Monsters = Generator.CreateMonsters(6); // 50 * 6 * 2 = 600
-            var easyDifficulty = _difficulty.Easy  * _party.PartySize;
-            var hardDifficulty = _difficulty.Hard  * _party.PartySize;
+            var easyDifficulty = _difficulty.Easy * _party.PartySize;
+            var hardDifficulty = _difficulty.Hard * _party.PartySize;
             var encounterXp = _encounterService.EncounterExperience;
 
 
@@ -96,8 +96,8 @@ namespace MVC5App.Tests.Controllers
         {
 
             _encounterService.Encounter.Monsters = Generator.CreateMonsters(5); // 50 * 5 * 2 = 500
-            var mediumDifficulty = _difficulty.Medium  * _party.PartySize;
-            var easyDifficulty = _difficulty.Easy*_party.PartySize;
+            var mediumDifficulty = _difficulty.Medium * _party.PartySize;
+            var easyDifficulty = _difficulty.Easy * _party.PartySize;
             var encounterXp = _encounterService.EncounterExperience;
 
 
@@ -109,7 +109,7 @@ namespace MVC5App.Tests.Controllers
         {
 
             _encounterService.Encounter.Monsters = Generator.CreateMonsters(1); // 50 * 1 * 1 = 50
-            var easyDifficulty = _difficulty.Easy  * _party.PartySize;
+            var easyDifficulty = _difficulty.Easy * _party.PartySize;
             var encounterXp = _encounterService.EncounterExperience;
 
 
@@ -164,8 +164,8 @@ namespace MVC5App.Tests.Controllers
             _mockMonsterRepository.Setup(p => p.GetMonsters(_partyService))
                 .Returns(() => new List<MonsterModel>
                 {
-                    new MonsterModel { Xp = 10 },
-                    new MonsterModel { Xp = 1000 }
+                    new MonsterModel { Xp = 10, Id = 1 },
+                    new MonsterModel { Xp = 1000, Id = 2 }
                 });
 
             var service = new EncounterService(_mockMonsterRepository.Object);
@@ -197,7 +197,7 @@ namespace MVC5App.Tests.Controllers
         {
             const int smallXp = 50;
             const int bigXp = 2500;
-           List<MonsterViewModel> monsters = new List<MonsterViewModel>
+            List<MonsterViewModel> monsters = new List<MonsterViewModel>
            {
                new MonsterViewModel()
                {
@@ -211,7 +211,7 @@ namespace MVC5App.Tests.Controllers
                    Quantity = 1,
                   Name = "Big monster"
                }
-           }; 
+           };
 
             var service = new EncounterService(_mockMonsterRepository.Object);
             var xp = service.GetEncountersExperienceValue(monsters);
@@ -220,7 +220,120 @@ namespace MVC5App.Tests.Controllers
 
             monsters[1].Quantity++;
             xp = service.GetEncountersExperienceValue(monsters);
-            Assert.IsTrue(xp == (smallXp + bigXp*2) * 2);
+            Assert.IsTrue(xp == (smallXp + bigXp * 2) * 2);
         }
-    } //Bottom
+
+        [Test]
+        public void AddOneMonsterToEncounter()
+        {
+            List<MonsterViewModel> monsters = new List<MonsterViewModel>
+           {
+               new MonsterViewModel()
+               {
+                   ExperienceValue = 50,
+                   Quantity = 1,
+                  Name = "Small monster"
+               },
+               new MonsterViewModel()
+               {
+                   ExperienceValue = 2500,
+                   Quantity = 1,
+                  Name = "Big monster"
+               }
+           };
+
+
+            var service = new EncounterService(_mockMonsterRepository.Object);
+            service.CreateEncounter(_party);
+            service.RandomNumber = new MockRandomNumber(1);
+            var numberToAdd = service.CalculateQuantityToAdd(monsters, new MonsterModel()
+            {
+                Xp = 500,
+                Name = "Medium monster"
+            });
+
+            Assert.IsTrue(numberToAdd == 1);
+        }
+        [Test]
+        public void AddThreeMonstersToEncounter()
+        {
+            List<MonsterViewModel> monsters = new List<MonsterViewModel>
+           {
+               new MonsterViewModel()
+               {
+                   ExperienceValue = 50,
+                   Quantity = 1,
+                  Name = "Small monster"
+               },
+               new MonsterViewModel()
+               {
+                   ExperienceValue = 2500,
+                   Quantity = 1,
+                  Name = "Big monster"
+               }
+           };
+
+
+            var service = new EncounterService(_mockMonsterRepository.Object);
+            service.CreateEncounter(_party);
+            service.RandomNumber = new MockRandomNumber(3);
+            var numberToAdd = service.CalculateQuantityToAdd(monsters, new MonsterModel()
+            {
+                Xp = 500,
+                Name = "Medium monster"
+            });
+
+            Assert.IsTrue(numberToAdd == 3);
+        }
+
+        [Test]
+        public void AddTwoDifferentMonstersToEncounter()
+        {
+            List<MonsterViewModel> monsters = new List<MonsterViewModel>
+           {
+               new MonsterViewModel()
+               {
+                   ExperienceValue = 50,
+                   Quantity = 1,
+                  Name = "Small monster"
+               },
+               new MonsterViewModel()
+               {
+                   ExperienceValue = 2500,
+                   Quantity = 1,
+                  Name = "Big monster"
+               }
+           };
+
+            var monster1 = new MonsterViewModel()
+            {
+                Id = 1,
+                ExperienceValue = 500,
+                Name = "Medium monster 1"
+            };
+
+
+            var monster2 = new MonsterViewModel()
+            {
+                Id = 2,
+                ExperienceValue = 500,
+                Name = "Medium monster 2"
+            };
+
+            var service = new EncounterService(_mockMonsterRepository.Object);
+            service.CreateEncounter(_party);
+            service.RandomNumber = new MockRandomNumber(1);
+            service.CalculateQuantityToAdd(monsters, new MonsterModel());
+
+            monsters.Add(monster1);
+
+            service.RandomNumber = new MockRandomNumber(1);
+            service.CalculateQuantityToAdd(monsters, new MonsterModel());
+
+            monsters.Add(monster2);
+
+            Assert.IsTrue(monsters.Count() == 4);
+        }
+
+    } //Bottom of tests
 }

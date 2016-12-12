@@ -1,4 +1,4 @@
-﻿app.controller('EncounterController', ['$scope', 'encounterService', '$modal', '$timeout', 'store', 'LoginService', function ($scope, encounterService, $modal, $timeout, store, loginService) {
+﻿app.controller('EncounterController', ['$rootScope', '$scope', 'encounterService', '$modal', '$timeout', 'LoginService', function ($rootScope, $scope, encounterService, $modal, $timeout, loginService) {
 
 
 
@@ -30,24 +30,11 @@
     $scope.levels = _.range(1, 21); //Hard-coded character levels
     $scope.isLoading = false;
     $scope.environment = $scope.environments[0];
-    $scope.encounterChanged = false;
+    $scope.encountersChanged = false;
 
-    var finishAddingNewEncounter = function (item) {
-        $scope.savedEncounters = _.filter($scope.savedEncounters, function (enc) {
-            return _.size(enc.monsters) > 0;
-        });
-
-        $scope.savedEncounters = _.compact(_.concat($scope.savedEncounters, item));
-        $scope.encounter = null;
-    }
-
-    $scope.saveNewEncounter = function (item) {
-        loginService.signIn().then(function() {
-            finishAddingNewEncounter(item);
-        });
-    };
 
     var finishUpdating = function (item) {
+        $scope.isSaving = true;
         $scope.savedEncounters = _.filter($scope.savedEncounters, function (enc) {
             return _.size(enc.monsters) > 0;
         });
@@ -56,13 +43,42 @@
             _.replace($scope.savedEncounters, item.$$hashKey, item);
         }
         var params = {
-            email: store.get('profile').email,
+            email: $rootScope.userProfile.email,
             encounters: $scope.savedEncounters
         };
         encounterService.saveEncounters(function () {
             $scope.$broadcast("saved", true);
-            $scope.encounterChanged = false;
+            $scope.encountersChanged = false;
+            $scope.isSaving = false;
         }, params);
+    };
+
+    var finishLoading = function () {
+        $scope.isLoadingSavedEncounters = true;
+        var params = { email: $rootScope.userProfile.email }
+
+        encounterService.getSavedEncounters(function (encounter) {
+            $scope.savedEncounters = null;
+            $scope.savedEncounters = _.compact(_.concat($scope.savedEncounters, encounter));
+            $scope.encountersChanged = false;
+            $scope.isLoadingSavedEncounters = false;
+        }, params);
+    };
+
+    var finishAddingNewEncounter = function (item) {
+        $scope.savedEncounters = _.filter($scope.savedEncounters, function (enc) {
+            return _.size(enc.monsters) > 0;
+        });
+
+        $scope.savedEncounters = _.compact(_.concat($scope.savedEncounters, item));
+        $scope.encounter = null;
+        $scope.encountersChanged = true;
+    };
+
+    $scope.saveNewEncounter = function (item) {
+        loginService.signIn().then(function () {
+            finishAddingNewEncounter(item);
+        });
     };
 
     $scope.updateEncounter = function (item) {
@@ -72,12 +88,12 @@
     };
 
 
-    $scope.$on("encounterChanged", function () {
-        $scope.encounterChanged = true;
+    $scope.$on("encountersChanged", function () {
+        $scope.encountersChanged = true;
     });
 
     $scope.createEncounters = function () {
-        $scope.isLoading = true;
+        $scope.isLoadingNewEncounter = true;
         var params = {
             partyLevel: $scope.levelOfCharacters,
             partySize: $scope.numberOfCharacters,
@@ -87,29 +103,25 @@
 
         encounterService.postMonsters(function (encounter) {
             $scope.encounter = encounter;
-            $scope.isLoading = false;
+            $scope.isLoadingNewEncounter = false;
         }, params);
     };
 
     var testDelay = function () {
-        $scope.isLoading = true;
+        $scope.isLoadingSavedEncounters = true;
         $timeout(function () {
-            $scope.isLoading = false;
-        }, 2000);
+            $scope.isLoadingSavedEncounters = false;
+        }, 10000);
     };
 
-    var finishLoading = function () {
-        var params = { email: store.get('profile').email }
+    /*************************************************************************************************************
+     * Automatically load saved encounters when either logging in, or opening the encounter page while logged in. 
+     *************************************************************************************************************/
+    $scope.$on("authenticated", function() {
+        finishLoading();
+    });
 
-        encounterService.getSavedEncounters(function (encounter) {
-            $scope.savedEncounters = null;
-            $scope.savedEncounters = _.compact(_.concat($scope.savedEncounters, encounter));
-        }, params);
+    if ($rootScope.isAuthenticated) {
+        finishLoading();
     };
-
-    $scope.loadEncounter = function () {
-        loginService.signIn().then(function () {
-            finishLoading();
-        });
-    }
 }]);

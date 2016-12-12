@@ -6,6 +6,8 @@ import { STRATEGIES as ENTERPRISE_STRATEGIES } from '../../connection/enterprise
 
 const { initNS, get } = dataFns(["client"]);
 
+const DEFAULT_CONNECTION_VALIDATION = { username: { min: 1, max: 15 } };
+
 export function hasFreeSubscription(m) {
   return ["free", "dev"].indexOf(get(m, ["tenant", "subscription"])) > -1;
 }
@@ -37,9 +39,31 @@ function strategyNameToConnectionType(str) {
     return "social";
   } else if (ENTERPRISE_STRATEGIES[str]) {
     return "enterprise";
+  } else if (["oauth1", "oauth2"].indexOf(str) !== -1) {
+    return "social";
   } else {
     return "unknown";
   }
+}
+
+function formatConnectionValidation (connectionValidation = {}) {
+  if (connectionValidation.username == null) {
+    return null;
+  }
+
+  const validation = { ...DEFAULT_CONNECTION_VALIDATION, ...connectionValidation };
+  const defaultMin = DEFAULT_CONNECTION_VALIDATION.username.min;
+  const defaultMax = DEFAULT_CONNECTION_VALIDATION.username.max;
+
+  validation.username.min = parseInt(validation.username.min, 10) || defaultMin;
+  validation.username.max = parseInt(validation.username.max, 10) || defaultMax;
+
+  if (validation.username.min > validation.username.max) {
+    validation.username.min = defaultMin;
+    validation.username.max = defaultMax;
+  }
+
+  return validation;
 }
 
 const emptyConnections = Immutable.fromJS({
@@ -71,6 +95,11 @@ function formatClientConnections(o) {
   for (var i=0; i < (o.strategies || []).length; i++) {
     const strategy = o.strategies[i];
     const connectionType = strategyNameToConnectionType(strategy.name);
+
+    if (connectionType === "passwordless") {
+      continue; // disabled until lock supports passwordless connections within the same engine
+    }
+
     const connections = strategy.connections.map(connection => {
       return formatClientConnection(connectionType, strategy.name, connection);
     });
@@ -98,6 +127,7 @@ function formatClientConnection(connectionType, strategyName, connection) {
     result.requireUsername = typeof connection.requires_username === "boolean"
       ? connection.requires_username
       : false;
+    result.validation = formatConnectionValidation(connection.validation);
   }
 
   if (connectionType === "enterprise") {
