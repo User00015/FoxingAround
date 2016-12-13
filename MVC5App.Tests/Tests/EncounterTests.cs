@@ -232,30 +232,34 @@ namespace MVC5App.Tests.Controllers
                {
                    ExperienceValue = 50,
                    Quantity = 1,
+                   Id = 5,
                   Name = "Small monster"
                },
                new MonsterViewModel()
                {
-                   ExperienceValue = 2500,
+                   ExperienceValue = 500,
                    Quantity = 1,
+                   Id = 10,
                   Name = "Big monster"
                }
            };
 
+            var monster = new MonsterModel()
+            {
+                Xp = 500,
+                Id = 1,
+                Name = "added monster"
+            };
 
             var service = new EncounterService(_mockMonsterRepository.Object);
             service.CreateEncounter(_party);
-            service.RandomNumber = new MockRandomNumber(1);
-            var numberToAdd = service.CalculateQuantityToAdd(monsters, new MonsterModel()
-            {
-                Xp = 500,
-                Name = "Medium monster"
-            });
+            service.RandomNumber = new MockRandomNumber();
+            var quantityAdded = service.CalculateQuantityToAdd(monsters,monster);
 
-            Assert.IsTrue(numberToAdd == 1);
+            Assert.IsTrue(quantityAdded == 1);
         }
         [Test]
-        public void AddThreeMonstersToEncounter()
+        public void AddFourMonstersToEncounter()
         {
             List<MonsterViewModel> monsters = new List<MonsterViewModel>
            {
@@ -263,27 +267,31 @@ namespace MVC5App.Tests.Controllers
                {
                    ExperienceValue = 50,
                    Quantity = 1,
+                   Id = 5,
                   Name = "Small monster"
                },
                new MonsterViewModel()
                {
-                   ExperienceValue = 2500,
+                   ExperienceValue = 500,
                    Quantity = 1,
+                   Id = 10,
                   Name = "Big monster"
                }
            };
 
+            var monster = new MonsterModel()
+            {
+                Xp = 200,
+                Id = 1,
+                Name = "Medium monster"
+            };
 
             var service = new EncounterService(_mockMonsterRepository.Object);
             service.CreateEncounter(_party);
-            service.RandomNumber = new MockRandomNumber(3);
-            var numberToAdd = service.CalculateQuantityToAdd(monsters, new MonsterModel()
-            {
-                Xp = 500,
-                Name = "Medium monster"
-            });
+            service.RandomNumber = new MockRandomNumber();
+            var quantityAdded = service.CalculateQuantityToAdd(monsters, monster);
 
-            Assert.IsTrue(numberToAdd == 3);
+            Assert.IsTrue(quantityAdded  == 3);
         }
 
         [Test]
@@ -295,44 +303,76 @@ namespace MVC5App.Tests.Controllers
                {
                    ExperienceValue = 50,
                    Quantity = 1,
+                   Id = 5,
                   Name = "Small monster"
                },
                new MonsterViewModel()
                {
-                   ExperienceValue = 2500,
+                   ExperienceValue = 500,
                    Quantity = 1,
+                   Id = 10,
                   Name = "Big monster"
                }
            };
 
-            var monster1 = new MonsterViewModel()
+            var monster1 = new MonsterModel()
             {
                 Id = 1,
-                ExperienceValue = 500,
+                Xp = 200,
                 Name = "Medium monster 1"
             };
 
 
-            var monster2 = new MonsterViewModel()
+            var monster2 = new MonsterModel()
             {
                 Id = 2,
-                ExperienceValue = 500,
+                Xp = 200,
                 Name = "Medium monster 2"
             };
 
             var service = new EncounterService(_mockMonsterRepository.Object);
             service.CreateEncounter(_party);
-            service.RandomNumber = new MockRandomNumber(1);
-            service.CalculateQuantityToAdd(monsters, new MonsterModel());
+            service.RandomNumber = new MockRandomNumber();
+            var quantityMonster1 = service.CalculateQuantityToAdd(monsters, monster1);
 
-            monsters.Add(monster1);
+            monsters.Add(new MonsterViewModel()
+            {
+                Id = 1,
+                ExperienceValue = 200,
+                Name = "Added monster",
+                Quantity = 2
+            });
 
-            service.RandomNumber = new MockRandomNumber(1);
-            service.CalculateQuantityToAdd(monsters, new MonsterModel());
 
-            monsters.Add(monster2);
+            service.RandomNumber = new MockRandomNumber();
+            var quantityMonster2 = service.CalculateQuantityToAdd(monsters, monster2);
 
-            Assert.IsTrue(monsters.Count() == 4);
+
+            Assert.IsTrue(quantityMonster1 == 3);
+            Assert.IsTrue(quantityMonster2 == 1);
+        }
+
+        [Test]
+        public void CalculateQuantityToAddShouldNeverReturnLessThanZero()
+        {
+
+            List<MonsterViewModel> monsters = new List<MonsterViewModel>();
+
+            var service = new EncounterService(_mockMonsterRepository.Object);
+            service.CreateEncounter(_party);
+            service.RandomNumber = new MockRandomNumber();
+
+            var monster = new MonsterModel()
+            {
+                Xp = 9999,
+                Id = 1,
+                Name = "Too big"
+            };
+
+            var quantityAdded = service.CalculateQuantityToAdd(monsters, monster);
+
+
+            Assert.IsTrue(quantityAdded == 0);
         }
 
     } //Bottom of tests

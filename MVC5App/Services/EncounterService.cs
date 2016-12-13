@@ -132,14 +132,13 @@ namespace MVC5App.Services
 
         public int CalculateQuantityToAdd(IList<MonsterViewModel> finalList, IMonsterModel monster)
         {
-            var maxQuantityToAdd = 0;
 
             //Don't change finalList. 
             var tempList = new List<MonsterViewModel>(finalList)
             {
                 new MonsterViewModel
                 {
-                    Quantity = maxQuantityToAdd,
+                    Quantity = 0,
                     ExperienceValue = monster.Xp,
                     Level = monster.ChallengeRating,
                     Name = monster.Name,
@@ -148,13 +147,12 @@ namespace MVC5App.Services
             };
 
             //Start adding copies of creature until maximum is reached.
-            while (GetEncountersExperienceValue(tempList) < _partyService.CurrentDifficulty() && maxQuantityToAdd < MaximumAmountPerMonster)
+            while (GetEncountersExperienceValue(tempList) < _partyService.CurrentDifficulty() && tempList.Single(m => m.Id == monster.Id).Quantity < MaximumAmountPerMonster)
             {
                 tempList.Single(m => m.Id == monster.Id).Quantity += 1;
-                maxQuantityToAdd = tempList.Single(m => m.Id == monster.Id).Quantity - 1;
             }
 
-            return RandomNumber.Next(maxQuantityToAdd);
+            return RandomNumber.Next(tempList.Single(m => m.Id == monster.Id).Quantity - 1);
 
         }
     }

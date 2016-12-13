@@ -12,16 +12,9 @@ namespace MVC5App.Services
 
     public class MockRandomNumber : IRandomNumber
     {
-        private readonly int _quantity;
-
-        public MockRandomNumber(int quantity)
-        {
-            _quantity = quantity;
-        }
-
         public int Next(int quantity)
         {
-            return _quantity;
+            return quantity;
         }
     }
 
