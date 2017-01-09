@@ -482,10 +482,16 @@
     <Content Include="bower_components\angular\angular.min.js" />
     <Content Include="bower_components\angular\index.js" />
     <Content Include="bower_components\auth0-lock\.gitignore" />
+    <Content Include="bower_components\auth0-lock\build\de.js" />
+    <Content Include="bower_components\auth0-lock\build\en.js" />
+    <Content Include="bower_components\auth0-lock\build\es.js" />
+    <Content Include="bower_components\auth0-lock\build\it.js" />
     <Content Include="bower_components\auth0-lock\build\lock.js" />
     <Content Include="bower_components\auth0-lock\build\lock.min.js">
       <DependentUpon>lock.js</DependentUpon>
     </Content>
+    <Content Include="bower_components\auth0-lock\build\pt-br.js" />
+    <Content Include="bower_components\auth0-lock\build\ru.js" />
     <Content Include="bower_components\auth0-lock\css\demo.css" />
     <Content Include="bower_components\auth0-lock\css\social_icons.css" />
     <Content Include="bower_components\auth0-lock\examples\bundling\browserify\.gitignore" />

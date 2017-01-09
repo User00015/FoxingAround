@@ -5,13 +5,13 @@ import { syncRemoteData } from './remote_data';
 import * as l from './index';
 import { img as preload } from '../utils/preload_utils';
 import { defaultProps } from '../ui/box/container';
-import { isFieldValid, showInvalidField, hideInvalidFields } from '../field/index';
+import { isFieldValid, showInvalidField } from '../field/index';
 
 export function setupLock(id, clientID, domain, options, hookRunner, emitEventFn) {
   let m = l.setup(id, clientID, domain, options, hookRunner, emitEventFn);
-
+  
   m = syncRemoteData(m);
-
+  
   preload(l.ui.logo(m) || defaultProps.logo);
 
   webApi.setupClient(id, clientID, domain, l.withAuthOptions(m, {
@@ -22,8 +22,6 @@ export function setupLock(id, clientID, domain, options, hookRunner, emitEventFn
   m = l.runHook(m, "didInitialize", options);
 
   swap(setEntity, "lock", id, m);
-
-  return m;
 }
 
 export function handleAuthCallback() {
@@ -81,7 +79,7 @@ export function openLock(id, opts) {
       return l.emitUnrecoverableErrorEvent(m, "'flashMessage' must provide a valid type ['error','success']")
     }
     if (!opts.flashMessage.text) {
-      return l.emitUnrecoverableErrorEvent(m, "'flashMessage' must provide a text")
+      return l.emitUnrecoverableErrorEvent(m, "'flashMessage' must provide a text") 
     }
   }
 
@@ -112,20 +110,12 @@ export function closeLock(id, force = false, callback = () => {}) {
     swap(updateEntity, "lock", id, l.stopRendering);
 
     setTimeout(() => {
-      swap(updateEntity, "lock", id, (m) => {
-        m = hideInvalidFields(m);
-        m = l.reset(m);
-        return m;
-      });
+      swap(updateEntity, "lock", id, l.reset);
       m = read(getEntity, "lock", id);
       callback(m);
     }, 1000);
   } else {
-    swap(updateEntity, "lock", id, (m) => {
-      m = hideInvalidFields(m);
-      m = l.reset(m);
-      return m;
-    });
+    swap(updateEntity, "lock", id, l.reset);
     callback(m);
   }
 }

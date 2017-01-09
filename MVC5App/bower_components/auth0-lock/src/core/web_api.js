@@ -15,9 +15,7 @@ class Auth0WebAPI {
       forceJSONP: false,
       callbackURL: opts.redirectUrl,
       responseMode: opts.responseMode,
-      responseType: opts.responseType,
-      __tenant: opts.overrides && opts.overrides.__tenant,
-      __token_issuer: opts.overrides && opts.overrides.__token_issuer
+      responseType: opts.responseType
     });
 
     this.authOpts[lockID] = {
@@ -208,8 +206,8 @@ function normalizeError(error) {
   }
 
   const result = {
-    error: error.details ? error.details.error : (error.code || error.statusCode || error.error),
-    description: error.details ? error.details.error_description : (error.error_description || error.description || error.error)
+    error: error.details ? error.details.error : (error.statusCode || error.error),
+    description: error.details ? error.details.error_description : (error.error_description || error.error)
   }
 
   // result is used for passwordless and error for database.

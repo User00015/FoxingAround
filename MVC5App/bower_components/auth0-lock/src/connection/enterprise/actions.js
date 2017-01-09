@@ -6,9 +6,7 @@ import {
   toggleHRD
 } from '../enterprise';
 import { getFieldValue, hideInvalidFields } from '../../field/index';
-import { emailLocalPart } from '../../field/email';
 import { logIn as coreLogIn } from '../../core/actions';
-import * as l from '../../core/index';
 
 // TODO: enterprise connections should not depend on database
 // connections. However, we now allow a username input to contain also
@@ -51,10 +49,8 @@ function logInActiveFlow(id) {
     ? "username"
     : "email";
 
-  const originalUsername = getFieldValue(m, usernameField);
-  const connection = enterpriseActiveFlowConnection(m);
-
-  const username = l.defaultADUsernameFromEmailPrefix(m) ? emailLocalPart(originalUsername) : originalUsername;
+  const username = getFieldValue(m, usernameField);
+  const connection = enterpriseActiveFlowConnection(m); 
 
   coreLogIn(id, ["password", usernameField], {
     connection: connection ? connection.get("name") : null,

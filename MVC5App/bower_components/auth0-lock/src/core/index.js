@@ -7,7 +7,6 @@ import * as i18n from '../i18n';
 import trim from 'trim';
 import * as gp from '../avatar/gravatar_provider';
 import { dataFns } from '../utils/data_utils';
-import { processSocialOptions } from '../connection/social/index';
 import { clientConnections, hasFreeSubscription } from './client/index';
 
 const {
@@ -20,8 +19,6 @@ const {
   tset,
   tremove
 } = dataFns(["core"]);
-
-const { tset: tsetSocial } = dataFns(["social"]);
 
 export function setup(id, clientID, domain, options, hookRunner, emitEventFn) {
   let m = init(id, Immutable.fromJS({
@@ -36,8 +33,7 @@ export function setup(id, clientID, domain, options, hookRunner, emitEventFn) {
     useTenantInfo: options.__useTenantInfo || false,
     hashCleanup: options.hashCleanup === false ? false : true,
     allowedConnections: Immutable.fromJS(options.allowedConnections || []),
-    ui: extractUIOptions(id, options),
-    defaultADUsernameFromEmailPrefix: options.defaultADUsernameFromEmailPrefix === false ? false : true
+    ui: extractUIOptions(id, options)
   }));
 
   m = i18n.initI18n(m);
@@ -269,7 +265,7 @@ function extractClientBaseUrlOption(opts, domain) {
 
 export function extractTenantBaseUrlOption(opts, domain) {
   if (opts.configurationBaseUrl && typeof opts.configurationBaseUrl === "string") {
-    return urljoin(opts.configurationBaseUrl, 'info-v1.js');
+    return opts.configurationBaseUrl;
   }
 
   if (opts.assetsUrl && typeof opts.assetsUrl === "string") {
@@ -289,12 +285,11 @@ export function extractTenantBaseUrlOption(opts, domain) {
     domain = parts.length > 3
       ? "https://cdn." + parts[parts.length - 3] + DOT_AUTH0_DOT_COM
       : AUTH0_US_CDN_URL;
-
-    return urljoin(domain, 'tenants', 'v1', `${tenant_name}.js`);
   } else {
-    return urljoin(domainUrl, 'info-v1.js');
+    domain = domainUrl;
   }
 
+  return urljoin(domain, 'tenants', 'v1', `${tenant_name}.js`);
 }
 
 function extractLanguageBaseUrlOption(opts, domain) {
@@ -322,10 +317,6 @@ export function setLoggedIn(m, value) {
 
 export function loggedIn(m) {
   return tget(m, "loggedIn", false);
-}
-
-export function defaultADUsernameFromEmailPrefix(m) {
-  return get(m, "defaultADUsernameFromEmailPrefix", true);
 }
 
 export function warn(x, str) {
@@ -512,11 +503,6 @@ export function overrideOptions(m, opts) {
 
   if (opts.allowedConnections) {
     m = tset(m, "allowedConnections", Immutable.fromJS(opts.allowedConnections));
-  }
-
-  if (opts.socialButtonStyle) {
-    let curated = processSocialOptions(opts);
-    m = tsetSocial(m, "socialButtonStyle", curated.socialButtonStyle);
   }
 
   if (opts.flashMessage) {

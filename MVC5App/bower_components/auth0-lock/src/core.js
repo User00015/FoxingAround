@@ -33,15 +33,6 @@ export default class Base extends EventEmitter {
 
     super();
 
-    this.validEvents = [
-      'show',
-      'hide',
-      'unrecoverable_error',
-      'authenticated',
-      'authorization_error',
-      'hash_parsed'
-    ];
-
     this.id = idu.incremental();
     this.engine = engine;
     const hookRunner = ::this.runHook;
@@ -49,13 +40,7 @@ export default class Base extends EventEmitter {
 
     go(this.id);
 
-    let m = setupLock(this.id, clientID, domain, options, hookRunner, emitEventFn);
-
-    this.on('newListener', (type) => {
-      if (this.validEvents.indexOf(type) === -1) {
-        l.emitUnrecoverableErrorEvent(m, `Invalid event "${type}".`)
-      }
-    });
+    setupLock(this.id, clientID, domain, options, hookRunner, emitEventFn);
 
     if (!Base.hasScheduledAuthCallback) {
       Base.hasScheduledAuthCallback = true;
