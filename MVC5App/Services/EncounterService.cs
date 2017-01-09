@@ -35,8 +35,6 @@ namespace MVC5App.Services
             _monsterRepository = monsterRepository;
         }
 
-        public int EncounterExperience => GetEncountersExperienceValue(Encounter.Monsters); //Unit Testing
-
         public void CreateEncounter(IPartyViewModel party)
         {
             _partyService = new PartyService(party);
