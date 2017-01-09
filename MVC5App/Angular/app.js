@@ -42,9 +42,6 @@ app
                 return localStorage.getItem('id_token');
             };
 
-            jwtInterceptorProvider.config({ whiteListedDomains: ['foxing-around.com'] });
-            
-
             $httpProvider.interceptors.push('jwtInterceptor');
         }
     ])
