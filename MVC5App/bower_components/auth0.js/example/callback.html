@@ -3,14 +3,15 @@
   <head>
     <script src="/auth0.js"></script>
     <script type="text/javascript">
-      var auth0 = new Auth0({
-        domain:       'mdocs.auth0.com',
-        clientID:     '0HP71GSd6PuoRYJ3DXKdiXCUUdGmBbup'
+      var auth0 = new auth0.WebAuth({
+        domain: 'auth0-tests-auth0js.auth0.com',
+        redirectUri: 'http://localhost:3000/example',
+        clientID: '3GGMIEuBPZ28lb6NBDNARaEZisqFakAs',
+        responseType: 'token'
       });
-      var result = auth0.parseHash(window.location.hash);
-      if (result) {
-        parent.postMessage(result, "http://localhost:9999/"); //The second parameter should be your domain
-      }
+      var result = auth0.parseHash(window.location.hash, function(err, data) {
+        parent.postMessage(err || data, "http://localhost:3000/");
+      });
     </script>
   </head>
   <body></body>

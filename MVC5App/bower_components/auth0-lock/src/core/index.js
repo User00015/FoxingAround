@@ -7,6 +7,7 @@ import * as i18n from '../i18n';
 import trim from 'trim';
 import * as gp from '../avatar/gravatar_provider';
 import { dataFns } from '../utils/data_utils';
+import { processSocialOptions } from '../connection/social/index';
 import { clientConnections, hasFreeSubscription } from './client/index';
 
 const {
@@ -20,6 +21,8 @@ const {
   tremove
 } = dataFns(["core"]);
 
+const { tset: tsetSocial } = dataFns(["social"]);
+
 export function setup(id, clientID, domain, options, hookRunner, emitEventFn) {
   let m = init(id, Immutable.fromJS({
     clientBaseUrl: extractClientBaseUrlOption(options, domain),
@@ -31,9 +34,11 @@ export function setup(id, clientID, domain, options, hookRunner, emitEventFn) {
     emitEventFn: emitEventFn,
     hookRunner: hookRunner,
     useTenantInfo: options.__useTenantInfo || false,
+    oidcConformant: options.oidcConformant || false,
     hashCleanup: options.hashCleanup === false ? false : true,
     allowedConnections: Immutable.fromJS(options.allowedConnections || []),
-    ui: extractUIOptions(id, options)
+    ui: extractUIOptions(id, options),
+    defaultADUsernameFromEmailPrefix: options.defaultADUsernameFromEmailPrefix === false ? false : true
   }));
 
   m = i18n.initI18n(m);
@@ -63,6 +68,10 @@ export function tenantBaseUrl(m) {
 
 export function useTenantInfo(m) {
   return get(m, "useTenantInfo");
+}
+
+export function oidcConformant(m) {
+  return get(m, "oidcConformant");
 }
 
 export function languageBaseUrl(m) {
@@ -197,20 +206,30 @@ export const auth = {
 
 function extractAuthOptions(options) {
   let {
+    audience,
     connectionScopes,
     params,
     redirect,
     redirectUrl,
     responseMode,
     responseType,
-    sso
+    sso,
+    state,
+    nonce
   } = options.auth || {};
 
+  let {
+    oidcConformant
+  } = options;
+
+  audience = typeof audience === "string" ? audience : undefined;
   connectionScopes = typeof connectionScopes === "object" ? connectionScopes : {};
   params = typeof params === "object" ? params : {};
-  redirectUrl = typeof redirectUrl === "string" && redirectUrl ? redirectUrl : undefined;
+  redirectUrl = typeof redirectUrl === "string" && redirectUrl ? redirectUrl : window.location.href;
   redirect = typeof redirect === "boolean" ? redirect : true;
   responseMode = typeof responseMode === "string" ? responseMode : undefined;
+  state = typeof state === "string" ? state : undefined;
+  nonce = typeof nonce === "string" ? nonce : undefined;
   responseType = typeof responseType === "string" ? responseType : redirectUrl ? "code" : "token";
 
   sso = typeof sso === "boolean" ? sso : true;
@@ -219,14 +238,25 @@ function extractAuthOptions(options) {
     warn(options, "Usage of scope 'openid profile' is not recommended. See https://auth0.com/docs/scopes for more details.");
   }
 
+  if (oidcConformant && !redirect && responseType.indexOf('id_token') > -1) {
+    throw new Error("It is not posible to request an 'id_token' while using popup mode.");
+  }
+
+  if (oidcConformant && !params.scope) {
+    params.scope = 'openid';
+  }
+
   return Immutable.fromJS({
+    audience,
     connectionScopes,
     params,
     redirect,
     redirectUrl,
     responseMode,
     responseType,
-    sso
+    sso,
+    state,
+    nonce
   });
 }
 
@@ -265,7 +295,7 @@ function extractClientBaseUrlOption(opts, domain) {
 
 export function extractTenantBaseUrlOption(opts, domain) {
   if (opts.configurationBaseUrl && typeof opts.configurationBaseUrl === "string") {
-    return opts.configurationBaseUrl;
+    return urljoin(opts.configurationBaseUrl, 'info-v1.js');
   }
 
   if (opts.assetsUrl && typeof opts.assetsUrl === "string") {
@@ -285,11 +315,12 @@ export function extractTenantBaseUrlOption(opts, domain) {
     domain = parts.length > 3
       ? "https://cdn." + parts[parts.length - 3] + DOT_AUTH0_DOT_COM
       : AUTH0_US_CDN_URL;
+
+    return urljoin(domain, 'tenants', 'v1', `${tenant_name}.js`);
   } else {
-    domain = domainUrl;
+    return urljoin(domainUrl, 'info-v1.js');
   }
 
-  return urljoin(domain, 'tenants', 'v1', `${tenant_name}.js`);
 }
 
 function extractLanguageBaseUrlOption(opts, domain) {
@@ -317,6 +348,10 @@ export function setLoggedIn(m, value) {
 
 export function loggedIn(m) {
   return tget(m, "loggedIn", false);
+}
+
+export function defaultADUsernameFromEmailPrefix(m) {
+  return get(m, "defaultADUsernameFromEmailPrefix", true);
 }
 
 export function warn(x, str) {
@@ -503,6 +538,11 @@ export function overrideOptions(m, opts) {
 
   if (opts.allowedConnections) {
     m = tset(m, "allowedConnections", Immutable.fromJS(opts.allowedConnections));
+  }
+
+  if (opts.socialButtonStyle) {
+    let curated = processSocialOptions(opts);
+    m = tsetSocial(m, "socialButtonStyle", curated.socialButtonStyle);
   }
 
   if (opts.flashMessage) {
