@@ -1,13 +1,54 @@
+#Change Log
+
+## [v10.8.1](https://github.com/auth0/lock/tree/v10.8.1) (2017-01-03)
+[Full Changelog](https://github.com/auth0/lock/compare/v10.8.0...v10.8.1)
+**Closed issues**
+- username/password login doesn't work with custom domains on the appliance [\#772](https://github.com/auth0/lock/issues/772)
+
+**Fixed**
+- allow to override tenant + issuer and pass to auth0.js [\#773](https://github.com/auth0/lock/pull/773) ([glena](https://github.com/glena))
+
+
+## [v10.8.0](https://github.com/auth0/lock/tree/v10.8.0) (2017-01-02)
+[Full Changelog](https://github.com/auth0/lock/compare/v10.7.3...v10.8.0)
+**Closed issues**
+- Request to add user-facing error message. [\#751](https://github.com/auth0/lock/issues/751)
+- Please throw an error for invalid events [\#748](https://github.com/auth0/lock/issues/748)
+- Old errors shown when reopening Lock [\#739](https://github.com/auth0/lock/issues/739)
+- Send login_hint when detecting previous session [\#729](https://github.com/auth0/lock/issues/729)
+- `defaultADUsernameFromEmailPrefix` is not implemented [\#713](https://github.com/auth0/lock/issues/713)
+- [v10] Enterprise connections don't strip domain from email [\#543](https://github.com/auth0/lock/issues/543)
+
+**Added**
+- Allow to override socialButtonStyle on show [\#766](https://github.com/auth0/lock/pull/766) ([glena](https://github.com/glena))
+- Added new error code: session_missing [\#760](https://github.com/auth0/lock/pull/760) ([glena](https://github.com/glena))
+- Add events validation and fail if it is not a valid one [\#756](https://github.com/auth0/lock/pull/756) ([glena](https://github.com/glena))
+- Added flag defaultADUsernameFromEmailPrefix [\#754](https://github.com/auth0/lock/pull/754) ([glena](https://github.com/glena))
+- Send login_hint when detecting previous session [\#753](https://github.com/auth0/lock/pull/753) ([glena](https://github.com/glena))
+- Create fa.js [\#752](https://github.com/auth0/lock/pull/752) ([doroudi](https://github.com/doroudi))
+
+**Changed**
+- Hide errors after close lock [\#761](https://github.com/auth0/lock/pull/761) ([glena](https://github.com/glena))
+
+**Fixed**
+- removed whitespace from input name [\#764](https://github.com/auth0/lock/pull/764) ([dangler](https://github.com/dangler))
+- fixed typo [\#762](https://github.com/auth0/lock/pull/762) ([dev101](https://github.com/dev101))
 # Change Log
 
-## [v10.7.2](https://github.com/auth0/lock/tree/v10.7.0) (2016-12-01)
+## [v10.7.3](https://github.com/auth0/lock/tree/v10.7.3) (2016-12-19)
+[Full Changelog](https://github.com/auth0/lock/compare/v10.7.2...v10.7.3)
+
+**Fixed**
+- Shorten Russian signUpLabel to fit into the widget width [\#743](https://github.com/auth0/lock/pull/743) ([cyxou](https://github.com/cyxou))
+
+## [v10.7.2](https://github.com/auth0/lock/tree/v10.7.2) (2016-12-01)
 [Full Changelog](https://github.com/auth0/lock/compare/v10.7.1...v10.7.2)
 
 **Fixed**
 - Fix how the tenant and client info url is build to avoid format issues [\#740](https://github.com/auth0/lock/pull/740) ([glena](https://github.com/glena))
 - Fix: Single saml connection with no domain shows undefined in button [\#738](https://github.com/auth0/lock/pull/738) ([glena](https://github.com/glena))
 
-## [v10.7.1](https://github.com/auth0/lock/tree/v10.7.0) (2016-11-25)
+## [v10.7.1](https://github.com/auth0/lock/tree/v10.7.1) (2016-11-25)
 [Full Changelog](https://github.com/auth0/lock/compare/v10.7.0...v10.7.1)
 
 **Fixed**
