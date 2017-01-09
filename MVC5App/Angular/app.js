@@ -4,8 +4,8 @@
 app
     .constant('_', window._)
     .config([
-        '$routeProvider', '$locationProvider', 'envServiceProvider', 'lockProvider', 'jwtInterceptorProvider', '$httpProvider',
-        function ($routeProvider, $locationProvider, envService, lockProvider, jwtInterceptorProvider, $httpProvider) {
+        '$routeProvider', '$locationProvider', 'envServiceProvider', 'lockProvider', 'jwtInterceptorProvider', '$httpProvider', 'jwtOptionsProvider',
+        function ($routeProvider, $locationProvider, envService, lockProvider, jwtInterceptorProvider, $httpProvider, jwtOptionsProvider) {
             $routeProvider
                 .when('/home', { templateUrl: './Angular/Home/home.html', controller: 'HomeController' })
                 //.when('/gallery', { templateUrl: './Angular/Gallery/gallery.html', controller: 'GalleryController' })
@@ -41,6 +41,8 @@ app
             jwtInterceptorProvider.tokenGetter = function () {
                 return localStorage.getItem('id_token');
             };
+
+            jwtOptionsProvider.config({ whiteListedDomains: ['foxing-around.com'] });
 
             $httpProvider.interceptors.push('jwtInterceptor');
         }
