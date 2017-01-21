@@ -1,5 +1,53 @@
 #Change Log
 
+## [v10.10.1](https://github.com/auth0/lock/tree/v10.10.1) (2017-01-19)
+[Full Changelog](https://github.com/auth0/lock/compare/v10.10.0...v10.10.1)
+
+
+**Changed**
+- Bump auth0.js to 8.1.2 [\#821](https://github.com/auth0/lock/pull/821) ([glena](https://github.com/glena))
+
+
+## [v10.10.0](https://github.com/auth0/lock/tree/v10.10.0) (2017-01-17)
+[Full Changelog](https://github.com/auth0/lock/compare/v10.9.2...v10.10.0)
+
+**Closed issues**
+- Lock v10.9.2 fails on IE 10 Windows 7 [\#801](https://github.com/auth0/lock/issues/801)
+
+**Added**
+- Add resumeAuth method and autoParseHash flag [\#790](https://github.com/auth0/lock/pull/790) ([luisrudge](https://github.com/luisrudge))
+- Hide first screen title option [\#745](https://github.com/auth0/lock/pull/745) ([glena](https://github.com/glena))
+
+**Changed**
+- Update zh.js [\#774](https://github.com/auth0/lock/pull/774) ([leplay](https://github.com/leplay))
+
+**Fixed**
+- Fix: popup does not close when signup fails [\#810](https://github.com/auth0/lock/pull/810) ([glena](https://github.com/glena))
+- removes scope openid warning in OIDC conformant mode. fix #780 [\#803](https://github.com/auth0/lock/pull/803) ([luisrudge](https://github.com/luisrudge))
+- Clearing fields when lock closes [\#802](https://github.com/auth0/lock/pull/802) ([luisrudge](https://github.com/luisrudge))
+- Fix redirect/popup login when shown in the hosted login page [\#799](https://github.com/auth0/lock/pull/799) ([glena](https://github.com/glena))
+
+**Breaking changes**
+- Bump auth0.js version - Fix profile casing (it should not convert to cammelcase) [\#815](https://github.com/auth0/lock/pull/815) ([glena](https://github.com/glena))
+
+In lock v10.9 we introduced an issue in auth0.js that changed the casing of the calls to retrieve the user profile (using `/userinfo` or `/tokeninfo`), everything was converted to camel case. We fixed that issue in this [auth0.js pull request](https://github.com/auth0/auth0.js/pull/307) and is part of this release of Lock. If you kept an v10.8 or older no changes are needed, for those who updated to v10.9 you need to revert the changes made to handle the case changes.
+
+## [v10.9.2](https://github.com/auth0/lock/tree/v10.9.2) (2017-01-11)
+[Full Changelog](https://github.com/auth0/lock/compare/v10.9.1...v10.9.2)
+
+**Fixed**
+- Bring back support for get profile in default mode [\#794](https://github.com/auth0/lock/pull/794) ([glena](https://github.com/glena))
+- Don't emit error when registering for event 'signin ready' [\#784](https://github.com/auth0/lock/pull/784) ([theopak](https://github.com/theopak))
+
+
+## [v10.9.1](https://github.com/auth0/lock/tree/v10.9.1) (2017-01-10)
+[Full Changelog](https://github.com/auth0/lock/compare/v10.9.0...v10.9.1)
+
+**Fixed**
+- Fix to comply legacy behaviour [\#787](https://github.com/auth0/lock/pull/787) ([glena](https://github.com/glena))
+- For legacy flow, the scope should default to openid [\#783](https://github.com/auth0/lock/pull/783) ([glena](https://github.com/glena))
+
+
 ## [v10.9.0](https://github.com/auth0/lock/tree/v10.9.0) (2017-01-09)
 [Full Changelog](https://github.com/auth0/lock/compare/v10.8.0-beta.5...v10.9.0)
 
@@ -13,6 +61,7 @@
 
 ## [v10.8.1](https://github.com/auth0/lock/tree/v10.8.1) (2017-01-03)
 [Full Changelog](https://github.com/auth0/lock/compare/v10.8.0...v10.8.1)
+
 **Closed issues**
 - username/password login doesn't work with custom domains on the appliance [\#772](https://github.com/auth0/lock/issues/772)
 
@@ -22,6 +71,7 @@
 
 ## [v10.8.0](https://github.com/auth0/lock/tree/v10.8.0) (2017-01-02)
 [Full Changelog](https://github.com/auth0/lock/compare/v10.7.3...v10.8.0)
+
 **Closed issues**
 - Request to add user-facing error message. [\#751](https://github.com/auth0/lock/issues/751)
 - Please throw an error for invalid events [\#748](https://github.com/auth0/lock/issues/748)

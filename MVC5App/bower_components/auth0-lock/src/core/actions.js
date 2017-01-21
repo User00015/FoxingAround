@@ -5,7 +5,7 @@ import { syncRemoteData } from './remote_data';
 import * as l from './index';
 import { img as preload } from '../utils/preload_utils';
 import { defaultProps } from '../ui/box/container';
-import { isFieldValid, showInvalidField, hideInvalidFields } from '../field/index';
+import { isFieldValid, showInvalidField, hideInvalidFields, clearFields } from '../field/index';
 
 export function setupLock(id, clientID, domain, options, hookRunner, emitEventFn) {
   let m = l.setup(id, clientID, domain, options, hookRunner, emitEventFn);
@@ -27,36 +27,36 @@ export function setupLock(id, clientID, domain, options, hookRunner, emitEventFn
 }
 
 export function handleAuthCallback() {
-  const hash = global.location.hash;
-
   const ms = read(getCollection, "lock");
   const keepHash = ms.filter(m => !l.hashCleanup(m)).size > 0;
+  const callback = (error, authResult) => {
+    const parsed = !!(error || authResult);
+    if (parsed && !keepHash) {
+      global.location.hash = "";
+    }
+  };
+  resumeAuth(global.location.hash, callback);
+}
 
-  ms.forEach(m => {
-    l.auth.redirect(m) && parseHash(m, hash, (result) => {
-        if (result && !keepHash) {
-          global.location.hash = "";
-        }
-      })
-    });
+export function resumeAuth(hash, callback) {
+  const ms = read(getCollection, "lock");
+  ms.forEach(m => l.auth.redirect(m) && parseHash(m, hash, callback));
 }
 
 function parseHash(m, hash, cb) {
-  webApi.parseHash(l.id(m), hash, function(error, parsedHash) {
-
+  webApi.parseHash(l.id(m), hash, function(error, authResult) {
     if (error) {
       l.emitHashParsedEvent(m, error);
     } else {
-      l.emitHashParsedEvent(m, parsedHash);
+      l.emitHashParsedEvent(m, authResult);
     }
 
     if (error) {
       l.emitAuthorizationErrorEvent(m, error);
-    } else if (parsedHash) {
-      l.emitAuthenticatedEvent(m, parsedHash);
+    } else if (authResult) {
+      l.emitAuthenticatedEvent(m, authResult);
     }
-
-    cb(!!(error || parsedHash))
+    cb(error, authResult);
   });
 }
 
@@ -104,11 +104,12 @@ export function closeLock(id, force = false, callback = () => {}) {
   // otherwise just reset.
   if (l.ui.appendContainer(m)) {
     swap(updateEntity, "lock", id, l.stopRendering);
-
+    
     setTimeout(() => {
       swap(updateEntity, "lock", id, (m) => {
         m = hideInvalidFields(m);
         m = l.reset(m);
+        m = clearFields(m);
         return m;
       });
       m = read(getEntity, "lock", id);
@@ -118,6 +119,7 @@ export function closeLock(id, force = false, callback = () => {}) {
     swap(updateEntity, "lock", id, (m) => {
       m = hideInvalidFields(m);
       m = l.reset(m);
+      m = clearFields(m);
       return m;
     });
     callback(m);

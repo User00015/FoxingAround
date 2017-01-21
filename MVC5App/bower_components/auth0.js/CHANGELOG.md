@@ -1,5 +1,40 @@
 #Change Log
 
+## [v8.1.2](https://github.com/auth0/auth0.js/tree/v8.1.2) (2017-01-19)
+[Full Changelog](https://github.com/auth0/auth0.js/compare/v8.1.1...v8.1.2)
+
+**Fixed**
+- Fixed params whitelist for authorize endpoint [\#324](https://github.com/auth0/auth0.js/pull/324) ([glena](https://github.com/glena))
+
+
+## [v8.1.1](https://github.com/auth0/auth0.js/tree/v8.1.1) (2017-01-17)
+[Full Changelog](https://github.com/auth0/auth0.js/compare/v8.1.0...v8.1.1)
+
+**Changed**
+- Removed state requirement [\#321](https://github.com/auth0/auth0.js/pull/321) ([glena](https://github.com/glena))
+
+**Removed**
+- Revert "Fallback to math.random if there is no crypto support" [\#320](https://github.com/auth0/auth0.js/pull/320) ([glena](https://github.com/glena))
+
+**Fixed**
+- Fix undefined variable [\#319](https://github.com/auth0/auth0.js/pull/319) ([glena](https://github.com/glena))
+
+
+## [v8.1.0](https://github.com/auth0/auth0.js/tree/v8.1.0) (2017-01-17)
+[Full Changelog](https://github.com/auth0/auth0.js/compare/v8.0.4...v8.1.0)
+
+**Added**
+- Fallback to math.random if there is no crypto support [\#316](https://github.com/auth0/auth0.js/pull/316) ([glena](https://github.com/glena))
+
+**Fixed**
+- Fix passwordless [\#315](https://github.com/auth0/auth0.js/pull/315) ([glena](https://github.com/glena))
+- Passwordless start: map params to authParams and fix tests [\#306](https://github.com/auth0/auth0.js/pull/306) ([glena](https://github.com/glena))
+- Fix transaction usage to delete what is stored in local storage [\#298](https://github.com/auth0/auth0.js/pull/298) ([glena](https://github.com/glena))
+
+**Breaking changes**
+- Do not change casing of the user profile object [\#307](https://github.com/auth0/auth0.js/pull/307) ([glena](https://github.com/glena))
+
+
 ## [v8.0.4](https://github.com/auth0/auth0.js/tree/v8.0.4) (2017-01-06)
 [Full Changelog](https://github.com/auth0/auth0.js/compare/v8.0.3...v8.0.4)
 

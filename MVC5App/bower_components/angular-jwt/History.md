@@ -1,3 +1,8 @@
+0.1.9 / 2017-01-17
+==================
+
+* Add support for RegEx in `whiteListedDomains` array
+
 0.1.8 / 2016-11-10
 ==================
  

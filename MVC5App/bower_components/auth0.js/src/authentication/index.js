@@ -86,9 +86,6 @@ Authentication.prototype.buildAuthorizeUrl = function (options) {
     nonce: { type: 'string', message: 'nonce option is required', condition: function(o) {
       return o.responseType.indexOf('code') === -1 && o.responseType.indexOf('id_token') !== -1;
     } },
-    state: { type: 'string', message: 'state option is required', condition: function(o) {
-      return o.responseType.indexOf('code') === -1;
-    } },
     scope: { optional: true, type: 'string', message: 'scope option is required' },
     audience: { optional: true, type: 'string', message: 'audience option is required' }
   });
@@ -104,7 +101,7 @@ Authentication.prototype.buildAuthorizeUrl = function (options) {
   }
 
   params = objectHelper.toSnakeCase(params, ['auth0Client']);
-  params = parametersWhitelist.oauthAuthorizeParams(params);
+  params = parametersWhitelist.oauthAuthorizeParams(this.warn, params);
 
   qString = qs.build(params);
 
@@ -223,7 +220,7 @@ Authentication.prototype.oauthToken = function (options, cb) {
   });
 
   body = objectHelper.toSnakeCase(body, ['auth0Client']);
-  body = parametersWhitelist.oauthTokenParams(body);
+  body = parametersWhitelist.oauthTokenParams(this.warn, body);
 
   body.grant_type = body.grant_type;
 
@@ -311,7 +308,7 @@ Authentication.prototype.getSSOData = function (withActiveDirectories, cb) {
   url = urljoin(this.baseOptions.rootUrl, 'user', 'ssodata', params);
 
   return this.request
-    .get(url, {noHeaders: true})
+    .get(url, { noHeaders: true })
     .withCredentials()
     .end(responseHandler(cb));
 };
@@ -334,7 +331,7 @@ Authentication.prototype.userInfo = function (accessToken, cb) {
   return this.request
     .get(url)
     .set('Authorization', 'Bearer ' + accessToken)
-    .end(responseHandler(cb));
+    .end(responseHandler(cb, { ignoreCasing: true }));
 };
 
 /**

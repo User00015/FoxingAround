@@ -1,5 +1,8 @@
 /* eslint-disable no-param-reassign */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable guard-for-in */
 
+var assert = require('./assert');
 var objectAssign = require('./object-assign');
 
 function pick(object, keys) {
@@ -9,6 +12,16 @@ function pick(object, keys) {
     }
     return prev;
   }, {});
+}
+
+function getKeysNotIn(obj, allowedKeys) {
+  var notAllowed = [];
+  for (var key in obj) {
+    if (allowedKeys.indexOf(key) === -1) {
+      notAllowed.push(key);
+    }
+  }
+  return notAllowed;
 }
 
 function objectValues(obj) {
@@ -75,21 +88,29 @@ function snakeToCamel(str) {
 }
 
 function toSnakeCase(object, exceptions) {
+  if (typeof object !== 'object' || assert.isArray(object) || !object === null) {
+    return object;
+  }
+
   exceptions = exceptions || [];
 
   return Object.keys(object).reduce(function (p, key) {
     var newKey = exceptions.indexOf(key) === -1 ? camelToSnake(key) : key;
-    p[newKey] = typeof(object[key]) === 'object' ? toSnakeCase(object[key]) : object[key];
+    p[newKey] = toSnakeCase(object[key]);
     return p;
   }, {});
 }
 
 function toCamelCase(object, exceptions) {
+  if (typeof object !== 'object' || assert.isArray(object) || !object === null) {
+    return object;
+  }
+
   exceptions = exceptions || [];
 
   return Object.keys(object).reduce(function (p, key) {
     var newKey = exceptions.indexOf(key) === -1 ? snakeToCamel(key) : key;
-    p[newKey] = typeof(object[key]) === 'object' ? toCamelCase(object[key]) : object[key];
+    p[newKey] = toCamelCase(object[key]);
     return p;
   }, {});
 }
@@ -100,5 +121,6 @@ module.exports = {
   blacklist: blacklist,
   merge: merge,
   pick: pick,
+  getKeysNotIn: getKeysNotIn,
   extend: extend
 };

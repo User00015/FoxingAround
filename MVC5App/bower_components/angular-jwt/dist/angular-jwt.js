@@ -128,8 +128,9 @@ angular.module('angular-jwt.interceptor', [])
         }
         var hostname = urlUtils.urlResolve(url).hostname.toLowerCase();
         for (var i = 0; i < options.whiteListedDomains.length; i++) {
-          var domain = options.whiteListedDomains[i].toLowerCase();
-          if (domain === hostname) {
+          var domain = options.whiteListedDomains[i];
+          var regexp = domain instanceof RegExp ? domain : new RegExp(domain, 'i');
+          if (hostname.match(regexp)) {
             return true;
           }
         }
@@ -186,6 +187,7 @@ angular.module('angular-jwt.interceptor', [])
       };
     }]
   });
+
  angular.module('angular-jwt.jwt', [])
   .service('jwtHelper', ["$window", function($window) {
 

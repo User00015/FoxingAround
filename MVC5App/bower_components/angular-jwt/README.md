@@ -90,6 +90,28 @@ angular
   });
 ```
 
+### Configuring the Authentication Scheme
+
+By default, angular-jwt uses the `Bearer` scheme when sending JSON Web Tokens as an `Authorization` header. The header that gets attached to `$http` requests looks like this:
+
+```
+Authorization: Bearer eyJ0eXAiOiJKV...
+```
+
+If you would like to provide your own scheme, you can configure it by setting a value for `authPrefix` in the `jwtOptionsProvider` configuration.
+
+```js
+angular
+  .module('app', ['angular-jwt'])
+  .config(function Config($httpProvider, jwtOptionsProvider) {
+    jwtOptionsProvider.config({
+      authPrefix: 'MyPrefix '
+      ...
+    });
+
+    $httpProvider.interceptors.push('jwtInterceptor');
+```
+
 ### Not Sending the JWT for Specific Requests
 
 ```js
@@ -133,7 +155,22 @@ angular
   });
 ```
 
-Note that you only need to provide the domain. Protocols (ex: `http://`) and port numbers should be omitted. 
+Note that you only need to provide the domain. Protocols (ex: `http://`) and port numbers should be omitted.
+
+You can also specify the domain using a regular expression.
+
+```js
+angular
+  .module('app', ['angular-jwt'])
+  .config(function Config($httpProvider, jwtOptionsProvider) {
+    jwtOptionsProvider.config({
+
+      ...
+
+      whiteListedDomains: [/api-version-\d+.myapp.com$/i, 'localhost']
+    });
+  });
+```
 
 ### Not Sending the JWT for Template Requests
 
@@ -386,4 +423,4 @@ Auth0 helps you to:
 
 ## License
 
-This project is licensed under the MIT license. See the [LICENSE](LICENSE) file for more info.
+This project is licensed under the MIT license. See the [LICENSE](LICENSE.txt) file for more info.

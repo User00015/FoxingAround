@@ -1,6 +1,6 @@
 {
   "name": "angular-jwt",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "Library to help you work with JWTs on AngularJS",
   "main": "index.js",
   "license": "MIT",
@@ -10,6 +10,10 @@
   },
   "scripts": {
     "test": "gulp test-src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/auth0/angular-jwt.git"
   },
   "dependencies": {},
   "devDependencies": {
