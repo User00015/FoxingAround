@@ -34,7 +34,8 @@ app
 
             lockProvider.init({
                 domain: 'foxing-around.auth0.com',
-                clientID: 'eYDiisAw4OLNYJwybpX1sLuUmPuyaJ91'
+                clientID: 'eYDiisAw4OLNYJwybpX1sLuUmPuyaJ91',
+                callbackURL: '/login'
             });
 
 

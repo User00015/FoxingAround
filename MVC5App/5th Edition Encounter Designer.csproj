@@ -482,18 +482,10 @@
     <Content Include="bower_components\angular\angular.min.js" />
     <Content Include="bower_components\angular\index.js" />
     <Content Include="bower_components\auth0-lock\.gitignore" />
-    <Content Include="bower_components\auth0-lock\build\de.js" />
-    <Content Include="bower_components\auth0-lock\build\en.js" />
-    <Content Include="bower_components\auth0-lock\build\es.js" />
-    <Content Include="bower_components\auth0-lock\build\it.js" />
     <Content Include="bower_components\auth0-lock\build\lock.js" />
     <Content Include="bower_components\auth0-lock\build\lock.min.js">
       <DependentUpon>lock.js</DependentUpon>
     </Content>
-    <Content Include="bower_components\auth0-lock\build\pt-br.js" />
-    <Content Include="bower_components\auth0-lock\build\ru.js" />
-    <Content Include="bower_components\auth0-lock\css\demo.css" />
-    <Content Include="bower_components\auth0-lock\css\social_icons.css" />
     <Content Include="bower_components\auth0-lock\examples\bundling\browserify\.gitignore" />
     <Content Include="bower_components\auth0-lock\examples\bundling\browserify\index.html" />
     <Content Include="bower_components\auth0-lock\examples\bundling\browserify\index.js" />
@@ -503,8 +495,6 @@
     <Content Include="bower_components\auth0-lock\examples\bundling\webpack\webpack.config.js" />
     <Content Include="bower_components\auth0-lock\Gruntfile.js" />
     <Content Include="bower_components\auth0-lock\scripts\utils\attribute.js" />
-    <Content Include="bower_components\auth0-lock\scripts\utils\i18n.js" />
-    <Content Include="bower_components\auth0-lock\scripts\utils\wildcard_version.js" />
     <Content Include="bower_components\auth0-lock\src\avatar.js" />
     <Content Include="bower_components\auth0-lock\src\avatar\gravatar_provider.js" />
     <Content Include="bower_components\auth0-lock\src\browser.js" />
@@ -987,14 +977,6 @@
     <Content Include="bower_components\auth0-lock\LICENSE" />
     <Content Include="bower_components\auth0-lock\package.json" />
     <Content Include="bower_components\auth0-lock\README.md" />
-    <Content Include="bower_components\auth0-lock\scripts\build.sh" />
-    <Content Include="bower_components\auth0-lock\scripts\ci.sh" />
-    <Content Include="bower_components\auth0-lock\scripts\clean.sh" />
-    <Content Include="bower_components\auth0-lock\scripts\common.sh" />
-    <Content Include="bower_components\auth0-lock\scripts\i18n.sh" />
-    <Content Include="bower_components\auth0-lock\scripts\test.sh" />
-    <Content Include="bower_components\auth0-lock\scripts\upload.sh" />
-    <Content Include="bower_components\auth0-lock\scripts\version" />
     <Content Include="bower_components\auth0-lock\src\connection\database\login_pane.jsx" />
     <Content Include="bower_components\auth0-lock\src\connection\database\login_sign_up_tabs.jsx" />
     <Content Include="bower_components\auth0-lock\src\connection\database\password_reset_confirmation.jsx" />
