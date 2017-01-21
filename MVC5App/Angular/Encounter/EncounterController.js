@@ -117,7 +117,7 @@
     /*************************************************************************************************************
      * Automatically load saved encounters when either logging in, or opening the encounter page while logged in. 
      *************************************************************************************************************/
-    $scope.$on("authenticated", function() {
+    $scope.$on("finishedAuthenticating", function () {
         finishLoading();
     });
 

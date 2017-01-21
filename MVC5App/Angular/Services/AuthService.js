@@ -4,11 +4,7 @@
         var self = this;
 
         self.login = function () {
-            lock.show({
-                auth: {
-                    redirect: false
-                }
-            });
+            lock.show();
         }
 
         $rootScope.userProfile = JSON.parse(localStorage.getItem('profile')) || {};
@@ -36,7 +32,7 @@
 
                     localStorage.setItem('profile', JSON.stringify(profile));
                     $rootScope.userProfile = JSON.parse(localStorage.getItem('profile')) || {};
-                    $rootScope.$broadcast('authenticated', true);
+                    $rootScope.$broadcast('finishedAuthenticating', true);
                 });
             });
         }

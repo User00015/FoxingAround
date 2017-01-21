@@ -32,10 +32,20 @@ app
             });
             envService.check();
 
+            var options = {
+                auth: {
+                    redirectUrl: envService.read('apiUrl') + '/callback',
+                    responseType: 'token',
+                    params: {
+                        scope: 'openid name email picture'
+                    }
+                }
+            }
+
             lockProvider.init({
                 domain: 'foxing-around.auth0.com',
                 clientID: 'eYDiisAw4OLNYJwybpX1sLuUmPuyaJ91',
-                callbackURL: '/login'
+                options: options
             });
 
 
@@ -43,7 +53,9 @@ app
                 return localStorage.getItem('id_token');
             };
 
-            jwtOptionsProvider.config({ whiteListedDomains: ['foxing-around.com'] });
+            jwtOptionsProvider.config({
+                whiteListedDomains: ['foxing-around.com']
+            });
 
             $httpProvider.interceptors.push('jwtInterceptor');
         }
@@ -61,6 +73,7 @@ app
         authService.registerAuthenticationListener();
 
         authManager.checkAuthOnRefresh();
+        authManager.redirectWhenUnauthenticated();
     }])
 
     .controller('RootController', ['$scope', '$route', '$routeParams', '$location',
