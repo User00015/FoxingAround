@@ -5,13 +5,13 @@ import { syncRemoteData } from './remote_data';
 import * as l from './index';
 import { img as preload } from '../utils/preload_utils';
 import { defaultProps } from '../ui/box/container';
-import { isFieldValid, showInvalidField } from '../field/index';
+import { isFieldValid, showInvalidField, hideInvalidFields } from '../field/index';
 
 export function setupLock(id, clientID, domain, options, hookRunner, emitEventFn) {
   let m = l.setup(id, clientID, domain, options, hookRunner, emitEventFn);
-  
+
   m = syncRemoteData(m);
-  
+
   preload(l.ui.logo(m) || defaultProps.logo);
 
   webApi.setupClient(id, clientID, domain, l.withAuthOptions(m, {
@@ -22,46 +22,42 @@ export function setupLock(id, clientID, domain, options, hookRunner, emitEventFn
   m = l.runHook(m, "didInitialize", options);
 
   swap(setEntity, "lock", id, m);
+
+  return m;
 }
 
 export function handleAuthCallback() {
   const hash = global.location.hash;
 
   const ms = read(getCollection, "lock");
-  const parsed = ms.filter(m => l.auth.redirect(m) && parseHash(m, hash));
   const keepHash = ms.filter(m => !l.hashCleanup(m)).size > 0;
 
-  if (parsed.size > 0 && !keepHash) {
-    global.location.hash = "";
-  }
+  ms.forEach(m => {
+    l.auth.redirect(m) && parseHash(m, hash, (result) => {
+        if (result && !keepHash) {
+          global.location.hash = "";
+        }
+      })
+    });
 }
 
-function parseHash(m, hash) {
-  const parsedHash = webApi.parseHash(l.id(m), hash);
-  l.emitHashParsedEvent(m, parsedHash);
+function parseHash(m, hash, cb) {
+  webApi.parseHash(l.id(m), hash, function(error, parsedHash) {
 
-  let error, result;
-
-  if (parsedHash) {
-    if (parsedHash.error) {
-      error = parsedHash;
-    } else if (!parsedHash.hasOwnProperty("error")) {
-      // NOTE: if the url hash contains the string "error"
-      // `parsedHash` will be the following object:
-      // {error: undefined, error_description: undefined}
-      // That is why we make the additional check for the error
-      // property to ensure we actually have a result.
-      result = parsedHash;
+    if (error) {
+      l.emitHashParsedEvent(m, error);
+    } else {
+      l.emitHashParsedEvent(m, parsedHash);
     }
 
     if (error) {
       l.emitAuthorizationErrorEvent(m, error);
-    } else if (result) {
-      l.emitAuthenticatedEvent(m, result);
+    } else if (parsedHash) {
+      l.emitAuthenticatedEvent(m, parsedHash);
     }
-  }
 
-  return !!(error || result);
+    cb(!!(error || parsedHash))
+  });
 }
 
 export function openLock(id, opts) {
@@ -79,7 +75,7 @@ export function openLock(id, opts) {
       return l.emitUnrecoverableErrorEvent(m, "'flashMessage' must provide a valid type ['error','success']")
     }
     if (!opts.flashMessage.text) {
-      return l.emitUnrecoverableErrorEvent(m, "'flashMessage' must provide a text") 
+      return l.emitUnrecoverableErrorEvent(m, "'flashMessage' must provide a text")
     }
   }
 
@@ -110,12 +106,20 @@ export function closeLock(id, force = false, callback = () => {}) {
     swap(updateEntity, "lock", id, l.stopRendering);
 
     setTimeout(() => {
-      swap(updateEntity, "lock", id, l.reset);
+      swap(updateEntity, "lock", id, (m) => {
+        m = hideInvalidFields(m);
+        m = l.reset(m);
+        return m;
+      });
       m = read(getEntity, "lock", id);
       callback(m);
     }, 1000);
   } else {
-    swap(updateEntity, "lock", id, l.reset);
+    swap(updateEntity, "lock", id, (m) => {
+      m = hideInvalidFields(m);
+      m = l.reset(m);
+      return m;
+    });
     callback(m);
   }
 }
@@ -183,7 +187,7 @@ export function logInSuccess(id, result) {
 }
 
 function logInError(id, fields, error, localHandler) {
-  localHandler(id, error, fields, () => process.nextTick(() => {
+  localHandler(id, error, fields, () => setTimeout(() => {
     const m = read(getEntity, "lock", id);
     const errorMessage = l.loginErrorMessage(m, error, loginType(fields));
 
@@ -192,7 +196,7 @@ function logInError(id, fields, error, localHandler) {
     }
 
     swap(updateEntity, "lock", id, l.setSubmitting, false, errorMessage);
-  }));
+  }, 0));
 
   swap(updateEntity, "lock", id, l.setSubmitting, false);
 }

@@ -25,4 +25,7 @@ release
 
 example/auth0.js
 
+.gitignore
+coverage
+
 .idea/

@@ -59,8 +59,7 @@ namespace MVC5App.Tests.Controllers
         {
             _encounterService.Encounter.Monsters = Generator.CreateMonsters(15); //50 * 15 * 4 = 3000
             var deadlyDifficulty = _difficulty.Deadly * _party.PartySize;
-            var encounterXp = _encounterService.EncounterExperience;
-
+            var encounterXp = _encounterService.GetEncountersExperienceValue(_encounterService.Encounter.Monsters);
 
             Assert.IsTrue(encounterXp >= deadlyDifficulty);
         }
@@ -72,8 +71,7 @@ namespace MVC5App.Tests.Controllers
             _encounterService.Encounter.Monsters = Generator.CreateMonsters(8); // 50 * 8 * 3 = 1200
             var mediumDifficulty = _difficulty.Medium * _party.PartySize;
             var deadlyDifficulty = _difficulty.Deadly * _party.PartySize;
-            var encounterXp = _encounterService.EncounterExperience;
-
+            var encounterXp = _encounterService.GetEncountersExperienceValue(_encounterService.Encounter.Monsters);
 
             Assert.IsTrue(encounterXp >= mediumDifficulty && encounterXp < deadlyDifficulty);
         }
@@ -85,8 +83,7 @@ namespace MVC5App.Tests.Controllers
             _encounterService.Encounter.Monsters = Generator.CreateMonsters(6); // 50 * 6 * 2 = 600
             var easyDifficulty = _difficulty.Easy * _party.PartySize;
             var hardDifficulty = _difficulty.Hard * _party.PartySize;
-            var encounterXp = _encounterService.EncounterExperience;
-
+            var encounterXp = _encounterService.GetEncountersExperienceValue(_encounterService.Encounter.Monsters);
 
             Assert.IsTrue(encounterXp >= easyDifficulty && encounterXp < hardDifficulty);
         }
@@ -98,8 +95,7 @@ namespace MVC5App.Tests.Controllers
             _encounterService.Encounter.Monsters = Generator.CreateMonsters(5); // 50 * 5 * 2 = 500
             var mediumDifficulty = _difficulty.Medium * _party.PartySize;
             var easyDifficulty = _difficulty.Easy * _party.PartySize;
-            var encounterXp = _encounterService.EncounterExperience;
-
+            var encounterXp = _encounterService.GetEncountersExperienceValue(_encounterService.Encounter.Monsters);
 
             Assert.IsTrue(encounterXp < mediumDifficulty && encounterXp > easyDifficulty);
         }
@@ -110,7 +106,8 @@ namespace MVC5App.Tests.Controllers
 
             _encounterService.Encounter.Monsters = Generator.CreateMonsters(1); // 50 * 1 * 1 = 50
             var easyDifficulty = _difficulty.Easy * _party.PartySize;
-            var encounterXp = _encounterService.EncounterExperience;
+            var encounterXp = _encounterService.GetEncountersExperienceValue(_encounterService.Encounter.Monsters);
+            //var encounterXp = _encounterService.EncounterExperience;
 
 
             Assert.IsTrue(encounterXp < easyDifficulty && encounterXp > 0);
