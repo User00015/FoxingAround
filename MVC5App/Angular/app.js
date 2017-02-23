@@ -34,7 +34,7 @@ app
 
             var options = {
                 auth: {
-                    redirectUrl: envService.read('apiUrl') + '/callback',
+                    redirectUrl: envService.read('apiUrl') + '/encounter',
                     responseType: 'token',
                     params: {
                         scope: 'openid name email picture'
@@ -45,7 +45,7 @@ app
             lockProvider.init({
                 domain: 'foxing-around.auth0.com',
                 clientID: 'eYDiisAw4OLNYJwybpX1sLuUmPuyaJ91',
-                options: options
+                options: options,
             });
 
 

@@ -29,7 +29,7 @@
 
     $scope.levels = _.range(1, 21); //Hard-coded character levels
     $scope.isLoading = false;
-    $scope.environment = $scope.environments[0];
+    $scope.environment = _.head($scope.environments);
     $scope.encountersChanged = false;
 
 
