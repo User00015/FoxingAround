@@ -33,7 +33,13 @@ namespace MVC5App.Controllers
         [HttpGet]
         public IEnumerable<MonsterModel> Get()
         {
-            return _monsterRepository.GetMonsters();
+            return _monsterRepository.GetMonsters().OrderBy(p => p.Name);
+        }
+
+        [HttpGet]
+        public IEnumerable<MonsterModel> Foo(IPartyService party)
+        {
+            return _monsterRepository.GetMonsters(party).OrderBy(p => p.Name);
         }
 
         [HttpGet]

@@ -1,6 +1,5 @@
 ﻿var app = angular.module('FifthEditionEncounters', ['ngRoute', 'ngAnimate', 'ngResource', 'environment', 'wt.responsive', 'mgcrea.ngStrap', 'auth0.lock', 'angular-storage', 'angular-jwt']);
 
-
 app
     .constant('_', window._)
     .config([
@@ -8,7 +7,7 @@ app
         function ($routeProvider, $locationProvider, envService, lockProvider, jwtInterceptorProvider, $httpProvider, jwtOptionsProvider) {
             $routeProvider
                 .when('/home', { templateUrl: './Angular/Home/home.html', controller: 'HomeController' })
-                //.when('/gallery', { templateUrl: './Angular/Gallery/gallery.html', controller: 'GalleryController' })
+                .when('/dashboard', { templateUrl: './Angular/Dashboard/dashboard.html', controller: 'DashboardController' })
                 .when('/encounter', { templateUrl: './Angular/Encounter/encounter.html', controller: 'EncounterController' })
                 //.when('/login', { templateUrl: './Angular/Login/login.html', controller: 'LoginController' }) //Maybe later
                 .when('/about', { templateUrl: './Angular/About/about.html', controller: 'AboutController' })
@@ -34,7 +33,7 @@ app
 
             var options = {
                 auth: {
-                    redirectUrl: envService.read('apiUrl') + '/encounter',
+                    redirectUrl: envService.read('apiUrl') + '/dashboard',
                     responseType: 'token',
                     params: {
                         scope: 'openid name email picture'

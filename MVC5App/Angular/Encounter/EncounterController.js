@@ -29,64 +29,40 @@
 
     $scope.levels = _.range(1, 21); //Hard-coded character levels
     $scope.isLoading = false;
-    $scope.environment = _.head($scope.environments);
+    $scope.environment = $scope.environments[0];
     $scope.encountersChanged = false;
 
-
-    var finishUpdating = function (item) {
-        $scope.isSaving = true;
-        $scope.savedEncounters = _.filter($scope.savedEncounters, function (enc) {
-            return _.size(enc.monsters) > 0;
-        });
-
-        if (item != null) {
-            _.replace($scope.savedEncounters, item.$$hashKey, item);
-        }
+    var finishAddingNewEncounter = function (item) {
         var params = {
             email: $rootScope.userProfile.email,
             encounters: $scope.savedEncounters
         };
-        encounterService.saveEncounters(function () {
-            $scope.$broadcast("saved", true);
-            $scope.encountersChanged = false;
-            $scope.isSaving = false;
-        }, params);
-    };
-
-    var finishLoading = function () {
-        $scope.isLoadingSavedEncounters = true;
-        var params = { email: $rootScope.userProfile.email }
 
         encounterService.getSavedEncounters(function (encounter) {
             $scope.savedEncounters = null;
-            $scope.savedEncounters = _.compact(_.concat($scope.savedEncounters, encounter));
+            params.encounters = _.compact(_.concat(item, encounter));
             $scope.encountersChanged = false;
             $scope.isLoadingSavedEncounters = false;
+
+            $scope.encounter = null;
+            $scope.encountersChanged = true;
+            encounterService.saveEncounters(function () {
+                $scope.$broadcast("saved", true);
+                $scope.encountersChanged = false;
+                $scope.isSaving = false;
+            }, params);
         }, params);
     };
 
-    var finishAddingNewEncounter = function (item) {
-        $scope.savedEncounters = _.filter($scope.savedEncounters, function (enc) {
-            return _.size(enc.monsters) > 0;
-        });
-
-        $scope.savedEncounters = _.compact(_.concat($scope.savedEncounters, item));
-        $scope.encounter = null;
-        $scope.encountersChanged = true;
-    };
+    encounterService.getMonsters(function(monsters) {
+        $scope.allMonsters = monsters;
+    });
 
     $scope.saveNewEncounter = function (item) {
         loginService.signIn().then(function () {
             finishAddingNewEncounter(item);
         });
     };
-
-    $scope.updateEncounter = function (item) {
-        loginService.signIn().then(function () {
-            finishUpdating(item);
-        });
-    };
-
 
     $scope.$on("encountersChanged", function () {
         $scope.encountersChanged = true;
@@ -114,14 +90,8 @@
         }, 10000);
     };
 
-    /*************************************************************************************************************
-     * Automatically load saved encounters when either logging in, or opening the encounter page while logged in. 
-     *************************************************************************************************************/
-    $scope.$on("finishedAuthenticating", function () {
-        finishLoading();
-    });
-
-    if ($rootScope.isAuthenticated) {
-        finishLoading();
+    $scope.addMonster = function(monster) {
+        $scope.encounter = _.concat($scope.encounter, monster);
     };
+
 }]);

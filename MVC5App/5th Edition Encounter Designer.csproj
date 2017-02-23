@@ -303,9 +303,9 @@
     <Content Include="Angular\Encounter\StatblockModalController.js" />
     <Content Include="Angular\Encounter\EncounterController.js" />
     <Content Include="Angular\Encounter\encounter.html" />
-    <Content Include="Angular\Encounter\encounterService.js" />
-    <Content Include="Angular\Gallery\gallery.html" />
-    <Content Include="Angular\Gallery\GalleryController.js" />
+    <Content Include="Angular\Services\encounterService.js" />
+    <Content Include="Angular\Dashboard\dashboard.html" />
+    <Content Include="Angular\Dashboard\DashboardController.js" />
     <Content Include="Angular\Home\Directives\dropdown.js" />
     <Content Include="Angular\Home\Directives\dropdown.html" />
     <Content Include="Angular\Home\home.html" />
