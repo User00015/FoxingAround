@@ -91,7 +91,7 @@
     };
 
     $scope.addMonster = function(monster) {
-        $scope.encounter = _.concat($scope.encounter, monster);
+        $scope.encounter.monsters = _.concat($scope.encounter.monsters, monster);
     };
 
 }]);

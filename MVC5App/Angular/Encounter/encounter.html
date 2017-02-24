@@ -1,10 +1,10 @@
 ﻿<div class="row">
 
-    <div class="sidebar col-sm-4 col-md-5" style="max-height: 75%;overflow-y:auto" >
+    <div class="sidebar col-sm-4 col-md-5" ng-if="foo" style="max-height: 75%;overflow-y:auto" >
         <label>Filter: <input ng-model="filterMonsters.name"></label>
         <ul class="navs nav-tabs nav-stacked" >
             <li ng-repeat="monster in allMonsters | filter:filterMonsters" class="list-group-item">
-                {{monster.name}} -- {{monster.xp}}
+                {{monster.name}} -- {{monster.experienceValue}}
                 <button type="button" class="pull-right" ng-click="addMonster(monster)">></button>
             </li>
         </ul>
@@ -35,7 +35,7 @@
             <button type="submit" class="btn btn-default btn-primary" ng-disabled="formEncounter.$invalid || isLoading" ng-click="createEncounters()">
                 <span ng-show="isLoadingNewEncounter">
                     <i class="glyphicon glyphicon-refresh spinning"></i>
-                </span>Randomize
+                </span>New Encounter
             </button>
 
             <encounter-table encounter="encounter" save="saveNewEncounter"></encounter-table>

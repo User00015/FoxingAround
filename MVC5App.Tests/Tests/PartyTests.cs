@@ -20,7 +20,7 @@ namespace MVC5App.Tests.Controllers
         {
             _monsterRepositoryMock = new Mock<IMonsterRepository>();
             _encounterService = new EncounterService(_monsterRepositoryMock.Object);
-            _encounterService.CreateEncounter(new PartyViewModel()
+            _encounterService.CreateRandomEncounter(new PartyViewModel()
             {
                 PartyLevel = 3,
                 PartySize = 6

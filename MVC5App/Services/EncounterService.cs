@@ -35,11 +35,11 @@ namespace MVC5App.Services
             _monsterRepository = monsterRepository;
         }
 
-        public void CreateEncounter(IPartyViewModel party)
+        public void CreateEmptyEncounter(IPartyViewModel party)
         {
             _partyService = new PartyService(party);
 
-            Encounter.Monsters = MonsterResolver(_partyService).OrderByDescending(p => p.ExperienceValue).ToList();
+            Encounter.Monsters = new List<MonsterViewModel>();
             Encounter.Difficulty = new DifficultyViewModel
             {
                 ExperienceValue = GetEncountersExperienceValue(Encounter.Monsters),
@@ -49,6 +49,13 @@ namespace MVC5App.Services
                 Deadly = _partyService.TotalDeadlyXP
             };
             Encounter.EncounterExperience = GetEncountersExperienceValue(Encounter.Monsters);
+
+        }
+
+        public void CreateRandomEncounter(IPartyViewModel party)
+        {
+            CreateEmptyEncounter(party);
+            Encounter.Monsters = MonsterResolver(_partyService).OrderByDescending(p => p.ExperienceValue).ToList();
         }
 
         public IEnumerable<MonsterViewModel> MonsterResolver(IPartyService party)

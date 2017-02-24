@@ -113,6 +113,13 @@ namespace MVC5App.Tests.Controllers
             Assert.IsTrue(encounterXp < easyDifficulty && encounterXp > 0);
         }
 
+        [Test]
+        public void CreateEmptyEncounterForAParty()
+        {
+            _encounterService.Encounter.Monsters = new List<MonsterViewModel>();
+            var encounterXp = _encounterService.GetEncountersExperienceValue(_encounterService.Encounter.Monsters);
+            Assert.IsTrue(encounterXp == 0);
+        }
 
         [Test]
         public void GetMonsterViewModel()
@@ -166,7 +173,7 @@ namespace MVC5App.Tests.Controllers
                 });
 
             var service = new EncounterService(_mockMonsterRepository.Object);
-            service.CreateEncounter(_party);
+            service.CreateRandomEncounter(_party);
             var encounter = service.MonsterResolver(_partyService);
 
             Assert.IsTrue(encounter.Count() == 1);
@@ -183,7 +190,7 @@ namespace MVC5App.Tests.Controllers
                 });
 
             var service = new EncounterService(_mockMonsterRepository.Object);
-            service.CreateEncounter(_party);
+            service.CreateRandomEncounter(_party);
             var encounter = service.MonsterResolver(_partyService);
 
             Assert.IsFalse(encounter.Any());
@@ -249,7 +256,7 @@ namespace MVC5App.Tests.Controllers
             };
 
             var service = new EncounterService(_mockMonsterRepository.Object);
-            service.CreateEncounter(_party);
+            service.CreateRandomEncounter(_party);
             service.RandomNumber = new MockRandomNumber();
             var quantityAdded = service.CalculateQuantityToAdd(monsters,monster);
 
@@ -284,7 +291,7 @@ namespace MVC5App.Tests.Controllers
             };
 
             var service = new EncounterService(_mockMonsterRepository.Object);
-            service.CreateEncounter(_party);
+            service.CreateRandomEncounter(_party);
             service.RandomNumber = new MockRandomNumber();
             var quantityAdded = service.CalculateQuantityToAdd(monsters, monster);
 
@@ -328,7 +335,7 @@ namespace MVC5App.Tests.Controllers
             };
 
             var service = new EncounterService(_mockMonsterRepository.Object);
-            service.CreateEncounter(_party);
+            service.CreateRandomEncounter(_party);
             service.RandomNumber = new MockRandomNumber();
             var quantityMonster1 = service.CalculateQuantityToAdd(monsters, monster1);
 
@@ -356,7 +363,7 @@ namespace MVC5App.Tests.Controllers
             List<MonsterViewModel> monsters = new List<MonsterViewModel>();
 
             var service = new EncounterService(_mockMonsterRepository.Object);
-            service.CreateEncounter(_party);
+            service.CreateRandomEncounter(_party);
             service.RandomNumber = new MockRandomNumber();
 
             var monster = new MonsterModel()

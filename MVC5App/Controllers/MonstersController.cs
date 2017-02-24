@@ -30,16 +30,24 @@ namespace MVC5App.Controllers
             _monsterRepository = monsterRepository;
         }
 
-        [HttpGet]
-        public IEnumerable<MonsterModel> Get()
-        {
-            return _monsterRepository.GetMonsters().OrderBy(p => p.Name);
-        }
+        //[HttpGet]
+        //public IEnumerable<MonsterModel> Get()
+        //{
+        //    return _monsterRepository.GetMonsters();
+        //}
 
         [HttpGet]
-        public IEnumerable<MonsterModel> Foo(IPartyService party)
+        public IEnumerable<MonsterViewModel> Get()
         {
-            return _monsterRepository.GetMonsters(party).OrderBy(p => p.Name);
+            var monsters = _monsterRepository.GetMonsters();
+            return monsters.Select(p => new MonsterViewModel()
+            {
+                Name = p.Name,
+                ExperienceValue = p.Xp,
+                Id = p.Id,
+                Level = p.ChallengeRating,
+                Quantity = 1
+            }).OrderBy(p => p.Name);
         }
 
         [HttpGet]
@@ -51,7 +59,14 @@ namespace MVC5App.Controllers
         [HttpPost]
         public EncounterViewModel Post([FromBody] PartyViewModel party)
         {
-            _encounterService.CreateEncounter(party);
+            _encounterService.CreateRandomEncounter(party);
+            return _encounterService.Encounter;
+        }
+
+        [HttpPost]
+        public EncounterViewModel Empty([FromBody] PartyViewModel party)
+        {
+           _encounterService.CreateEmptyEncounter(party);
             return _encounterService.Encounter;
         }
 

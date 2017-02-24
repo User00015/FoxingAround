@@ -21,7 +21,7 @@ namespace MVC5App.Tests.Controllers
             _databaseMock = new Mock<ITableDataService>();
             _mockRepository = new MonsterRepository(_databaseMock.Object);
             _mock = new EncounterService(_mockRepository);
-            _mock.CreateEncounter(new PartyViewModel());
+            _mock.CreateRandomEncounter(new PartyViewModel());
 
         }
 
