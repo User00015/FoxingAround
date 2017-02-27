@@ -13,5 +13,6 @@ namespace MVC5App.ViewModels
         public List<MonsterViewModel> Monsters { get; set; }  = new List<MonsterViewModel>();
         public int EncounterExperience { get; set;  }
         public DifficultyViewModel Difficulty { get; set; } = new DifficultyViewModel();
+        public int Environment { get; set; }
     }
 }

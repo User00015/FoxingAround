@@ -3,6 +3,7 @@
     var self = this;
 
     var monstersUrl = envService.read('apiUrl') + '/api/Monsters';
+    var emptyMonstersUrl = envService.read('apiUrl') + '/api/Monsters/Empty';
     var detailsUrl = envService.read('apiUrl') + '/api/Monsters/';
     var updateUrl = envService.read('apiUrl') + '/api/Monsters/ExperienceValues';
     var loadEncountersUrl = envService.read('apiUrl') + '/api/Monsters/LoadEncounters';
@@ -26,12 +27,20 @@
         });
     }
 
-    self.postMonsters = function(callback, params) {
+    self.randomizeMonsterEncounter = function(callback, params) {
         $http.post(monstersUrl, params).then(function(response) {
             self.encounter = response.data;
             callback(response.data);
         });
     }
+
+    self.emptyMonsterEncounter = function(callback, params) {
+        $http.post(emptyMonstersUrl, params).then(function(response) {
+            self.encounter = response.data;
+            callback(response.data);
+        });
+    }
+
 
     self.getSavedEncounters = function(callback, email) {
         $http.post(loadEncountersUrl, email).then(function(response) {

@@ -1,3 +1,4 @@
+using MVC5App.Models;
 using MVC5App.ViewModels.Interfaces;
 
 namespace MVC5App.ViewModels
@@ -9,5 +10,6 @@ namespace MVC5App.ViewModels
         public string Level { get; set; }
         public int ExperienceValue { get; set; }
         public int Quantity { get; set; }
+        public Environment Environment { get; set; }
     }
 }

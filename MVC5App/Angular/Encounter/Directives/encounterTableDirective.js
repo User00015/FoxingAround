@@ -18,7 +18,6 @@
                 scope.isSaved = true;
             });
 
-
             scope.getMonsterDetails = function (monster) {
                 $modal({
                     templateUrl: 'Angular/Encounter/Statblock.html',
@@ -58,6 +57,12 @@
                 scope.$emit("encountersChanged");
             };
 
+            scope.$on("updateEncounter", function () {
+                if (_.isUndefined(scope.encounter) || _.isNull(scope.encounter))
+                    return;
+                updateEncounters();
+            });
+
             scope.removeMonster = function (monster) {
                 if (monster.quantity > 1) {
                     monster.quantity = monster.quantity - 1;
@@ -66,13 +71,7 @@
                         return m.id !== monster.id;
                     });
                 }
-
-                if (_.size(scope.encounter.monsters) === 0) {
-                    scope.encounter = null;
-                    scope.$emit("encountersChanged");
-                } else {
-                    updateEncounters();
-                }
+                updateEncounters();
             }
 
             scope.addMonster = function (monster) {

@@ -46,7 +46,9 @@ namespace MVC5App.Controllers
                 ExperienceValue = p.Xp,
                 Id = p.Id,
                 Level = p.ChallengeRating,
-                Quantity = 1
+                Quantity = 1,
+                Environment = p.Environment
+                
             }).OrderBy(p => p.Name);
         }
 

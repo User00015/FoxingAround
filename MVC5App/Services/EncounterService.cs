@@ -49,6 +49,7 @@ namespace MVC5App.Services
                 Deadly = _partyService.TotalDeadlyXP
             };
             Encounter.EncounterExperience = GetEncountersExperienceValue(Encounter.Monsters);
+            Encounter.Environment = party.Environment;
 
         }
 

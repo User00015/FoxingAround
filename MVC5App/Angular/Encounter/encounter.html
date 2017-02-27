@@ -1,13 +1,15 @@
 ﻿<div class="row">
 
-    <div class="sidebar col-sm-4 col-md-5" ng-if="foo" style="max-height: 75%;overflow-y:auto" >
-        <label>Filter: <input ng-model="filterMonsters.name"></label>
-        <ul class="navs nav-tabs nav-stacked" >
-            <li ng-repeat="monster in allMonsters | filter:filterMonsters" class="list-group-item">
+    <div class="sidebar col-sm-4 col-md-5" style="max-height: 75%;overflow-y:auto">
+        <div class="form-group">
+            <input class="form-control" type="search" palceholder="Filter..." ng-model="filterMonsters.name">
+        </div>
+        <div class="navs nav-tabs nav-stacked">
+            <a href="#" ng-repeat="monster in allMonsters | filter:filterMonsters | filter:xpFilter | filter:terrainFilter" class="list-group-item" ng-click="addMonster(monster)">
                 {{monster.name}} -- {{monster.experienceValue}}
-                <button type="button" class="pull-right" ng-click="addMonster(monster)">></button>
-            </li>
-        </ul>
+                <div class="pull-right">></div>
+            </a>
+        </div>
     </div>
     <div class="well col-sm-8 col-md-7">
         <form class="form-horizontal" name="formEncounter">
@@ -32,7 +34,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-default btn-primary" ng-disabled="formEncounter.$invalid || isLoading" ng-click="createEncounters()">
+            <button type="submit" class="btn btn-default btn-primary" ng-disabled="formEncounter.$invalid || isLoading" ng-click="createEncounter()">
                 <span ng-show="isLoadingNewEncounter">
                     <i class="glyphicon glyphicon-refresh spinning"></i>
                 </span>New Encounter

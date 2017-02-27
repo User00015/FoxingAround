@@ -54,7 +54,7 @@
         }, params);
     };
 
-    encounterService.getMonsters(function(monsters) {
+    encounterService.getMonsters(function (monsters) {
         $scope.allMonsters = monsters;
     });
 
@@ -68,7 +68,34 @@
         $scope.encountersChanged = true;
     });
 
-    $scope.createEncounters = function () {
+    $scope.xpFilter = function (monster) {
+        if (_.isNil($scope.encounter) || _.isNil($scope.encounter.difficulty)) return true; //Return all if no encounter is present
+        var xpFilter = _.nth(_.values($scope.encounter.difficulty), $scope.difficulty.value);
+        return (monster.experienceValue <= xpFilter);
+    }
+
+    $scope.terrainFilter = function (monster) {
+        if ($scope.environment.value === -1) return true; //return all if no Terrain is selected
+
+        return _.findKey(monster.environment, function (value, key) { return key == $scope.environment.type.toLowerCase() && value === "yes"; });
+    }
+
+    $scope.createEncounter = function () {
+        var params = {
+            partyLevel: $scope.levelOfCharacters,
+            partySize: $scope.numberOfCharacters,
+            difficulty: $scope.difficulty.value,
+            environment: $scope.environment.value
+        };
+
+        encounterService.emptyMonsterEncounter(function (encounter) {
+
+            $scope.encounter = encounter;
+            $scope.isLoadingNewEncounter = false;
+        }, params);
+    }
+
+    $scope.randomizeEncounter = function () {
         $scope.isLoadingNewEncounter = true;
         var params = {
             partyLevel: $scope.levelOfCharacters,
@@ -77,7 +104,7 @@
             environment: $scope.environment.value
         };
 
-        encounterService.postMonsters(function (encounter) {
+        encounterService.randomizeMonsterEncounter(function (encounter) {
             $scope.encounter = encounter;
             $scope.isLoadingNewEncounter = false;
         }, params);
@@ -90,8 +117,13 @@
         }, 10000);
     };
 
-    $scope.addMonster = function(monster) {
-        $scope.encounter.monsters = _.concat($scope.encounter.monsters, monster);
+    $scope.addMonster = function (monster) {
+        if (_.includes($scope.encounter.monsters, monster)) {
+            _.find($scope.encounter.monsters, monster).quantity += 1;
+        } else {
+            $scope.encounter.monsters = _.concat($scope.encounter.monsters, monster);
+        }
+        $scope.$broadcast("updateEncounter");
     };
 
 }]);
