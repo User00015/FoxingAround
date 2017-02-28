@@ -47,7 +47,6 @@
             $scope.encounter = null;
             $scope.encountersChanged = true;
             encounterService.saveEncounters(function () {
-                $scope.$broadcast("saved", true);
                 $scope.encountersChanged = false;
                 $scope.isSaving = false;
             }, params);
@@ -63,10 +62,6 @@
             finishAddingNewEncounter(item);
         });
     };
-
-    $scope.$on("encountersChanged", function () {
-        $scope.encountersChanged = true;
-    });
 
     $scope.xpFilter = function (monster) {
         if (_.isNil($scope.encounter) || _.isNil($scope.encounter.difficulty)) return true; //Return all if no encounter is present

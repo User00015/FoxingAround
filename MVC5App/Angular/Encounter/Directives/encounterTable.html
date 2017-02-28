@@ -1,6 +1,18 @@
-﻿<h3 ng-show="encounter">
-    Encounter
-</h3>
+﻿
+<div class="row">
+    <h3 ng-show="encounter" class="col-md-3">
+        Encounter:
+    </h3>
+    <h3 ng-show="encounter" class="col-md-9">
+        <div ng-show="$parent.difficulty.type" class="col-md-6">
+            Difficulty maximum:{{maximumDifficulty()}} ({{$parent.difficulty.type}}) 
+        </div>
+        <div class="col-md-6">
+            Current difficulty:{{encounter.difficulty.experienceValue}} ({{adjustedDifficulty}})
+        </div>
+    </h3>
+
+</div>
 <table wt-responsive-table class="table table-striped responsive" ng-show="encounter">
     <thead>
         <tr>
@@ -31,7 +43,6 @@
             <td>
                 {{monster.experienceValue}}
                 <br />
-                ({{encounter.difficulty.experienceValue}}: {{adjustedDifficulty}})
 
 
             </td>
@@ -59,5 +70,5 @@
         </tr>
     </tbody>
 </table>
-<button type="button" class="btn btn-default btn-primary" ng-click="saveEncounter(encounter)" ng-show="encounter">Save</button>
+<button type="button" class="btn btn-default btn-primary" ng-click="saveEncounter(encounter)" ng-show="encounter && encounter.monsters.length > 0">Save</button>
 
