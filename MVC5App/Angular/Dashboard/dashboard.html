@@ -38,7 +38,7 @@
         </div>
         <div class="col-md-6">
             <div ng-repeat="savedEncounter in savedEncounters" ng-model="savedEncounter">
-                <a href="encounter"> {{savedEncounter.monsters[0].name}}</a>
+                <a href="encounter" ng-click="foo()"> {{savedEncounter.name}}</a>
                 <!--<div ng-show="!isCollapsed">
                     <encounter-table encounter="savedEncounter" save="saveEncounters"></encounter-table>
                 </div>-->
@@ -56,4 +56,3 @@
        data-title="Changes detected"
        bs-tooltip></i>
 </button>-->
-</div>

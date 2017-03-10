@@ -32,7 +32,15 @@
     $scope.environment = $scope.environments[0];
     $scope.encountersChanged = false;
 
-    var finishAddingNewEncounter = function (item) {
+    var foo = function (item) {
+
+    };
+
+    encounterService.getMonsters(function (monsters) {
+        $scope.allMonsters = monsters;
+    });
+
+    $scope.saveNewEncounter = function (item) {
         var params = {
             email: $rootScope.userProfile.email,
             encounters: $scope.savedEncounters
@@ -51,16 +59,6 @@
                 $scope.isSaving = false;
             }, params);
         }, params);
-    };
-
-    encounterService.getMonsters(function (monsters) {
-        $scope.allMonsters = monsters;
-    });
-
-    $scope.saveNewEncounter = function (item) {
-        loginService.signIn().then(function () {
-            finishAddingNewEncounter(item);
-        });
     };
 
     $scope.xpFilter = function (monster) {
@@ -84,7 +82,6 @@
         };
 
         encounterService.emptyMonsterEncounter(function (encounter) {
-
             $scope.encounter = encounter;
             $scope.isLoadingNewEncounter = false;
         }, params);
@@ -116,9 +113,9 @@
         if (_.includes($scope.encounter.monsters, monster)) {
             _.find($scope.encounter.monsters, monster).quantity += 1;
         } else {
+            monster.quantity = 1;
             $scope.encounter.monsters = _.concat($scope.encounter.monsters, monster);
         }
-        $scope.$broadcast("updateEncounter");
     };
 
 }]);

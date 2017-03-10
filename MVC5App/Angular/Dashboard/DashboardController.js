@@ -15,6 +15,10 @@
         console.log("saved");
     }
 
+    $scope.foo = function() {
+        console.log("foo");
+    }
+
     $scope.$on("finishedAuthenticating", function () {
         finishLoading();
     });
