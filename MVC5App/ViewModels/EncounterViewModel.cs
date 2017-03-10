@@ -14,5 +14,6 @@ namespace MVC5App.ViewModels
         public int EncounterExperience { get; set;  }
         public DifficultyViewModel Difficulty { get; set; } = new DifficultyViewModel();
         public int Environment { get; set; }
+        public string Name { get; set; }
     }
 }

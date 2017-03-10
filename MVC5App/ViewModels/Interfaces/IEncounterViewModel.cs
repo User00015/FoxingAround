@@ -8,5 +8,6 @@ namespace MVC5App.ViewModels.Interfaces
         List<MonsterViewModel> Monsters { get; set; }
         int EncounterExperience { get; set; }
         DifficultyViewModel Difficulty { get; set; }
+        string Name { get; set; }
     }
 }

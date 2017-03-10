@@ -303,6 +303,7 @@
     <Content Include="Angular\Encounter\StatblockModalController.js" />
     <Content Include="Angular\Encounter\EncounterController.js" />
     <Content Include="Angular\Encounter\encounter.html" />
+    <Content Include="Angular\Services\dashboardService.js" />
     <Content Include="Angular\Services\encounterService.js" />
     <Content Include="Angular\Dashboard\dashboard.html" />
     <Content Include="Angular\Dashboard\DashboardController.js" />

@@ -4,7 +4,7 @@ app
     .constant('_', window._)
     .config([
         '$routeProvider', '$locationProvider', 'envServiceProvider', 'lockProvider', 'jwtInterceptorProvider', '$httpProvider', 'jwtOptionsProvider',
-        function ($routeProvider, $locationProvider, envService, lockProvider, jwtInterceptorProvider, $httpProvider, jwtOptionsProvider) {
+        function($routeProvider, $locationProvider, envService, lockProvider, jwtInterceptorProvider, $httpProvider, jwtOptionsProvider) {
             $routeProvider
                 .when('/home', { templateUrl: './Angular/Home/home.html', controller: 'HomeController' })
                 .when('/dashboard', { templateUrl: './Angular/Dashboard/dashboard.html', controller: 'DashboardController' })
@@ -48,7 +48,7 @@ app
             });
 
 
-            jwtInterceptorProvider.tokenGetter = function () {
+            jwtInterceptorProvider.tokenGetter = function() {
                 return localStorage.getItem('id_token');
             };
 
@@ -59,23 +59,20 @@ app
             $httpProvider.interceptors.push('jwtInterceptor');
         }
     ])
+    .run([
+        '$rootScope', 'jwtHelper', 'lock', 'authService', 'authManager', function($rootScope, jwtHelper, lock, authService, authManager) {
+            angular.element(document).on("click", function(e) {
+                $rootScope.$broadcast("documentClicked", angular.element(e.target));
+            });
+            $rootScope._ = window._;
 
-    .run(['$rootScope',  'jwtHelper', 'lock', 'authService', 'authManager', function ($rootScope, jwtHelper, lock, authService, authManager) {
-        angular.element(document).on("click", function (e) {
-            $rootScope.$broadcast("documentClicked", angular.element(e.target));
-        });
-        $rootScope._ = window._;
+            var token = localStorage.getItem('id_token');
+            if (token != undefined) authManager.authenticate();
 
-        var token = localStorage.getItem('id_token');
-        if (token != undefined) authManager.authenticate(); 
+            authService.registerAuthenticationListener();
 
-        authService.registerAuthenticationListener();
+            authManager.checkAuthOnRefresh();
+            authManager.redirectWhenUnauthenticated();
+        }
+    ]);
 
-        authManager.checkAuthOnRefresh();
-        authManager.redirectWhenUnauthenticated();
-    }])
-
-    .controller('RootController', ['$scope', '$route', '$routeParams', '$location',
-            function ($scope, $route, $routeParams, $location) {
-
-            }]);

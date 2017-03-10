@@ -2,7 +2,7 @@
 
     <div class="sidebar col-sm-4 col-md-5" style="max-height: 75%;overflow-y:auto">
         <div class="form-group">
-            <input class="form-control" type="search" palceholder="Filter..." ng-model="filterMonsters.name">
+            <input class="form-control" type="search" palceholder="Filter..." id="filter" ng-model="filterMonsters.name">
         </div>
         <div class="navs nav-tabs nav-stacked">
             <a href="#" ng-repeat="monster in allMonsters | filter:filterMonsters | filter:xpFilter | filter:terrainFilter" class="list-group-item" ng-click="addMonster(monster)">

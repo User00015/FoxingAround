@@ -1,4 +1,4 @@
-﻿app.controller('EncounterController', ['$rootScope', '$scope', 'encounterService', '$modal', '$timeout', 'LoginService', function ($rootScope, $scope, encounterService, $modal, $timeout, loginService) {
+﻿app.controller('EncounterController', ['$rootScope', '$scope', 'encounterService', '$modal', '$timeout', 'LoginService', 'dashboardService', function ($rootScope, $scope, encounterService, $modal, $timeout, loginService, dashboardService) {
 
 
 
@@ -31,6 +31,10 @@
     $scope.isLoading = false;
     $scope.environment = $scope.environments[0];
     $scope.encountersChanged = false;
+
+    if (!_.isNil(dashboardService.encounter)) {
+        $scope.encounter = dashboardService.encounter;
+    };
 
     var finishAddingNewEncounter = function (item) {
         var params = {
@@ -89,7 +93,6 @@
         };
 
         encounterService.emptyMonsterEncounter(function (encounter) {
-
             $scope.encounter = encounter;
             $scope.isLoadingNewEncounter = false;
         }, params);
