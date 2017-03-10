@@ -1,4 +1,4 @@
-﻿app.controller('EncounterController', ['$rootScope', '$scope', 'encounterService', '$modal', '$timeout', 'LoginService', function ($rootScope, $scope, encounterService, $modal, $timeout, loginService) {
+﻿app.controller('EncounterController', ['$rootScope', '$scope', 'encounterService', '$modal', '$timeout', 'LoginService', 'dashboardService', function ($rootScope, $scope, encounterService, $modal, $timeout, loginService, dashboardService) {
 
 
 
@@ -32,15 +32,11 @@
     $scope.environment = $scope.environments[0];
     $scope.encountersChanged = false;
 
-    var foo = function (item) {
-
+    if (!_.isNil(dashboardService.encounter)) {
+        $scope.encounter = dashboardService.encounter;
     };
 
-    encounterService.getMonsters(function (monsters) {
-        $scope.allMonsters = monsters;
-    });
-
-    $scope.saveNewEncounter = function (item) {
+    var finishAddingNewEncounter = function (item) {
         var params = {
             email: $rootScope.userProfile.email,
             encounters: $scope.savedEncounters

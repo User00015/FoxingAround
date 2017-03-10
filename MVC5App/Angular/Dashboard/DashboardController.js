@@ -1,4 +1,6 @@
-﻿app.controller('DashboardController', ['$scope', 'encounterService', '$rootScope', function ($scope, encounterService, $rootScope) {
+﻿app.controller('DashboardController', ['$scope', 'encounterService', '$rootScope', 'dashboardService', function ($scope, encounterService, $rootScope, dashboardService) {
+
+    $scope.isLoadingSavedEncounters = true;
 
     var finishLoading = function () {
         $scope.isLoadingSavedEncounters = true;
@@ -11,13 +13,10 @@
 
     }
 
-    $scope.saveEncounters = function() {
-        console.log("saved");
-    }
-
-    $scope.foo = function() {
-        console.log("foo");
-    }
+    $scope.setEncounter = function(savedEncounter) {
+        dashboardService.encounter = savedEncounter;
+        console.log(dashboardService);
+    };
 
     $scope.$on("finishedAuthenticating", function () {
         finishLoading();
