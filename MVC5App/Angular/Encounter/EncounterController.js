@@ -36,23 +36,20 @@
         $scope.encounter = dashboardService.encounter;
     };
 
-    var finishAddingNewEncounter = function (item) {
+    encounterService.getMonsters(function (monsters) {
+        $scope.allMonsters = monsters;
+    });
+
+    $scope.saveNewEncounter = function (item) {
         var params = {
             email: $rootScope.userProfile.email,
-            encounters: $scope.savedEncounters
+            encounters: null
         };
 
         encounterService.getSavedEncounters(function (encounter) {
-            $scope.savedEncounters = null;
             params.encounters = _.compact(_.concat(item, encounter));
-            $scope.encountersChanged = false;
-            $scope.isLoadingSavedEncounters = false;
-
             $scope.encounter = null;
-            $scope.encountersChanged = true;
             encounterService.saveEncounters(function () {
-                $scope.encountersChanged = false;
-                $scope.isSaving = false;
             }, params);
         }, params);
     };

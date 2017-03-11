@@ -1230,7 +1230,7 @@
       <DependentUpon>bundleconfig.json</DependentUpon>
     </Content>
     <Content Include="Content\cerulean-bootstrap.less" />
-    <Content Include="Content\variables.less" />
+    <Content Include="Content\crulean-variables.less" />
     <Content Include="Content\final.less" />
     <Content Include="Content\less\.csscomb.json" />
     <Content Include="Content\less\.csslintrc" />
@@ -1313,6 +1313,12 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\sandstone-bootstrap.less" />
+    <Content Include="Content\sandstone-variables.less" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
     <None Include="monsters.json" />
     <Content Include="Scripts\lodash.min.js" />
     <Content Include="Scripts\mixins\lodash.js" />

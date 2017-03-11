@@ -9,13 +9,8 @@
 
             scope.adjustedDifficulty = "";
             scope.toggle = true; //Defaults visible
-            //scope.isSaved = true;
 
             //var saveHandler = scope.save(); //scope.save()(encounter)
-
-            //scope.$on("saved", function () {
-            //    scope.isSaved = true;
-            //});
 
             var updateEncounters = function () {
                 var monstersList = scope.encounter.monsters;
@@ -24,7 +19,6 @@
                     difficulty.experienceValue = xp;
                     scope.adjustedDifficulty = getDifficulty(difficulty);
                 }, monstersList);
-                //scope.isSaved = false;
             };
 
             var getDifficulty = function (difficulties) {
@@ -61,14 +55,7 @@
 
                 scope.adjustedDifficulty = getDifficulty(scope.encounter.difficulty);
                 updateEncounters();
-            });
-
-
-            //scope.$on("updateEncounter", function () {
-            //    if (_.isUndefined(scope.encounter) || _.isNull(scope.encounter))
-            //        return;
-            //    updateEncounters();
-            //});
+            }, true);
 
             scope.removeMonster = function (monster) {
                 if (monster.quantity > 1) {
@@ -85,11 +72,6 @@
                 monster.quantity = monster.quantity + 1;
                 updateEncounters();
             }
-
-            //scope.saveEncounter = function (encounter) {
-            //    saveHandler(encounter);
-            //    scope.isSaved = true;
-            //}
         }
     }
 }]);

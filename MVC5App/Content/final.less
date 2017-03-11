@@ -1,6 +1,6 @@
 ﻿@import "less/bootstrap";
-@import "variables";
-@import "cerulean-bootstrap";
+@import "sandstone-variables";
+@import "sandstone-bootstrap";
 
 
 body {
@@ -22,10 +22,15 @@ body {
     }
 }
 
-.navbar-brand  {
+.navbar-brand {
     padding: 1px 15px;
 
-    >.image {
+    > .image {
         height: 100%;
     }
+}
+
+.encounter-panel {
+    max-height: 90%;
+    overflow-y: auto;
 }
