@@ -44,6 +44,7 @@ namespace MVC5App
                 "~/bower_components/angular-strap/dist/angular-strap.tpl.min.js",
                 "~/bower_components/auth0-lock/build/lock.min.js",
                 "~/bower_components/angular-lock/dist/angular-lock.min.js",
+                "~/bower_components/angularUtils-pagination/dirPagination.js",
                 "~/Scripts/mixins/lodash.js",
                 "~/Scripts/lodash.min.js"));
 
@@ -54,6 +55,9 @@ namespace MVC5App
                       "~/bower_components/angular-responsive-tables/release/angular-responsive-tables.css",
                       "~/Content/site.css"));
 
+            bundles.Add(new PartialsBundle("FifthEditionEncounters", "~/bundles/templates").Include(
+                "~/bower_components/angularUtils-pagination/dirPagination.tpl.html"
+                ));
 
             BundleTable.EnableOptimizations = false;
         }

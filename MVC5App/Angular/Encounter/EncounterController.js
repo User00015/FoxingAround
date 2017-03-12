@@ -1,6 +1,7 @@
 ﻿app.controller('EncounterController', ['$rootScope', '$scope', 'encounterService', '$modal', '$timeout', 'LoginService', 'dashboardService', function ($rootScope, $scope, encounterService, $modal, $timeout, loginService, dashboardService) {
 
 
+    $scope.bar = true;
 
     $scope.difficulties = [
 { type: "Easy", value: 0 },
@@ -40,6 +41,10 @@
         $scope.allMonsters = monsters;
     });
 
+    $scope.pageChangeHandler = function (num) {
+        console.log('going to page ' + num);
+    };
+    
     $scope.saveNewEncounter = function (item) {
         var params = {
             email: $rootScope.userProfile.email,
@@ -110,5 +115,4 @@
             $scope.encounter.monsters = _.concat($scope.encounter.monsters, monster);
         }
     };
-
 }]);

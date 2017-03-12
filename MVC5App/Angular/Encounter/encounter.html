@@ -1,69 +1,84 @@
 ﻿<div class="row">
 
     <!--Monster sidebar-->
-    <div class="sidebar col-sm-4 col-md-5 encounter-panel">
-        <div class="form-group">
-            <input class="form-control" type="search" palceholder="Filter..." id="filter" ng-model="filterMonsters.name">
-        </div>
-        <div ng-if="encounter">
-            <div class="navs nav-tabs nav-stacked">
-                <a href="#" ng-repeat="monster in allMonsters | filter:filterMonsters | filter:xpFilter | filter:terrainFilter" class="list-group-item" ng-click="addMonster(monster)">
-                    {{monster.name}} -- {{monster.experienceValue}}
-                    <div class="pull-right">></div>
-                </a>
+    <div id="monsterList" class="collapse" ng-class="{in: !bar}">
+        <div class="sidebar col-sm-4 col-md-5 encounter-panel">
+            <div class="form-group">
+                <input class="form-control" type="search" palceholder="Filter..." id="filter" ng-model="filterMonsters.name">
             </div>
-        </div>
-        <div ng-if="!encounter">
-            Please select from the following from the dropdowns: Number of characters and level of characters!
+            <div ng-if="encounter">
+                <div class="navs nav-tabs nav-stacked">
+                    <a href="#" dir-paginate="monster in allMonsters | filter:filterMonsters | filter:xpFilter | filter:terrainFilter | itemsPerPage: 10" class="list-group-item" ng-click="addMonster(monster)">
+                        {{monster.name}} -- {{monster.experienceValue}}
+                        <div class="pull-right">></div>
+                    </a>
+                </div>
+                <div class="text-center">
+                    <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)"></dir-pagination-controls>
+                </div>
+            </div>
+            <div ng-if="!encounter">
+                Please select from the following from the dropdowns: Number of characters and level of characters!
+            </div>
         </div>
     </div>
 
-    <div class="well col-sm-8 col-md-7 encounter-panel">
-        <form class="form-horizontal" name="formEncounter">
-            <div class="form-group">
-                <div class="col-md-3">
-                    <label for="NumberOfCharactersSelect" class="control-label">Number of characters</label>
-                    <select class="form-control" name="numOfChars" id="NumberOfCharactersSelect" placeholder="" ng-model="numberOfCharacters" required ng-options="level as level for level in levels"></select>
+    <div id="encounterList" class="collapse" ng-class="{in: bar}">
+        <div class="well col-sm-8 col-md-7 encounter-panel">
+            <form class="form-horizontal" name="formEncounter">
+                <div class="form-group">
+                    <div class="col-md-3">
+                        <label for="NumberOfCharactersSelect" class="control-label">Number of characters</label>
+                        <select class="form-control" name="numOfChars" id="NumberOfCharactersSelect" placeholder="" ng-model="numberOfCharacters" required ng-options="level as level for level in levels"></select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="LevelOfCharacters" class="control-label">Level of Characters</label>
+                        <select class="form-control" name="levelOfChars" id="LevelOfCharacters" required ng-model="levelOfCharacters" ng-options="level as level for level in levels"></select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="Difficulty" class="control-label">Difficulty</label>
+                        <select class="form-control" id="Difficulty" placeholder="" ng-model="difficulty" ng-options="difficulty.type for difficulty in difficulties track by difficulty.value"></select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="Terrain" class="control-label">Terrain</label>
+                        <select class="form-control" id="Terrain" placeholder="" ng-model="environment" ng-options="environment.type for environment in environments track by environment.value"></select>
+                    </div>
                 </div>
 
-                <div class="col-md-3">
-                    <label for="LevelOfCharacters" class="control-label">Level of Characters</label>
-                    <select class="form-control" name="levelOfChars" id="LevelOfCharacters" required ng-model="levelOfCharacters" ng-options="level as level for level in levels"></select>
+                <button type="submit" class="btn btn-default btn-primary" ng-disabled="formEncounter.$invalid || isLoading" ng-click="createEncounter()">
+                    <span ng-show="isLoadingNewEncounter">
+                        <i class="glyphicon glyphicon-refresh spinning"></i>
+                    </span>New Encounter
+                </button>
+
+                <button type="submit" class="btn btn-default btn-primary pull-right" ng-disabled="formEncounter.$invalid || isLoading" ng-click="randomizeEncounter()">
+                    <span ng-show="isLoadingNewEncounter">
+                        <i class="glyphicon glyphicon-refresh spinning"></i>
+                    </span>Random Encounter
+                </button>
+
+                <encounter-table encounter="encounter"></encounter-table>
+                <div class="form-group">
+                    <label class="col-sm-4" for="saveName" ng-show="encounter && encounter.monsters.length > 0">
+                        Name your encounter:
+                        <input type="text" id="saveName" class="form-control" ng-model="encounter.Name" />
+                    </label>
+                    <label class="col-sm-2" for="saveName" ng-show="encounter && encounter.monsters.length > 0">
+                        Save your encounter:
+                        <button type="submit" class="form-control btn btn-default btn-primary" ng-click="saveNewEncounter(encounter)" ng-show="encounter && encounter.monsters.length > 0" ng-disabled="!encounter.Name.length > 0">Save</button>
+                    </label>
                 </div>
+            </form>
+        </div>
+    </div>
+</div>
 
-                <div class="col-md-3">
-                    <label for="Difficulty" class="control-label">Difficulty</label>
-                    <select class="form-control" id="Difficulty" placeholder="" ng-model="difficulty" ng-options="difficulty.type for difficulty in difficulties track by difficulty.value"></select>
-                </div>
-                <div class="col-md-3">
-                    <label for="Terrain" class="control-label">Terrain</label>
-                    <select class="form-control" id="Terrain" placeholder="" ng-model="environment" ng-options="environment.type for environment in environments track by environment.value"></select>
-                </div>
-            </div>
-
-            <button type="submit" class="btn btn-default btn-primary" ng-disabled="formEncounter.$invalid || isLoading" ng-click="createEncounter()">
-                <span ng-show="isLoadingNewEncounter">
-                    <i class="glyphicon glyphicon-refresh spinning"></i>
-                </span>New Encounter
-            </button>
-
-            <button type="submit" class="btn btn-default btn-primary pull-right" ng-disabled="formEncounter.$invalid || isLoading" ng-click="randomizeEncounter()">
-                <span ng-show="isLoadingNewEncounter">
-                    <i class="glyphicon glyphicon-refresh spinning"></i>
-                </span>Random Encounter
-            </button>
-
-            <encounter-table encounter="encounter"></encounter-table>
-            <div class="form-group">
-                <label class="col-sm-4" for="saveName" ng-show="encounter && encounter.monsters.length > 0">
-                    Name your encounter:
-                    <input type="text" id="saveName" class="form-control" ng-model="encounter.Name"  />
-                </label>
-                <label class="col-sm-2" for="saveName" ng-show="encounter && encounter.monsters.length > 0">
-                    Save your encounter:
-                    <button type="submit" class="form-control btn btn-default btn-primary" ng-click="saveNewEncounter(encounter)" ng-show="encounter && encounter.monsters.length > 0" ng-disabled="!encounter.Name.length > 0" >Save</button>
-                </label>
-            </div>
-        </form>
+<div ng-click="bar = !bar" class="panel-toggle">
+    <div class="panel">
+        <div class="panel-body">
+            <span> hello guys</span>
+        </div>
     </div>
 </div>

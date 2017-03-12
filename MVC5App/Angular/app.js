@@ -1,10 +1,10 @@
-﻿var app = angular.module('FifthEditionEncounters', ['ngRoute', 'ngAnimate', 'ngResource', 'environment', 'wt.responsive', 'mgcrea.ngStrap', 'auth0.lock', 'angular-storage', 'angular-jwt']);
+﻿var app = angular.module('FifthEditionEncounters', ['ngRoute', 'ngAnimate', 'ngResource', 'environment', 'wt.responsive', 'mgcrea.ngStrap', 'auth0.lock', 'angular-storage', 'angular-jwt', 'angularUtils.directives.dirPagination']);
 
 app
     .constant('_', window._)
     .config([
         '$routeProvider', '$locationProvider', 'envServiceProvider', 'lockProvider', 'jwtInterceptorProvider', '$httpProvider', 'jwtOptionsProvider',
-        function($routeProvider, $locationProvider, envService, lockProvider, jwtInterceptorProvider, $httpProvider, jwtOptionsProvider) {
+        function ($routeProvider, $locationProvider, envService, lockProvider, jwtInterceptorProvider, $httpProvider, jwtOptionsProvider) {
             $routeProvider
                 .when('/home', { templateUrl: './Angular/Home/home.html', controller: 'HomeController' })
                 .when('/dashboard', { templateUrl: './Angular/Dashboard/dashboard.html', controller: 'DashboardController' })
@@ -48,7 +48,7 @@ app
             });
 
 
-            jwtInterceptorProvider.tokenGetter = function() {
+            jwtInterceptorProvider.tokenGetter = function () {
                 return localStorage.getItem('id_token');
             };
 
@@ -60,8 +60,8 @@ app
         }
     ])
     .run([
-        '$rootScope', 'jwtHelper', 'lock', 'authService', 'authManager', function($rootScope, jwtHelper, lock, authService, authManager) {
-            angular.element(document).on("click", function(e) {
+        '$rootScope', 'jwtHelper', 'lock', 'authService', 'authManager', function ($rootScope, jwtHelper, lock, authService, authManager) {
+            angular.element(document).on("click", function (e) {
                 $rootScope.$broadcast("documentClicked", angular.element(e.target));
             });
             $rootScope._ = window._;

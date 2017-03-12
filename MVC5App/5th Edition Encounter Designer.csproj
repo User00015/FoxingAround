@@ -249,6 +249,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
+    <Compile Include="App_Start\PartialTransform.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -478,6 +479,10 @@
     <Content Include="bower_components\angular-strap\src\tooltip\tooltip.tpl.html" />
     <Content Include="bower_components\angular-strap\src\typeahead\typeahead.js" />
     <Content Include="bower_components\angular-strap\src\typeahead\typeahead.tpl.html" />
+    <Content Include="bower_components\angularUtils-pagination\dirPagination.js" />
+    <Content Include="bower_components\angularUtils-pagination\dirPagination.tpl.html" />
+    <Content Include="bower_components\angularUtils-pagination\index.js" />
+    <Content Include="bower_components\angularUtils-pagination\package.js" />
     <Content Include="bower_components\angular\angular-csp.css" />
     <Content Include="bower_components\angular\angular.js" />
     <Content Include="bower_components\angular\angular.min.js" />
@@ -1225,6 +1230,10 @@
     <Content Include="bower_components\auth0.js\README.md" />
     <Content Include="bower_components\auth0.js\scripts\ci.sh" />
     <Content Include="bower_components\auth0.js\scripts\release.sh" />
+    <Content Include="bower_components\angularUtils-pagination\.bower.json" />
+    <Content Include="bower_components\angularUtils-pagination\bower.json" />
+    <Content Include="bower_components\angularUtils-pagination\package.json" />
+    <Content Include="bower_components\angularUtils-pagination\README.md" />
     <None Include="bundleconfig.json" />
     <Content Include="bundleconfig.json.bindings">
       <DependentUpon>bundleconfig.json</DependentUpon>
