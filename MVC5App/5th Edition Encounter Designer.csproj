@@ -350,6 +350,14 @@
     <Content Include="bower_components\angular-lock\dist\angular-lock.js" />
     <Content Include="bower_components\angular-lock\dist\angular-lock.min.js" />
     <Content Include="bower_components\angular-lock\gulpfile.js" />
+    <Content Include="bower_components\angular-pageslide-directive\.gitignore" />
+    <Content Include="bower_components\angular-pageslide-directive\dist\angular-pageslide-directive.js" />
+    <Content Include="bower_components\angular-pageslide-directive\dist\angular-pageslide-directive.min.js" />
+    <Content Include="bower_components\angular-pageslide-directive\examples\index.html" />
+    <Content Include="bower_components\angular-pageslide-directive\Gruntfile.js" />
+    <Content Include="bower_components\angular-pageslide-directive\karma.conf.js" />
+    <Content Include="bower_components\angular-pageslide-directive\src\angular-pageslide-directive.js" />
+    <Content Include="bower_components\angular-pageslide-directive\test\angular-pageslide-directive.spec.js" />
     <Content Include="bower_components\angular-resource\angular-resource.js" />
     <Content Include="bower_components\angular-resource\angular-resource.min.js" />
     <Content Include="bower_components\angular-resource\index.js" />
@@ -1234,6 +1242,11 @@
     <Content Include="bower_components\angularUtils-pagination\bower.json" />
     <Content Include="bower_components\angularUtils-pagination\package.json" />
     <Content Include="bower_components\angularUtils-pagination\README.md" />
+    <Content Include="bower_components\angular-pageslide-directive\.bower.json" />
+    <Content Include="bower_components\angular-pageslide-directive\.travis.yml" />
+    <Content Include="bower_components\angular-pageslide-directive\bower.json" />
+    <Content Include="bower_components\angular-pageslide-directive\package.json" />
+    <Content Include="bower_components\angular-pageslide-directive\readme.md" />
     <None Include="bundleconfig.json" />
     <Content Include="bundleconfig.json.bindings">
       <DependentUpon>bundleconfig.json</DependentUpon>

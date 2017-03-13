@@ -1,4 +1,4 @@
-﻿var app = angular.module('FifthEditionEncounters', ['ngRoute', 'ngAnimate', 'ngResource', 'environment', 'wt.responsive', 'mgcrea.ngStrap', 'auth0.lock', 'angular-storage', 'angular-jwt', 'angularUtils.directives.dirPagination']);
+﻿var app = angular.module('FifthEditionEncounters', ['ngRoute', 'ngAnimate', 'ngResource', 'environment', 'wt.responsive', 'mgcrea.ngStrap', 'auth0.lock', 'angular-storage', 'angular-jwt', 'angularUtils.directives.dirPagination', 'pageslide-directive']);
 
 app
     .constant('_', window._)

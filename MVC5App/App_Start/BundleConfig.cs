@@ -45,6 +45,7 @@ namespace MVC5App
                 "~/bower_components/auth0-lock/build/lock.min.js",
                 "~/bower_components/angular-lock/dist/angular-lock.min.js",
                 "~/bower_components/angularUtils-pagination/dirPagination.js",
+                "~/bower_components/angular-pageslide-directive/dist/angular-pageslide-directive.min.js",
                 "~/Scripts/mixins/lodash.js",
                 "~/Scripts/lodash.min.js"));
 
