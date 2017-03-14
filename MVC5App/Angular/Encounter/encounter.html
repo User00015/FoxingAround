@@ -1,9 +1,8 @@
-﻿
-<pageslide ps-open="checked"  ps-side="top" ps-size="1000px">
-    <div>
+﻿<pageslide ps-open="checked" ps-side="top" ps-size="100%"  ps-container="encounter">
+    <div style="background: #f8f5f0">
         <div class="encounter-panel">
             <div class="form-group">
-                <input class="form-control" type="search" palceholder="Filter..." id="filter" ng-model="filterMonsters.name">
+                <input class="form-control" type="search" palceholder="Filter..." id="filter1" ng-model="filterMonsters.name">
             </div>
             <div ng-if="encounter">
                 <div class="navs nav-tabs nav-stacked">
@@ -21,12 +20,39 @@
             </div>
         </div>
     </div>
+    <div class="panel">
+        <div class="panel-body " style="background:#f8f5f0">
+            Data on encounter goes here!
+        </div>
+    </div>
 </pageslide>
-
 <div class="row">
 
+
     <!--Monster sidebar-->
-    <div class="well  encounter-panel">
+    <div class="sidebar col-sm-4 col-md-5 encounter-panel hide-on-mobile">
+        <div class="form-group">
+            <input class="form-control" type="search" palceholder="Filter..." id="filter" ng-model="filterMonsters.name">
+        </div>
+        <div ng-if="encounter">
+            <div class="navs nav-tabs nav-stacked">
+                <a href="#" dir-paginate="monster in allMonsters | filter:filterMonsters | filter:xpFilter | filter:terrainFilter | itemsPerPage: 10" class="list-group-item" ng-click="addMonster(monster)">
+                    {{monster.name}} -- {{monster.experienceValue}}
+                    <div class="pull-right">></div>
+                </a>
+            </div>
+            <div class="text-center">
+                <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)"></dir-pagination-controls>
+            </div>
+        </div>
+        <div ng-if="!encounter">
+            Please select from the following from the dropdowns: Number of characters and level of characters!
+        </div>
+    </div>
+    <div ng-click="checked = !checked" class="show-on-mobile">
+        <span>Creature List</span>
+    </div>
+    <div class="well col-sm-8 col-md-7 encounter-panel" id="encounter">
         <form class="form-horizontal" name="formEncounter">
             <div class="form-group">
                 <div class="col-md-3">
@@ -75,13 +101,4 @@
         </form>
     </div>
 </div>
-
-<!--<div ng-click="bar = !bar" class="panel-toggle">
-    <div class="panel">
-        <div class="panel-body">
-            <span> hello guys</span>
-        </div>
-    </div>
-</div>-->
-<button type="button" class="btn btn-default btn-primary" ng-click="checked = !checked">Click me to sliiiiide!</button>
 
