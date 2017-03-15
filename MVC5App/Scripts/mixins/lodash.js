@@ -1,13 +1,10 @@
-﻿_.mixin({
-    'replace': function (collection, identity, replacement) {
-        var index = _.indexOf(collection, _.find(collection, identity));
-        collection.splice(index, 1, replacement);
-    }
-});
+﻿(function () {
 
-_.mixin({
-    'isNil': function(obj) {
-        return _.isUndefined(obj) || _.isNull(obj);
-    }
-});
+    _.mixin({
+        'push': function(collection, item) {
+            collection.push(item);
+        }
+    });
+
+})(angular);
 

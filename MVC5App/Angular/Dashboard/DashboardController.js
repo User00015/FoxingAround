@@ -13,9 +13,19 @@
 
     }
 
-    $scope.setEncounter = function(savedEncounter) {
-        dashboardService.encounter = savedEncounter;
-        console.log(dashboardService);
+    $scope.setEncounter = function (savedEncounter) {
+        $scope.monsters = [];
+        //dashboardService.encounter = savedEncounter;
+        //console.log(dashboardService);
+        _.each(savedEncounter.monsters, function (monster) {
+            encounterService.getMonsterDetails(function (data) {
+                _.push($scope.monsters, data);
+            }, monster.id);
+        });
+    };
+
+    $scope.report = function() {
+        console.log($scope.monsters);
     };
 
     $scope.$on("finishedAuthenticating", function () {

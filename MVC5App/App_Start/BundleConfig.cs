@@ -56,9 +56,9 @@ namespace MVC5App
                       "~/bower_components/angular-responsive-tables/release/angular-responsive-tables.css",
                       "~/Content/site.css"));
 
-            bundles.Add(new PartialsBundle("FifthEditionEncounters", "~/bundles/templates").Include(
-                "~/bower_components/angularUtils-pagination/dirPagination.tpl.html"
-                ));
+            //bundles.Add(new PartialsBundle("FifthEditionEncounters", "~/bundles/templates").Include(
+            //    "~/bower_components/angularUtils-pagination/dirPagination.tpl.html"
+            //    ));
 
             BundleTable.EnableOptimizations = false;
         }
