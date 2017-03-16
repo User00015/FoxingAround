@@ -1,8 +1,5 @@
 ﻿app.controller('EncounterController', ['$rootScope', '$scope', 'encounterService', '$modal', '$timeout', 'LoginService', 'dashboardService', function ($rootScope, $scope, encounterService, $modal, $timeout, loginService, dashboardService) {
 
-
-    $scope.bar = true;
-
     $scope.difficulties = [
 { type: "Easy", value: 0 },
 { type: "Medium", value: 1 },

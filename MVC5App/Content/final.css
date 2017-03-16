@@ -6355,6 +6355,13 @@ body {
     display: none;
   }
 }
+/*.bar {
+    background: @gray-dark;
+
+    i {
+        background: #f8f5f0;
+    }
+}*/
 .slider-toggle {
   position: fixed;
   bottom: 0px;
