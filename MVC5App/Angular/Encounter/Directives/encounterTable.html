@@ -1,16 +1,28 @@
 ﻿
 <div class="row">
-    <h3 ng-show="encounter" class="col-md-3">
+    <div ng-show="encounter" class="col-md-3">
         Encounter:
-    </h3>
-    <h3 ng-show="encounter" class="col-md-9">
-        <div ng-show="$parent.difficulty.type" class="col-md-6">
+    </div>
+    <div ng-show="encounter" class="col-md-9">
+        <div class="col-md-3" ng-class="{'bold': encounter.difficulty.experienceValue <= encounter.difficulty.easy}">
+            Easy:{{encounter.difficulty.easy}}
+        </div>
+        <div class="col-md-3" ng-class="{'bold': encounter.difficulty.experienceValue <= encounter.difficulty.medium && encounter.difficulty.experienceValue > encounter.difficulty.easy }">
+            Medium:{{encounter.difficulty.medium}}
+        </div>
+        <div class="col-md-3" ng-class="{'bold': encounter.difficulty.experienceValue <= encounter.difficulty.hard && encounter.difficulty.experienceValue > encounter.difficulty.medium }">
+            Hard:{{encounter.difficulty.hard}}
+        </div>
+        <div class="col-md-3" ng-class="{'bold': encounter.difficulty.experienceValue <= encounter.difficulty.deadly && encounter.difficulty.experienceValue > encounter.difficulty.hard }">
+            Deadly:{{encounter.difficulty.deadly}}
+        </div>
+        <!--<div ng-show="$parent.difficulty.type" class="col-md-6">
             Difficulty maximum:{{maximumDifficulty()}} ({{$parent.difficulty.type}}) 
         </div>
         <div class="col-md-6">
             Current difficulty:{{encounter.difficulty.experienceValue}} ({{adjustedDifficulty}})
-        </div>
-    </h3>
+        </div>-->
+    </div>
 
 </div>
 <table wt-responsive-table class="table table-striped responsive" ng-show="encounter">
@@ -24,7 +36,7 @@
                 <i class="fa fa-question-circle"
                    data-trigger="hover"
                    data-placement="top"
-                   data-title="Experience is presented for individual monsters before quantity and size multipliers are applied. The value in parenthesis is the total encounter value, including quantity and size multipliers."
+                   data-title="Experience is presented for individual monsters before quantity and size multipliers are applied. The currently highlighted difficulty includes quantity and size multipliers."
                    bs-tooltip>
                 </i>
             </th>

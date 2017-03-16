@@ -6362,6 +6362,9 @@ body {
         background: #f8f5f0;
     }
 }*/
+.bold {
+  font-weight: bold;
+}
 .slider-toggle {
   position: fixed;
   bottom: 0px;
