@@ -38,10 +38,17 @@
         $scope.allMonsters = monsters;
     });
 
-    $scope.pageChangeHandler = function (num) {
-        console.log('going to page ' + num);
+    $scope.getDifficulty = function () {
+        if (_.isNil($scope.encounter)) return null;
+
+        var difficulties = $scope.encounter.difficulty;
+        if (difficulties.easy >= difficulties.experienceValue) return "Easy";
+        if (difficulties.medium >= difficulties.experienceValue) return "Medium";
+        if (difficulties.hard >= difficulties.experienceValue) return "Hard";
+        if (difficulties.deadly >= difficulties.experienceValue) return "Deadly";
+        return "Deadly++";
     };
-    
+
     $scope.saveNewEncounter = function (item) {
         var params = {
             email: $rootScope.userProfile.email,

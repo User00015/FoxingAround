@@ -43,7 +43,7 @@
                 });
             }
 
-            scope.maximumDifficulty = function() {
+            scope.maximumDifficulty = function () {
                 if (_.isNil(scope.encounter) || _.isNil(scope.$parent) || _.isNil(scope.$parent.difficulty)) return 0;
 
                 return _.nth(_.values(scope.encounter.difficulty), scope.$parent.difficulty.value);
