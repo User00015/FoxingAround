@@ -1,9 +1,11 @@
-﻿<pageslide ps-open="checked" ps-side="top" ps-size="100%" style="background: #f8f5f0">
-    <div class="encounter-panel">
-        <div class="form-group">
-            <input class="form-control" type="search" palceholder="Filter..." id="filter1" ng-model="filterMonsters.name">
-        </div>
-        <div ng-if="encounter">
+﻿<pageslide ps-open="checked" ps-side="bottom" ps-size="100%" style="background: #f8f5f0" ps-class="show-on-mobile">
+    <div class="encounter-panel" ng-show="encounter">
+        <form role="search">
+            <div class="form-group">
+                <input class="form-control" type="search" placeholder="Filter by name" ng-model="filterMonsters.name">
+            </div>
+        </form>
+        <div>
             <div class="navs nav-tabs nav-stacked">
                 <a href="#" dir-paginate="monster in allMonsters | filter:filterMonsters | filter:xpFilter | filter:terrainFilter | itemsPerPage: 10" class="list-group-item" ng-click="addMonster(monster)">
                     {{monster.name}} -- {{monster.experienceValue}}
@@ -11,30 +13,25 @@
                 </a>
             </div>
             <div class="text-center">
-                <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)"></dir-pagination-controls>
+                <dir-pagination-controls boundary-links="true"></dir-pagination-controls>
             </div>
         </div>
-        <!--<div ng-if="!encounter">
-            Please select from the following from the dropdowns: Number of characters and level of characters!
-        </div>-->
-
-        <div class="panel">
-
+        <div ng-repeat="monster in encounter.monsters">
+            Name: {{monster.name}} -- Challenge Rating: {{monster.level}} -- Quantity: {{monster.quantity}}
+        </div>
+        <span class="bold">
+            Difficulty: {{getDifficulty()}}({{encounter.difficulty.experienceValue}})
+        </span>
+        <div class="panel slider-toggle" ng-click="checked = !checked" style="background:#DFD7CA">
             <div class="panel-body">
-                <div class="pull-right">
-                    <div ng-click="checked = !checked">
-                        <div class="fa-stack fa-lg" style="padding-left:19px">
-                            <i class="fa fa-square-o fa-stack-2x"></i>
-                            <i class="fa fa-chevron-up fa-stack-1x" aria-hidden="true"></i>
-                        </div>
+                <div>
+                    <div class="fa-stack fa-lg">
+                        <i class="fa fa-square-o fa-stack-2x"></i>
+                        <i class="fa fa-stack-1x" ng-class="checked ? 'fa-chevron-down': 'fa-chevron-up'" aria-hidden="true"></i>
                     </div>
+                    <span class="text-center" style="color: black">Expand Monster List</span>
                 </div>
-                <div ng-repeat="monster in encounter.monsters">
-                    Name: {{monster.name}} -- Challenge Rating: {{monster.level}} -- Quantity: {{monster.quantity}}
-                </div>
-                Current experience value: {{encounter.difficulty.experienceValue}}
             </div>
-
         </div>
     </div>
 </pageslide>
@@ -43,7 +40,7 @@
     <!--Monster sidebar-->
     <div class="sidebar col-sm-4 col-md-4 encounter-panel hide-on-mobile">
         <div class="form-group">
-            <input class="form-control" type="search" palceholder="Filter..." id="filter" ng-model="filterMonsters.name" >
+            <input class="form-control" type="search" placeholder="Filter by name" id="filter" ng-model="filterMonsters.name">
         </div>
         <div ng-if="encounter">
             <div class="navs nav-tabs nav-stacked">
@@ -57,20 +54,10 @@
             </div>
         </div>
         <div ng-if="!encounter">
-            Please select from the following from the dropdowns: Number of characters and level of characters!
+            This displays monsters when a party is selected.
         </div>
     </div>
     <div class="well col-sm-8 col-md-8 encounter-panel" id="encounter">
-        <div class="panel" >
-            <div class="pull-right">
-                <div ng-click="checked = !checked" class="show-on-mobile" ng-show="encounter">
-                    <div class="fa-stack fa-lg">
-                        <i class="fa fa-square-o fa-stack-2x"></i>
-                        <i class="fa fa-chevron-down fa-stack-1x" aria-hidden="true"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
         <form class="form-horizontal" name="formEncounter">
             <div class="form-group" style="margin-top:32px">
                 <div class="col-md-3">
@@ -104,7 +91,6 @@
                     <i class="glyphicon glyphicon-refresh spinning"></i>
                 </span>Random Encounter
             </button>
-
             <encounter-table encounter="encounter"></encounter-table>
             <div class="form-group">
                 <label class="col-sm-4" for="saveName" ng-show="encounter && encounter.monsters.length > 0">

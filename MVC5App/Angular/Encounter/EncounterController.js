@@ -1,4 +1,4 @@
-﻿app.controller('EncounterController', ['$rootScope', '$scope', 'encounterService', '$modal', '$timeout', 'LoginService', 'dashboardService', function ($rootScope, $scope, encounterService, $modal, $timeout, loginService, dashboardService) {
+﻿app.controller('EncounterController', ['$rootScope', '$scope', 'encounterService', '$modal', '$timeout',  function ($rootScope, $scope, encounterService, $modal, $timeout) {
 
     $scope.difficulties = [
 { type: "Easy", value: 0 },
@@ -30,18 +30,21 @@
     $scope.environment = $scope.environments[0];
     $scope.encountersChanged = false;
 
-    if (!_.isNil(dashboardService.encounter)) {
-        $scope.encounter = dashboardService.encounter;
-    };
-
     encounterService.getMonsters(function (monsters) {
         $scope.allMonsters = monsters;
     });
 
-    $scope.pageChangeHandler = function (num) {
-        console.log('going to page ' + num);
+    $scope.getDifficulty = function () {
+        if (_.isNil($scope.encounter)) return null;
+
+        var difficulties = $scope.encounter.difficulty;
+        if (difficulties.easy >= difficulties.experienceValue) return "Easy";
+        if (difficulties.medium >= difficulties.experienceValue) return "Medium";
+        if (difficulties.hard >= difficulties.experienceValue) return "Hard";
+        if (difficulties.deadly >= difficulties.experienceValue) return "Deadly";
+        return "Deadly++";
     };
-    
+
     $scope.saveNewEncounter = function (item) {
         var params = {
             email: $rootScope.userProfile.email,

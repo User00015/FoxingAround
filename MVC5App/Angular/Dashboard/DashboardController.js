@@ -1,4 +1,4 @@
-﻿app.controller('DashboardController', ['$scope', 'encounterService', '$rootScope', 'dashboardService', function ($scope, encounterService, $rootScope, dashboardService) {
+﻿app.controller('DashboardController', ['$scope', 'encounterService', '$rootScope', function ($scope, encounterService, $rootScope) {
 
     $scope.isLoadingSavedEncounters = true;
 
@@ -15,17 +15,11 @@
 
     $scope.setEncounter = function (savedEncounter) {
         $scope.monsters = [];
-        //dashboardService.encounter = savedEncounter;
-        //console.log(dashboardService);
         _.each(savedEncounter.monsters, function (monster) {
             encounterService.getMonsterDetails(function (data) {
                 _.push($scope.monsters, data);
             }, monster.id);
         });
-    };
-
-    $scope.report = function() {
-        console.log($scope.monsters);
     };
 
     $scope.$on("finishedAuthenticating", function () {
