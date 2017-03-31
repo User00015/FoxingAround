@@ -1,52 +1,17 @@
-﻿<style>
-    .vertical-divider {
-        clear: both;
-        position: relative;
-    }
-
-        .vertical-divider:after {
-            clear: both;
-            content: " ";
-            display: block;
-            height: 0;
-            visibility: hidden;
-        }
-
-        .vertical-divider .column:not(:first-child):after, .vertical-divider .columns:not(:first-child):after {
-            background: #DDDDDD;
-            bottom: 0;
-            content: " ";
-            margin-left: -10px;
-            position: absolute;
-            top: 0;
-            width: 1px;
-        }
-</style>
-<div class="well">
+﻿<div class="well">
     <h3 style="text-decoration: underline">
         Dashboard
     </h3>
-    <div class="row">
+    <uib-accordion close-others="true">
+        <uib-accordion-group heading="Static Header, initially expanded" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled">
+            This content is straight in the template.
+        </uib-accordion-group>
+        <uib-accordion-group heading="{{group.title}}" ng-repeat="group in groups">
+            {{group.content}}
+        </uib-accordion-group>
 
-        <div class="col-md-6">
-            <div>
-                Saved encounter lists:
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div ng-show="isLoadingSavedEncounters"> <i class="fa fa-refresh fa-spin fa-5x"></i></div>
-            <div ng-repeat="savedEncounter in savedEncounters" ng-model="savedEncounter">
-                <a href="#" ng-click="setEncounter(savedEncounter)"> {{savedEncounter.name}}</a>
-                <!--<div ng-show="!isCollapsed">
-                    <encounter-table encounter="savedEncounter" save="saveEncounters"></encounter-table>
-                </div>-->
-            </div>
-        </div>
-    </div>
+    </uib-accordion>
 
-
-    <monster-block monsters="monsters"></monster-block>
-    
 
 </div>
 <!--<button type="submit" class="btn btn-default btn-primary" ng-click="updateEncounter()" ng-if="savedEncounters">

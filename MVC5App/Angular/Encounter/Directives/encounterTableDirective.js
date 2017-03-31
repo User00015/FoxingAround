@@ -1,4 +1,4 @@
-﻿app.directive('encounterTable', ['encounterService', '$modal', '$timeout', 'store', function (encounterService, $modal, $timeout, store) {
+﻿app.directive('encounterTable', ['encounterService', '$modal', '$timeout', 'store', function (encounterService, $uibModal, $timeout, store) {
     return {
         restrict: "AE",
         templateUrl: "Angular/Encounter/Directives/encounterTable.html",
@@ -31,8 +31,8 @@
             };
 
             scope.getMonsterDetails = function (monster) {
-                $modal({
-                    templateUrl: 'Angular/Encounter/Statblock.html',
+                $uibModal.open({
+                    templateUrl: '/Angular/Encounter/Statblock.html',
                     controller: 'StatblockModalController',
                     backdrop: true,
                     resolve: {
