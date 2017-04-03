@@ -31,9 +31,9 @@ namespace MVC5App
                 "~/Angular/*.js").IncludeDirectory(
                 "~/Angular", "*.js", true));
 
-            bundles.Add(new ScriptBundle("~/bundles/angulartemplates").Include(
-                "~/Scripts/templates/*.js").IncludeDirectory(
-                "~/Scripts/templates", "*.js", true));
+            //bundles.Add(new ScriptBundle("~/bundles/angulartemplates").Include(
+            //    "~/Scripts/templates/*.js").IncludeDirectory(
+            //    "~/Scripts/templates", "*.js", true));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
