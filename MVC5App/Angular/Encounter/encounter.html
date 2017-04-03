@@ -1,4 +1,4 @@
-﻿<pageslide ps-open="checked" ps-side="bottom" ps-size="100%" style="background: #f8f5f0" ps-class="show-on-mobile">
+﻿<pageslide ps-open="expandedList" ps-side="bottom" ps-size="100%" style="background: #f8f5f0" ps-class="show-on-mobile">
     <div class="encounter-panel" ng-show="encounter">
         <form role="search">
             <div class="form-group">
@@ -22,14 +22,14 @@
         <span class="bold">
             Difficulty: {{getDifficulty()}}({{encounter.difficulty.experienceValue}})
         </span>
-        <div class="panel slider-toggle" ng-click="checked = !checked" style="background:#DFD7CA">
+        <div class="panel slider-toggle" ng-click="expandedList = !expandedList " style="background:#DFD7CA">
             <div class="panel-body">
                 <div>
                     <div class="fa-stack fa-lg">
                         <i class="fa fa-square-o fa-stack-2x"></i>
-                        <i class="fa fa-stack-1x" ng-class="checked ? 'fa-chevron-down': 'fa-chevron-up'" aria-hidden="true"></i>
+                        <i class="fa fa-stack-1x" ng-class="expandedList  ? 'fa-chevron-down': 'fa-chevron-up'" aria-hidden="true"></i>
                     </div>
-                    <span class="text-center" style="color: black">Expand Monster List</span>
+                    <span class="text-center" style="color: black">{{expandedList ? 'Close' : 'Open'}} Monster List</span>
                 </div>
             </div>
         </div>
