@@ -1,4 +1,5 @@
-﻿<pageslide ps-open="expandedList" ps-side="bottom" ps-size="100%" style="background: #f8f5f0" ps-class="show-on-mobile">
+﻿    <!--Mobile only moster list-->
+<pageslide ps-open="expandedList" ps-side="bottom" ps-size="100%" style="background: #f8f5f0" ps-class="show-on-mobile">
     <div class="encounter-panel" ng-show="encounter">
         <form role="search">
             <div class="form-group">
@@ -19,9 +20,9 @@
         <div ng-repeat="monster in encounter.monsters">
             Name: {{monster.name}} -- Challenge Rating: {{monster.level}} -- Quantity: {{monster.quantity}}
         </div>
-        <span class="bold">
+        <!--<span class="bold">
             Difficulty: {{getDifficulty()}}({{encounter.difficulty.experienceValue}})
-        </span>
+        </span>-->
         <div class="panel slider-toggle" ng-click="expandedList = !expandedList " style="background:#DFD7CA">
             <div class="panel-body">
                 <div>
@@ -29,7 +30,15 @@
                         <i class="fa fa-square-o fa-stack-2x"></i>
                         <i class="fa fa-stack-1x" ng-class="expandedList  ? 'fa-chevron-down': 'fa-chevron-up'" aria-hidden="true"></i>
                     </div>
-                    <span class="text-center" style="color: black">{{expandedList ? 'Close' : 'Open'}} Monster List</span>
+                    <span class="text-center" style="color: black">
+                        {{expandedList ? 'Close' : 'Open'}} Monster List
+                    </span>
+                    <span class="text-center col-xs-offset-2" style="color:black">
+                        Monsters: <span class="bold">{{getTotalMonsters()}} </span>
+                    </span>
+                    <span class="text-center col-xs-offset-2" style="color:black">
+                        Difficulty: <span class ="bold">{{getDifficulty()}}({{encounter.difficulty.experienceValue}})</span>
+                    </span>
                 </div>
             </div>
         </div>

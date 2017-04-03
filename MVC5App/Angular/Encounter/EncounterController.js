@@ -1,5 +1,6 @@
 ﻿app.controller('EncounterController', ['$rootScope', '$scope', 'encounterService', '$modal', '$timeout',  function ($rootScope, $scope, encounterService, $modal, $timeout) {
 
+
     $scope.difficulties = [
 { type: "Easy", value: 0 },
 { type: "Medium", value: 1 },
@@ -115,4 +116,9 @@
             $scope.encounter.monsters = _.concat($scope.encounter.monsters, monster);
         }
     };
+
+    $scope.getTotalMonsters = function() {
+        if (_.isNil($scope.encounter)) return 0;
+        return _.reduce($scope.encounter.monsters, function(result, value) { return result + value.quantity; }, 0);
+    }
 }]);
