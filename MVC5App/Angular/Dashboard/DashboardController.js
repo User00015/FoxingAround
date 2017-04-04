@@ -13,7 +13,6 @@
     }
 
     $scope.open = function() {
-        console.log("open!");
     };
 
     $scope.selectEncounter = function (savedEncounter) {

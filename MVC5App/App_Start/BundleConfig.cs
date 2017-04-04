@@ -23,8 +23,6 @@ namespace MVC5App
                 "~/bower_components/angular-environment/dist/angular-environment.min.js",
                 "~/Scripts/smart-table.min.js",
                 "~/bower_components/angular-animate/angular-animate.min.js",
-                "~/bower_components/angular-bootstrap/ui-bootstrap.min.js",
-                "~/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js",
                 "~/bower_components/angular-route/angular-route.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/angularapp").Include(

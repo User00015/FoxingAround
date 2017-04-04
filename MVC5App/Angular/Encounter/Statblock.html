@@ -1,66 +1,72 @@
-﻿<div class="modal-header" ng-show="title">
-    <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span aria-hidden="true">&times;</span></button>
-    <h4 class="modal-title"></h4>
-</div>
-<div class="modal-body" style="padding-bottom: 5px">
-    <div>
-        {{monsterDetails.type}}: {{monsterDetails.name}}
-        <div class="pull-right">
-            CR {{monsterDetails.challengeRating}}
+﻿<div class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" aria-label="Close" ng-click="$hide()"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body" style="padding-bottom: 5px">
+                <div>
+                    {{monsterDetails.type}}: {{monsterDetails.name}}
+                    <div class="pull-right">
+                        CR {{monsterDetails.challengeRating}}
+                    </div>
+                </div>
+                <div>
+                    {{monsterDetails.subtype != null ? monsterDetails.subtype + ',' : ""}} {{monsterDetails.alignment}}
+                    <div class="pull-right">
+                        {{monsterDetails.xp}}
+                    </div>
+                </div>
+                <div class="row"><hr style="margin-top: 5px; margin-bottom: 5px" /></div>
+                <div>Armor Class {{monsterDetails.armorClass}}</div>
+                <div>Hit Points {{monsterDetails.hitDice}}</div>
+                <div>Speed {{monsterDetails.speed}}</div>
+                <div class="row"><hr style="margin-top: 5px; margin-bottom: 5px" /></div>
+                <div class="row">
+                    <div class="col-xs-2">
+                        <div>STR</div>
+                        <div>{{monsterDetails.strength}}</div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div>DEX</div>
+                        <div>{{monsterDetails.dexterity}}</div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div>CON</div>
+                        <div>{{monsterDetails.constitution}}</div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div>INT</div>
+                        <div>{{monsterDetails.intelligence}}</div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div>WIS</div>
+                        <div>{{monsterDetails.wisdom}}</div>
+                    </div>
+                    <div class="col-xs-2">
+                        <div>CHA</div>
+                        <div>{{monsterDetails.charisma}}</div>
+                    </div>
+                </div>
+                <div class="row"><hr style="margin-top: 5px; margin-bottom: 5px" /></div>
+                <div ng-repeat="ability in monsterDetails.specialAbilities">
+                    <div><b>{{ability.name}}: </b> {{ability.desc}}</div>
+                </div>
+                <div style="margin-top: 5px">Actions</div>
+                <div class="row"><hr style="margin-top: 5px; margin-bottom: 5px" /></div>
+                <div ng-repeat="action in monsterDetails.actions">
+                    <div><b>{{action.name}}: </b>{{action.desc}}</div>
+                </div>
+                <div style="margin-top: 5px">Legendary Actions</div>
+                <div class="row"><hr style="margin-top: 5px; margin-bottom: 5px" /></div>
+                <div ng-repeat="action in monsterDetails.legendaryActions">
+                    <div><b>{{action.name}}: </b>{{action.desc}}</div>
+                </div>
+            </div> <!--End modal body-->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="$hide()">Close</button>
+            </div>
         </div>
     </div>
-    <div>
-        {{monsterDetails.subtype != null ? monsterDetails.subtype + ',' : ""}} {{monsterDetails.alignment}}
-        <div class="pull-right">
-            {{monsterDetails.xp}}
-        </div>
-    </div>
-    <div class="row"><hr style="margin-top: 5px; margin-bottom: 5px" /></div>
-    <div>Armor Class {{monsterDetails.armorClass}}</div>
-    <div>Hit Points {{monsterDetails.hitDice}}</div>
-    <div>Speed {{monsterDetails.speed}}</div>
-    <div class="row"><hr style="margin-top: 5px; margin-bottom: 5px" /></div>
-    <div class="row">
-        <div class="col-xs-2">
-            <div>STR</div>
-            <div>{{monsterDetails.strength}}</div>
-        </div>
-        <div class="col-xs-2">
-            <div>DEX</div>
-            <div>{{monsterDetails.dexterity}}</div>
-        </div>
-        <div class="col-xs-2">
-            <div>CON</div>
-            <div>{{monsterDetails.constitution}}</div>
-        </div>
-        <div class="col-xs-2">
-            <div>INT</div>
-            <div>{{monsterDetails.intelligence}}</div>
-        </div>
-        <div class="col-xs-2">
-            <div>WIS</div>
-            <div>{{monsterDetails.wisdom}}</div>
-        </div>
-        <div class="col-xs-2">
-            <div>CHA</div>
-            <div>{{monsterDetails.charisma}}</div>
-        </div>
-    </div>
-    <div class="row"><hr style="margin-top: 5px; margin-bottom: 5px" /></div>
-    <div ng-repeat="ability in monsterDetails.specialAbilities">
-        <div><b>{{ability.name}}: </b> {{ability.desc}}</div>
-    </div>
-    <div style="margin-top: 5px">Actions</div>
-    <div class="row"><hr style="margin-top: 5px; margin-bottom: 5px" /></div>
-    <div ng-repeat="action in monsterDetails.actions">
-        <div><b>{{action.name}}: </b>{{action.desc}}</div>
-    </div>
-    <div style="margin-top: 5px">Legendary Actions</div>
-    <div class="row"><hr style="margin-top: 5px; margin-bottom: 5px" /></div>
-    <div ng-repeat="action in monsterDetails.legendaryActions">
-        <div><b>{{action.name}}: </b>{{action.desc}}</div>
-    </div>
-</div> <!--End modal body-->
-<div class="modal-footer">
-    <button type="button" class="btn btn-default" ng-click="$hide()">Close</button>
 </div>
