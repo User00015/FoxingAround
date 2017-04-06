@@ -2,15 +2,19 @@
     <h3 style="text-decoration: underline">
         Dashboard
     </h3>
+    <div class="panel-group" ng-model="activePanel" data-allow-multiple="false" bs-collapse>
+        <div class="panel panel-default" ng-repeat="encounter in savedEncounters">
+            <div class="panel-heading" bs-collapse-toggle>
+                {{encounter.name}}
+                <i class="fa fa-times-circle fa-2x pull-right" ng-click="delete(encounter)"></i>
+            </div>
 
+            <div class="panel-body panel-collapse" bs-collapse-target>
+                <monster-block monsters="encounter.monsters"></monster-block>
+            </div>
+        </div>
+    </div>
 </div>
-<!--<button type="submit" class="btn btn-default btn-primary" ng-click="updateEncounter()" ng-if="savedEncounters">
-    <span ng-show="isSaving">
-        <i class="glyphicon glyphicon-refresh spinning"></i>
-    </span>Save All
-    <i class="fa fa-exclamation-triangle" style="color: #f0ad4e" ng-if="encountersChanged"
-       data-trigger="hover"
-       data-placement="top"
-       data-title="Changes detected"
-       bs-tooltip></i>
-</button>-->
+<span class="col-xs-12 text-center" ng-show="isLoadingSavedEncounters">
+    <i class="glyphicon glyphicon-refresh spinning fa fa-5x"></i>
+</span>

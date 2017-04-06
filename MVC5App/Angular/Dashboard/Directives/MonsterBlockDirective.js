@@ -1,4 +1,4 @@
-﻿app.directive('monsterBlock', [function () {
+﻿app.directive('monsterBlock', ['encounterService', function (encounterService) {
 
     return {
         restrict: "AE",
@@ -7,7 +7,12 @@
             monsters: '='
         },
         link: function (scope) {
-            console.log(scope.monsters);
+            scope.allMonsters = [];
+            _.each(scope.monsters, function (monster) {
+                encounterService.getMonsterDetails(function (data) {
+                    _.push(scope.allMonsters, data);
+                }, monster.id);
+            });
         }
     }
 }]);

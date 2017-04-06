@@ -6319,7 +6319,6 @@ input:focus,
 }
 body {
   background-color: white;
-  overflow-y: hidden;
 }
 .panel {
   background-color: #F8F5F0;

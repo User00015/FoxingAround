@@ -1,6 +1,6 @@
 ﻿app.controller('DashboardController', ['$scope', 'encounterService', '$rootScope', '$templateCache', function ($scope, encounterService, $rootScope, $templateCache) {
 
-    $scope.isLoadingSavedEncounters = true;
+    $scope.isLoadingSavedEncounters = false;
 
     var finishLoading = function () {
         $scope.isLoadingSavedEncounters = true;
@@ -12,7 +12,8 @@
         }, params);
     }
 
-    $scope.open = function() {
+    $scope.delete = function(encounter) {
+        console.log(encounter);
     };
 
     $scope.selectEncounter = function (savedEncounter) {
