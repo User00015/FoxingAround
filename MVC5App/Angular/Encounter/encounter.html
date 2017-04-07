@@ -1,4 +1,5 @@
-﻿<pageslide ps-open="checked" ps-side="bottom" ps-size="100%" style="background: #f8f5f0" ps-class="show-on-mobile">
+﻿    <!--Mobile only monster list-->
+<pageslide ps-open="expandedList" ps-side="bottom" ps-size="100%" style="background: #f8f5f0" ps-class="show-on-mobile">
     <div class="encounter-panel" ng-show="encounter">
         <form role="search">
             <div class="form-group">
@@ -19,23 +20,25 @@
         <div ng-repeat="monster in encounter.monsters">
             Name: {{monster.name}} -- Challenge Rating: {{monster.level}} -- Quantity: {{monster.quantity}}
         </div>
-        <span class="bold">
-            Difficulty: {{getDifficulty()}}({{encounter.difficulty.experienceValue}})
-        </span>
-        <div class="panel slider-toggle" ng-click="checked = !checked" style="background:#DFD7CA">
+        <div class="panel slider-toggle" ng-click="expandedList = !expandedList " style="background:#DFD7CA">
             <div class="panel-body">
                 <div>
                     <div class="fa-stack fa-lg">
                         <i class="fa fa-square-o fa-stack-2x"></i>
-                        <i class="fa fa-stack-1x" ng-class="checked ? 'fa-chevron-down': 'fa-chevron-up'" aria-hidden="true"></i>
+                        <i class="fa fa-stack-1x" ng-class="expandedList  ? 'fa-chevron-down': 'fa-chevron-up'" aria-hidden="true"></i>
                     </div>
-                    <span class="text-center" style="color: black">Expand Monster List</span>
+                    <span class="text-center col-xs-offset-1" style="color: black">
+                        Monster List: {{getTotalMonsters()}}
+                    </span>
+                    <span class="text-center col-xs-offset-1 col-sm-offset-2" style="color:black">
+                        Difficulty: <span class="bold">{{getDifficulty()}}({{encounter.difficulty.experienceValue}})</span>
+                    </span>
                 </div>
             </div>
         </div>
     </div>
 </pageslide>
-<div class="row">
+<div class="row" style="overflow-y:hidden">
 
     <!--Monster sidebar-->
     <div class="sidebar col-sm-4 col-md-4 encounter-panel hide-on-mobile">
@@ -99,7 +102,10 @@
                 </label>
                 <label class="col-sm-2" for="saveName" ng-show="encounter && encounter.monsters.length > 0">
                     Save your encounter:
-                    <button type="submit" class="form-control btn btn-default btn-primary" ng-click="saveNewEncounter(encounter)" ng-show="encounter && encounter.monsters.length > 0" ng-disabled="!encounter.Name.length > 0">Save</button>
+                    <button type="submit" class="form-control btn btn-default btn-primary" ng-click="saveNewEncounter(encounter)" ng-show="encounter && encounter.monsters.length > 0" ng-disabled="!encounter.Name.length > 0">
+                        <i class="glyphicon glyphicon-refresh spinning fa" ng-show="isSaving"></i>
+                        Save
+                    </button>
                 </label>
             </div>
         </form>

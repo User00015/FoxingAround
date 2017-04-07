@@ -1,4 +1,5 @@
-﻿app.controller('EncounterController', ['$rootScope', '$scope', 'encounterService', '$modal', '$timeout', 'LoginService', 'dashboardService', function ($rootScope, $scope, encounterService, $modal, $timeout, loginService, dashboardService) {
+﻿app.controller('EncounterController', ['$rootScope', '$scope', 'encounterService', '$modal', '$timeout',  function ($rootScope, $scope, encounterService, $modal, $timeout) {
+
 
     $scope.difficulties = [
 { type: "Easy", value: 0 },
@@ -30,10 +31,6 @@
     $scope.environment = $scope.environments[0];
     $scope.encountersChanged = false;
 
-    if (!_.isNil(dashboardService.encounter)) {
-        $scope.encounter = dashboardService.encounter;
-    };
-
     encounterService.getMonsters(function (monsters) {
         $scope.allMonsters = monsters;
     });
@@ -50,6 +47,7 @@
     };
 
     $scope.saveNewEncounter = function (item) {
+        $scope.isSaving = true;
         var params = {
             email: $rootScope.userProfile.email,
             encounters: null
@@ -58,8 +56,9 @@
         encounterService.getSavedEncounters(function (encounter) {
             params.encounters = _.compact(_.concat(item, encounter));
             $scope.encounter = null;
-            encounterService.saveEncounters(function () {
-            }, params);
+            encounterService.saveEncounters(params).then(function() {
+                $scope.isSaving = false;
+            });
         }, params);
     };
 
@@ -119,4 +118,9 @@
             $scope.encounter.monsters = _.concat($scope.encounter.monsters, monster);
         }
     };
+
+    $scope.getTotalMonsters = function() {
+        if (_.isNil($scope.encounter)) return 0;
+        return _.reduce($scope.encounter.monsters, function(result, value) { return result + value.quantity; }, 0);
+    }
 }]);

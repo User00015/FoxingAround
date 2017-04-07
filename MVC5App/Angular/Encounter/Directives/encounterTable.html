@@ -1,19 +1,19 @@
 ﻿
 <div class="row">
-    <div ng-show="encounter" class="col-md-3">
+    <div ng-show="encounter" class="col-sm-12">
         Difficulties:
     </div>
-    <div ng-show="encounter" class="col-md-9">
-        <div class="col-md-3" ng-class="{'bold': encounter.difficulty.experienceValue <= encounter.difficulty.easy}">
+    <div ng-show="encounter">
+        <div class="col-xs-3" ng-class="{'bold': encounter.difficulty.experienceValue <= encounter.difficulty.easy}">
             Easy:{{encounter.difficulty.easy}}
         </div>
-        <div class="col-md-3" ng-class="{'bold': encounter.difficulty.experienceValue <= encounter.difficulty.medium && encounter.difficulty.experienceValue > encounter.difficulty.easy }">
+        <div class="col-xs-3" ng-class="{'bold': encounter.difficulty.experienceValue <= encounter.difficulty.medium && encounter.difficulty.experienceValue > encounter.difficulty.easy }">
             Medium:{{encounter.difficulty.medium}}
         </div>
-        <div class="col-md-3" ng-class="{'bold': encounter.difficulty.experienceValue <= encounter.difficulty.hard && encounter.difficulty.experienceValue > encounter.difficulty.medium }">
+        <div class="col-xs-3" ng-class="{'bold': encounter.difficulty.experienceValue <= encounter.difficulty.hard && encounter.difficulty.experienceValue > encounter.difficulty.medium }">
             Hard:{{encounter.difficulty.hard}}
         </div>
-        <div class="col-md-3" ng-class="{'bold': encounter.difficulty.experienceValue > encounter.difficulty.hard }">
+        <div class="col-xs-3" ng-class="{'bold': encounter.difficulty.experienceValue > encounter.difficulty.hard }">
             Deadly:{{encounter.difficulty.deadly}}{{encounter.difficulty.experienceValue > encounter.difficulty.deadly ? '++' : ''}}
         </div>
     </div>
@@ -30,7 +30,7 @@
                 <i class="fa fa-question-circle"
                    data-trigger="hover"
                    data-placement="top"
-                   data-title="Experience is presented for individual monsters before quantity and size multipliers are applied. The currently highlighted difficulty includes quantity and size multipliers."
+                   data-title="Experience is presented for individual monsters before quantity and size multipliers are applied."
                    bs-tooltip>
                 </i>
             </th>

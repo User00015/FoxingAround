@@ -7,11 +7,11 @@ namespace MVC5App
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/bower_components/jquery/dist/jquery.min.js"));
+            //bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
+            //            "~/bower_components/jquery/dist/jquery.min.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
-                        "~/bower_components/jquery-validation/dist/*.min.js"));
+            //bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
+            //            "~/bower_components/jquery-validation/dist/*.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                 "~/bower_components/bootstrap/dist/bootstrap.min.js",
@@ -28,6 +28,10 @@ namespace MVC5App
             bundles.Add(new ScriptBundle("~/bundles/angularapp").Include(
                 "~/Angular/*.js").IncludeDirectory(
                 "~/Angular", "*.js", true));
+
+            //bundles.Add(new ScriptBundle("~/bundles/angulartemplates").Include(
+            //    "~/Scripts/templates/*.js").IncludeDirectory(
+            //    "~/Scripts/templates", "*.js", true));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.

@@ -1,6 +1,6 @@
-﻿app.controller('DashboardController', ['$scope', 'encounterService', '$rootScope', 'dashboardService', function ($scope, encounterService, $rootScope, dashboardService) {
+﻿app.controller('DashboardController', ['$scope', 'encounterService', '$rootScope', function ($scope, encounterService, $rootScope) {
 
-    $scope.isLoadingSavedEncounters = true;
+    $scope.isLoadingSavedEncounters = false;
 
     var finishLoading = function () {
         $scope.isLoadingSavedEncounters = true;
@@ -10,22 +10,26 @@
             $scope.savedEncounters = _.compact(_.concat($scope.savedEncounters, encounter));
             $scope.isLoadingSavedEncounters = false;
         }, params);
-
     }
 
-    $scope.setEncounter = function (savedEncounter) {
+    $scope.delete = function (encounter) {
+        _.remove($scope.savedEncounters, encounter);
+
+        var params = {
+            email: $rootScope.userProfile.email,
+            encounters: $scope.savedEncounters
+        };
+
+        encounterService.saveEncounters(params);
+    };
+
+    $scope.selectEncounter = function (savedEncounter) {
         $scope.monsters = [];
-        //dashboardService.encounter = savedEncounter;
-        //console.log(dashboardService);
         _.each(savedEncounter.monsters, function (monster) {
             encounterService.getMonsterDetails(function (data) {
                 _.push($scope.monsters, data);
             }, monster.id);
         });
-    };
-
-    $scope.report = function() {
-        console.log($scope.monsters);
     };
 
     $scope.$on("finishedAuthenticating", function () {
@@ -35,4 +39,5 @@
     if ($rootScope.isAuthenticated) {
         finishLoading();
     };
+
 }]);
