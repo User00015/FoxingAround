@@ -28,10 +28,10 @@
                         <i class="fa fa-stack-1x" ng-class="expandedList  ? 'fa-chevron-down': 'fa-chevron-up'" aria-hidden="true"></i>
                     </div>
                     <span class="text-center col-xs-offset-1" style="color: black">
-                         Monster List: {{getTotalMonsters()}}
+                        Monster List: {{getTotalMonsters()}}
                     </span>
                     <span class="text-center col-xs-offset-1 col-sm-offset-2" style="color:black">
-                        Difficulty: <span class ="bold">{{getDifficulty()}}({{encounter.difficulty.experienceValue}})</span>
+                        Difficulty: <span class="bold">{{getDifficulty()}}({{encounter.difficulty.experienceValue}})</span>
                     </span>
                 </div>
             </div>
@@ -102,7 +102,10 @@
                 </label>
                 <label class="col-sm-2" for="saveName" ng-show="encounter && encounter.monsters.length > 0">
                     Save your encounter:
-                    <button type="submit" class="form-control btn btn-default btn-primary" ng-click="saveNewEncounter(encounter)" ng-show="encounter && encounter.monsters.length > 0" ng-disabled="!encounter.Name.length > 0">Save</button>
+                    <button type="submit" class="form-control btn btn-default btn-primary" ng-click="saveNewEncounter(encounter)" ng-show="encounter && encounter.monsters.length > 0" ng-disabled="!encounter.Name.length > 0">
+                        <i class="glyphicon glyphicon-refresh spinning fa" ng-show="isSaving"></i>
+                        Save
+                    </button>
                 </label>
             </div>
         </form>

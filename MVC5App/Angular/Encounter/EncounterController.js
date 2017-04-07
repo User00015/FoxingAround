@@ -47,6 +47,7 @@
     };
 
     $scope.saveNewEncounter = function (item) {
+        $scope.isSaving = true;
         var params = {
             email: $rootScope.userProfile.email,
             encounters: null
@@ -55,8 +56,9 @@
         encounterService.getSavedEncounters(function (encounter) {
             params.encounters = _.compact(_.concat(item, encounter));
             $scope.encounter = null;
-            encounterService.saveEncounters(function () {
-            }, params);
+            encounterService.saveEncounters(params).then(function() {
+                $scope.isSaving = false;
+            });
         }, params);
     };
 

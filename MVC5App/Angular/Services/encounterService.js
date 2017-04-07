@@ -48,10 +48,8 @@
         });
     }
 
-    self.saveEncounters = function(callback, email) {
-        $http.post(saveEncountersUrl, email).then(function(response) {
-            callback(response);
-        });
+    self.saveEncounters = function(email) {
+        $http.post(saveEncountersUrl, email);
     }
 
     return self;

@@ -6,12 +6,15 @@
         <div class="panel panel-default" ng-repeat="encounter in savedEncounters">
             <div class="panel-heading" bs-collapse-toggle>
                 {{encounter.name}}
-                <i class="fa fa-times-circle fa-2x pull-right" ng-click="delete(encounter)"></i>
+                <i class="fa fa-times-circle fa-2x pull-right" ng-click="delete(encounter); $event.stopPropagation();"></i>
             </div>
 
             <div class="panel-body panel-collapse" bs-collapse-target>
                 <monster-block monsters="encounter.monsters"></monster-block>
             </div>
+            <!--<div class="panel-footer">
+                <button type="button" class="btn btn-default btn-primary btn-sm">Remove</button>
+            </div>-->
         </div>
     </div>
 </div>

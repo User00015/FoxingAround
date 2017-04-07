@@ -1,4 +1,4 @@
-﻿app.controller('DashboardController', ['$scope', 'encounterService', '$rootScope', '$templateCache', function ($scope, encounterService, $rootScope, $templateCache) {
+﻿app.controller('DashboardController', ['$scope', 'encounterService', '$rootScope', function ($scope, encounterService, $rootScope) {
 
     $scope.isLoadingSavedEncounters = false;
 
@@ -12,8 +12,15 @@
         }, params);
     }
 
-    $scope.delete = function(encounter) {
-        console.log(encounter);
+    $scope.delete = function (encounter) {
+        _.remove($scope.savedEncounters, encounter);
+
+        var params = {
+            email: $rootScope.userProfile.email,
+            encounters: $scope.savedEncounters
+        };
+
+        encounterService.saveEncounters(params);
     };
 
     $scope.selectEncounter = function (savedEncounter) {
@@ -33,4 +40,4 @@
         finishLoading();
     };
 
-   }]);
+}]);
