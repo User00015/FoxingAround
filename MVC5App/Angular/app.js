@@ -7,7 +7,7 @@ app
         function ($routeProvider, $locationProvider, envService, lockProvider, jwtInterceptorProvider, $httpProvider, jwtOptionsProvider) {
             $routeProvider
                 .when('/home', { templateUrl: './Angular/Home/home.html', controller: 'HomeController' })
-                .when('/dashboard', { templateUrl: './Angular/Dashboard/dashboard.html', controller: 'DashboardController' })
+                .when('/dashboard', { templateUrl: './Angular/Dashboard/dashboard.html', controller: 'DashboardController', authorize: true })
                 .when('/encounter', { templateUrl: './Angular/Encounter/encounter.html', controller: 'EncounterController' })
                 //.when('/login', { templateUrl: './Angular/Login/login.html', controller: 'LoginController' }) //Maybe later
                 .when('/about', { templateUrl: './Angular/About/about.html', controller: 'AboutController' })
@@ -33,7 +33,7 @@ app
 
             var options = {
                 auth: {
-                    redirectUrl: envService.read('apiUrl') + '/dashboard',
+                    redirectUrl: envService.read('apiUrl') + '/home',
                     responseType: 'token',
                     params: {
                         scope: 'openid name email picture'
@@ -60,7 +60,7 @@ app
         }
     ])
     .run([
-        '$rootScope', 'jwtHelper', 'lock', 'authService', 'authManager', function ($rootScope, jwtHelper, lock, authService, authManager) {
+        '$rootScope', 'jwtHelper', 'lock', 'authService', 'authManager', '$location', 'LoginService', function ($rootScope, jwtHelper, lock, authService, authManager, $location, loginService) {
             angular.element(document).on("click", function (e) {
                 $rootScope.$broadcast("documentClicked", angular.element(e.target));
             });
@@ -73,6 +73,15 @@ app
 
             authManager.checkAuthOnRefresh();
             authManager.redirectWhenUnauthenticated();
+
+            if (!$rootScope.isAuthenticated) {
+                $rootScope.$on("$routeChangeStart", function (evt, to, from) {
+                    // requires authorization?
+                    if (to.authorize === true) {
+                        loginService.signIn();
+                    }
+                });
+            }
         }
     ]);
 

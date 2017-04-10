@@ -1,5 +1,4 @@
-﻿app.controller('EncounterController', ['$rootScope', '$scope', 'encounterService', '$modal', '$timeout',  function ($rootScope, $scope, encounterService, $modal, $timeout) {
-
+﻿app.controller('EncounterController', ['$rootScope', '$scope', 'encounterService', '$modal', '$timeout', 'LoginService',  function ($rootScope, $scope, encounterService, $modal, $timeout, loginService) {
 
     $scope.difficulties = [
 { type: "Easy", value: 0 },

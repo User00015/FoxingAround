@@ -95,7 +95,7 @@
                 </span>Random Encounter
             </button>
             <encounter-table encounter="encounter"></encounter-table>
-            <div class="form-group">
+            <div class="form-group" ng-show="isAuthenticated">
                 <label class="col-sm-4" for="saveName" ng-show="encounter && encounter.monsters.length > 0">
                     Name your encounter:
                     <input type="text" id="saveName" class="form-control" ng-model="encounter.Name" />
