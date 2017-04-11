@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
 using System.Web.Http.Results;
 using MVC5App.DynamoDb;
@@ -48,7 +49,7 @@ namespace MVC5App.Controllers
                 Level = p.ChallengeRating,
                 Quantity = 1,
                 Environment = p.Environment
-                
+
             }).OrderBy(p => p.Name);
         }
 
@@ -68,21 +69,25 @@ namespace MVC5App.Controllers
         [HttpPost]
         public EncounterViewModel Empty([FromBody] PartyViewModel party)
         {
-           _encounterService.CreateEmptyEncounter(party);
+            _encounterService.CreateEmptyEncounter(party);
             return _encounterService.Encounter;
         }
 
         [Authorize]
-        [HttpPost]
-        public IEnumerable<EncounterViewModel> LoadEncounters([FromBody] SavedEncountersViewModel model)
+        [HttpGet]
+        public IEnumerable<EncounterViewModel> LoadEncounters()
         {
-            return _monsterRepository.GetSavedEncounters(model);
+            var identity = User.Identity as ClaimsIdentity;
+            var email = identity?.Claims.SingleOrDefault(p => p.Type == "name")?.Value;
+            return _monsterRepository.GetSavedEncounters(email);
         }
 
         [Authorize]
         [HttpPost]
         public IHttpActionResult SaveEncounters([FromBody] SavedEncountersViewModel model)
         {
+            var identity = User.Identity as ClaimsIdentity;
+            model.Email = identity?.Claims.SingleOrDefault(p => p.Type == "name")?.Value;
             _monsterRepository.SaveEncounters(model);
 
             return Ok();
@@ -105,6 +110,6 @@ namespace MVC5App.Controllers
             return _encounterService.Encounter;
         }
 
-       
+
     }
 }

@@ -4,19 +4,18 @@
 
     var finishLoading = function () {
         $scope.isLoadingSavedEncounters = true;
-        var params = { email: $rootScope.userProfile.email }
 
         encounterService.getSavedEncounters(function (encounter) {
             $scope.savedEncounters = _.compact(_.concat($scope.savedEncounters, encounter));
             $scope.isLoadingSavedEncounters = false;
-        }, params);
+        });
     }
 
     $scope.delete = function (encounter) {
         _.remove($scope.savedEncounters, encounter);
 
         var params = {
-            email: $rootScope.userProfile.email,
+            email: null,
             encounters: $scope.savedEncounters
         };
 

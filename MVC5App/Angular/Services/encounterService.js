@@ -42,14 +42,14 @@
     }
 
 
-    self.getSavedEncounters = function(callback, email) {
-        $http.post(loadEncountersUrl, email).then(function(response) {
+    self.getSavedEncounters = function(callback) {
+        $http.get(loadEncountersUrl).then(function(response) {
             callback(response.data);
         });
     }
 
-    self.saveEncounters = function(email) {
-        $http.post(saveEncountersUrl, email);
+    self.saveEncounters = function(encounters) {
+        $http.post(saveEncountersUrl, encounters);
     }
 
     return self;

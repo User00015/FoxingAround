@@ -1,4 +1,4 @@
-﻿app.controller('EncounterController', ['$rootScope', '$scope', 'encounterService', '$modal', '$timeout', 'LoginService',  function ($rootScope, $scope, encounterService, $modal, $timeout, loginService) {
+﻿app.controller('EncounterController', ['$rootScope', '$scope', 'encounterService', '$modal', '$timeout', 'LoginService', function ($rootScope, $scope, encounterService, $modal, $timeout, loginService) {
 
     $scope.difficulties = [
 { type: "Easy", value: 0 },
@@ -48,17 +48,16 @@
     $scope.saveNewEncounter = function (item) {
         $scope.isSaving = true;
         var params = {
-            email: $rootScope.userProfile.email,
+            email: null,
             encounters: null
         };
 
         encounterService.getSavedEncounters(function (encounter) {
             params.encounters = _.compact(_.concat(item, encounter));
             $scope.encounter = null;
-            encounterService.saveEncounters(params).then(function() {
-                $scope.isSaving = false;
-            });
-        }, params);
+            encounterService.saveEncounters(params);
+            $scope.isSaving = false;
+        });
     };
 
     $scope.xpFilter = function (monster) {
@@ -118,8 +117,8 @@
         }
     };
 
-    $scope.getTotalMonsters = function() {
+    $scope.getTotalMonsters = function () {
         if (_.isNil($scope.encounter)) return 0;
-        return _.reduce($scope.encounter.monsters, function(result, value) { return result + value.quantity; }, 0);
+        return _.reduce($scope.encounter.monsters, function (result, value) { return result + value.quantity; }, 0);
     }
 }]);
