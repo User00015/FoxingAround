@@ -318,6 +318,8 @@
     <Content Include="Angular\Ordering\OrderingController.js" />
     <Content Include="Angular\Services\AuthService.js" />
     <Content Include="Angular\Services\LoginService.js" />
+    <Content Include="Angular\Tracker\tracker.html" />
+    <Content Include="Angular\Tracker\TrackerController.js" />
     <Content Include="bower_components\a0-angular-storage\dist\angular-storage.js" />
     <Content Include="bower_components\a0-angular-storage\dist\angular-storage.min.js" />
     <Content Include="bower_components\a0-angular-storage\gulpfile.js" />

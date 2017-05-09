@@ -1,0 +1,50 @@
+﻿<div class="well">
+    <h3 style="text-decoration: underline">
+        Encounter Tracker
+    </h3>
+    <div class="row" style="margin-top:40px">
+        <div class="col-md-2 col-md-offset-2" style="text-decoration: underline">
+            Initiative Order
+        </div>
+        <div class="col-md-2" style="text-decoration: underline">
+            Name
+        </div>
+        <div class="col-md-2" style="text-decoration: underline">
+            HP
+        </div>
+        <div style="margin-top:40px">
+            <div class="col-md-12" ng-repeat="combatant in encounter | orderBy: 'init':'desc'">
+                <span class="col-md-offset-2 col-md-2">{{combatant.init}}</span>
+                <span class="col-md-2">{{combatant.name}} </span>
+                <span class="col-md-2">
+                    <button type="button" ng-click="subtractHp(combatant)" class="btn btn-sm  btn-success ">
+                        <i class="fa fa-minus-circle fa-fw"></i>
+                    </button>
+                    <input type="number" ng-model="combatant.hp" />
+                    <button type="button" ng-click="addHp(combatant)" class="btn btn-sm  btn-success ">
+                        <i class="fa fa-plus-circle fa-fw"></i>
+                    </button>
+                </span>
+                <div class="col-md-4"></div>
+            </div>
+        </div>
+    </div>
+    <form class="form-group" style="margin-top: 40px">
+        <div>
+            <label>
+                Name
+                <input type="text" class="form-control input-sm" ng-model="newCombatantName" />
+            </label>
+            <label>
+                Initiative:
+                <input class="form-control input-sm" type="number" ng-model="newCombatantInit" />
+            </label>
+            <label>
+                Hit Points
+                <input type="number" class="form-control input-sm" ng-model="newCombatantHp" />
+            </label>
+
+            <button class="btn btn-sm btn-primary" ng-click="addCombatant()" ng-disabled="!(newCombatantInit && newCombatantName)">Add</button>
+        </div>
+    </form>
+</div>
