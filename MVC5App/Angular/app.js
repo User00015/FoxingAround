@@ -10,6 +10,7 @@ app
                 .when('/dashboard', { templateUrl: './Angular/Dashboard/dashboard.html', controller: 'DashboardController', authorize: true })
                 .when('/encounter', { templateUrl: './Angular/Encounter/encounter.html', controller: 'EncounterController' })
                 .when('/tracker', { templateUrl: './Angular/Tracker/Tracker.html', controller: 'TrackerController' })
+                .when('/tools', { templateUrl: './Angular/Tools/Tools.html', controller: 'ToolsController' })
                 //.when('/login', { templateUrl: './Angular/Login/login.html', controller: 'LoginController' }) //Maybe later
                 .when('/about', { templateUrl: './Angular/About/about.html', controller: 'AboutController' })
                 .otherwise({ redirectTo: '/home' });
